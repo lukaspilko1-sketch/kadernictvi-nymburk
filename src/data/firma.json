@@ -1,0 +1,26 @@
+{
+  "nazev": "Kadeřnictví a holičství Nymburk",
+  "adresa": { "ulice": "Zbožská 664/4", "mesto": "Nymburk", "psc": "TODO" },
+  "telefon": "603 242 505",
+  "telefonOdkaz": "tel:+420603242505",
+  "facebook": "https://www.facebook.com/profile.php?id=100057433419981",
+  "souradnice": { "lat": null, "lon": null, "TODO": "doplnit souřadnice pro JSON-LD a mapu" },
+  "domena": "TODO",
+  "hodiny": {
+    "po": { "od": "08:00", "do": "14:30" },
+    "ut": { "od": "08:00", "do": "16:30" },
+    "st": { "od": "08:00", "do": "14:30" },
+    "ct": { "od": "08:00", "do": "16:30" },
+    "pa": { "od": "08:00", "do": "14:00" },
+    "so": null,
+    "ne": null
+  },
+  "hodinyPoznamka": "TODO: víkend zatím nepotvrzen, ověřit u majitelky.",
+  "oNas": {
+    "TODO": "Skutečný text o salonu dodá majitelka. Zatím jen neutrální placeholder.",
+    "text": [
+      "Salon najdete ve Zbožské ulici v Nymburku. Stříháme dámy, pány i děti.",
+      "Objednáváme telefonicky. Zavolejte a domluvíme termín."
+    ]
+  }
+}

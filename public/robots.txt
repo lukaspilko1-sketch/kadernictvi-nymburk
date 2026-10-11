@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: po nasazení upravit adresu podle skutečné domény
+Sitemap: https://TODO-uzivatel.github.io/sitemap-index.xml

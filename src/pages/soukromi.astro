@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import firma from '../data/firma.json';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Ochrana soukromí | Kadeřnictví a holičství Nymburk" description="Web nepoužívá cookies ani sledovací nástroje." cesta="/soukromi/" jsonLd={false}>
+  <main class="obal obal-uzky text-stranka">
+    <p><a href={`${base}/`}>← Zpět na úvod</a></p>
+    <h1>Ochrana soukromí</h1>
+    <p>Tento web nepoužívá cookies, nesleduje návštěvníky a neobsahuje analytické ani reklamní nástroje. Neukládáme žádné osobní údaje.</p>
+    <p>Fonty jsou součástí webu a nenačítají se z cizích serverů.</p>
+    <p>Na stránce je vložená mapa z OpenStreetMap a odkazy na Mapy.cz a Facebook. Mapa se načte, až se k ní dostanete. Po kliknutí na odkaz na cizí web se na něj vztahují jeho vlastní podmínky.</p>
+    <p>Objednání probíhá telefonicky na <a href={firma.telefonOdkaz}>{firma.telefon}</a>. Údaje, které při telefonátu sdělíte, používáme jen k domluvě termínu.</p>
+    <!-- TODO: doplnit provozovatele (jméno/IČO) podle majitelky -->
+    <p class="mala">Provozovatel: TODO (doplní majitelka). Provozovna: {firma.adresa.ulice}, {firma.adresa.mesto}.</p>
+  </main>
+</Base>

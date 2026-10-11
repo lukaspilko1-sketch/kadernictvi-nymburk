@@ -1,0 +1,15 @@
+{
+  "TODO": "Před zveřejněním ověřit souhlas zákazníků (jsou na nich i děti). Fotku skryjete nastavením zobrazit na false.",
+  "fotky": [
+    { "soubor": "panske-1.jpg", "alt": "Pán v zeleném tričku po střihu, krátké boky a vyčesaný vršek", "zobrazit": true },
+    { "soubor": "detske-1.jpg", "alt": "Usměvavý chlapec v kadeřnickém plášti po střihu", "zobrazit": true },
+    { "soubor": "damske-1.jpg", "alt": "Dlouhé hnědé vlasy s růžovými a blond prameny", "zobrazit": true },
+    { "soubor": "panske-2.jpg", "alt": "Pánský fade s vyholeným vzorem do boku hlavy, pohled zezadu", "zobrazit": true },
+    { "soubor": "panske-3.jpg", "alt": "Vousatý pán se zakrácenými vlasy a čistým přechodem po stranách", "zobrazit": true },
+    { "soubor": "detske-4.jpg", "alt": "Barvení dětských vlasů zelenou barvou štětcem", "zobrazit": true },
+    { "soubor": "panske-4.jpg", "alt": "Mladý muž s upraveným vrškem a vyholenými boky, pohled z profilu", "zobrazit": true },
+    { "soubor": "detske-2.jpg", "alt": "Chlapec po střihu s vyholenou linkou nad uchem", "zobrazit": true },
+    { "soubor": "panske-5.jpg", "alt": "Pán s delším vrškem v odstínech blond a vyholenými boky", "zobrazit": true },
+    { "soubor": "detske-3.jpg", "alt": "Koláž z dětského barvení vlasů do zelena", "zobrazit": false }
+  ]
+}

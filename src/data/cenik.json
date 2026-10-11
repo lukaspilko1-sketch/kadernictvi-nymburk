@@ -1,0 +1,52 @@
+{
+  "platnostOd": "1. 3. 2025",
+  "TODO": "Ověřit platnost pánského ceníku před spuštěním.",
+  "skupiny": [
+    {
+      "id": "panske",
+      "nazev": "Pánské",
+      "sekce": [
+        {
+          "nazev": "Vlasy",
+          "polozky": [
+            { "nazev": "Klasika", "cena": 225 },
+            { "nazev": "Klasika jen boky", "cena": 165 },
+            { "nazev": "Klasika zaholení kontur břitvou", "cena": 260 },
+            { "nazev": "Střih strojkem", "cena": 170 },
+            { "nazev": "Komplet (střih + mytí + konečná úprava)", "cena": 305 },
+            { "nazev": "Děti do 6 let", "cena": 175 },
+            { "nazev": "Fade strojkem a vršek nůžkami", "cena": 350 },
+            { "nazev": "Fade strojkem vršek strojkem", "cena": 320 },
+            { "nazev": "Fade strojkem pouze boky", "cena": 275 },
+            { "nazev": "Fade boky břitvou vršek nůžkami", "cena": 420 },
+            { "nazev": "Fade boky břitvou vršek strojkem", "cena": 375 },
+            { "nazev": "Fade jen boky břitvou", "cena": 310 },
+            { "nazev": "Fade do 6 let", "cena": 265 },
+            { "nazev": "Holení hlavy břitvou", "cena": 300 },
+            { "nazev": "Melír", "cena": 420 },
+            { "nazev": "Barvení vlasů", "cena": 390 },
+            { "nazev": "Pánská trvalá", "cena": 380 }
+          ]
+        },
+        {
+          "nazev": "Vousy",
+          "polozky": [
+            { "nazev": "Zkrácení vousů strojkem", "cena": 135 },
+            { "nazev": "Zkrácení vousů strojkem + zaholení kontur břitvou", "cena": 175 },
+            { "nazev": "Komplet holení břitvou", "cena": 250 },
+            { "nazev": "Barvení vousů", "cena": 205 }
+          ]
+        },
+        {
+          "nazev": "Ostatní",
+          "polozky": [
+            { "nazev": "Masáž hlavy", "cena": 50 },
+            { "nazev": "Odstranění chloupků voskem (uši a nos)", "cena": 95 }
+          ]
+        }
+      ]
+    },
+    { "id": "damske", "nazev": "Dámské", "TODO": "Dámský ceník dodá majitelka.", "sekce": [] },
+    { "id": "detske", "nazev": "Dětské", "TODO": "Dětský ceník dodá majitelka.", "sekce": [] }
+  ]
+}

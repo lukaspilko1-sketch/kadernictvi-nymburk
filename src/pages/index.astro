@@ -1,0 +1,363 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Ikona from '../components/Ikona.astro';
+import Rohy from '../components/Rohy.astro';
+import ZavolatTlacitko from '../components/ZavolatTlacitko.astro';
+import firma from '../data/firma.json';
+import cenik from '../data/cenik.json';
+import { galerieFotky, fotka } from '../lib/fotky';
+import { dnyPoradi } from '../lib/otevreno';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const href = (p: string) => `${base}${p}`;
+
+const menu = [
+  ['sluzby', 'Služby'],
+  ['cenik', 'Ceník'],
+  ['o-nas', 'O nás'],
+  ['galerie', 'Galerie'],
+  ['kontakt', 'Kontakt'],
+];
+
+const dnyNazvy: Record<string, string> = { po: 'Pondělí', ut: 'Úterý', st: 'Středa', ct: 'Čtvrtek', pa: 'Pátek', so: 'Sobota', ne: 'Neděle' };
+const hodiny = firma.hodiny as Record<string, { od: string; do: string } | null>;
+const cas = (s: string) => s.replace(/^0/, '');
+const kc = (n: number) => `${n.toLocaleString('cs-CZ')} Kč`;
+
+const heroA = fotka('panske-4.jpg');
+const heroB = fotka('detske-1.jpg');
+const heroC = fotka('damske-1.jpg');
+const oNasFoto = fotka('panske-1.jpg');
+
+const galerie = galerieFotky();
+const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width: 1000, format: 'webp' })));
+
+const sluzby = [
+  {
+    nazev: 'Dámy', ikona: 'kartac' as const, foto: fotka('damske-1.jpg'), alt: 'Dlouhé vlasy s růžovými prameny',
+    text: 'Střih, barvení a prameny. Dámský ceník právě připravujeme, cenu vám řekneme po telefonu.',
+  },
+  {
+    nazev: 'Pánové', ikona: 'britva' as const, foto: fotka('panske-3.jpg'), alt: 'Pán s vousy po střihu',
+    text: 'Klasické střihy a fade strojkem i břitvou. Úprava vousů, holení břitvou, melír, barvení a trvalá.',
+  },
+  {
+    nazev: 'Děti', ikona: 'nuzky' as const, foto: fotka('detske-2.jpg'), alt: 'Chlapec po střihu s vyholenou linkou',
+    text: 'Střih pro nejmenší i školáky, fade už od šesti let. Barevné pramínky podle přání dítěte.',
+  },
+];
+---
+<Base>
+  <a class="preskocit" href="#obsah">Přeskočit na obsah</a>
+
+  <header class="hlavicka" id="hlavicka">
+    <div class="hlavicka-vnitrek">
+      <a class="logo" href={href('/')} aria-label="Kadeřnictví a holičství Nymburk, úvodní strana">
+        <img src={href('/logo-mark.svg')} alt="" width="44" height="46" />
+        <span class="logo-text">Kadeřnictví <span class="amp">&amp;</span> holičství <em>Nymburk</em></span>
+      </a>
+      <button class="menu-tlacitko" type="button" aria-expanded="false" aria-controls="menu">
+        <span class="sr">Menu</span>
+        <span class="cary" aria-hidden="true"></span>
+      </button>
+      <nav class="menu" id="menu" aria-label="Hlavní menu">
+        <ul>
+          {menu.map(([id, n]) => <li><a href={`#${id}`}>{n}</a></li>)}
+        </ul>
+      </nav>
+      <a class="hlavicka-tel" href={firma.telefonOdkaz}>{firma.telefon}</a>
+    </div>
+  </header>
+
+  <main id="obsah">
+    <section class="hero" aria-labelledby="hero-nadpis">
+      <div class="hero-text" data-reveal>
+        <p class="stitek" data-stav-dnes>
+          <span class="tecka" aria-hidden="true"></span><span data-stav-text>Otevírací doba níže</span>
+        </p>
+        <h1 id="hero-nadpis">Péče o vlasy, která&nbsp;sedí.</h1>
+        <p class="podnadpis">Dámy, pánové i děti · {firma.adresa.ulice}, {firma.adresa.mesto}</p>
+        <div class="hero-akce">
+          <ZavolatTlacitko />
+          <span class="hero-poznamka">Objednáváme jen telefonicky.</span>
+        </div>
+      </div>
+      <div class="hero-foto">
+        {heroA && <figure class="hf hf-a"><Picture src={heroA} alt="Mladý muž po střihu s vyholenými boky" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 900px) 320px, 55vw" loading="eager" fetchpriority="high" /></figure>}
+        {heroB && <figure class="hf hf-b"><Picture src={heroB} alt="Usměvavý chlapec po střihu" formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 900px) 220px, 40vw" loading="eager" /></figure>}
+        {heroC && <figure class="hf hf-c"><Picture src={heroC} alt="Dlouhé vlasy s růžovými a blond prameny" formats={['avif', 'webp']} widths={[200, 320, 400]} sizes="(min-width: 900px) 190px, 34vw" loading="eager" /></figure>}
+      </div>
+    </section>
+
+    <section class="sekce sluzby" id="sluzby" aria-labelledby="sluzby-nadpis">
+      <div class="obal">
+        <h2 id="sluzby-nadpis" data-reveal>Pro koho stříháme</h2>
+        <ol class="sluzby-seznam">
+          {sluzby.map((s, i) => (
+            <li class={`sluzba ${i % 2 ? 'obracene' : ''}`} data-reveal>
+              <div class="sluzba-foto">
+                {s.foto && <Picture src={s.foto} alt={s.alt} formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 700px) 240px, 60vw" loading="lazy" />}
+              </div>
+              <div class="sluzba-text">
+                <Ikona jmeno={s.ikona} trida="ikona-velka" />
+                <h3>{s.nazev}</h3>
+                <p>{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="sekce cenik" id="cenik" aria-labelledby="cenik-nadpis">
+      <div class="obal obal-uzky">
+        <h2 id="cenik-nadpis" data-reveal>Ceník</h2>
+        <div class="zalozky" role="tablist" aria-label="Skupina ceníku">
+          {cenik.skupiny.map((s, i) => (
+            <button class="zalozka" role="tab" type="button" id={`zal-${s.id}`} aria-controls={`panel-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{s.nazev}</button>
+          ))}
+        </div>
+        {cenik.skupiny.map((s, i) => (
+          <div class="cenik-panel" role="tabpanel" id={`panel-${s.id}`} aria-labelledby={`zal-${s.id}`} data-panel-vychozi={i === 0 ? 'ano' : 'ne'}>
+            <div class="listek" data-reveal>
+              <Rohy />
+              <img class="listek-ikona" src={href('/logo-mark.svg')} alt="" width="52" height="54" />
+              <h3 class="listek-nadpis">Ceník {s.nazev}</h3>
+              {s.sekce.length > 0 ? (
+                s.sekce.map((sek) => (
+                  <section class="listek-sekce">
+                    <h4>{sek.nazev}</h4>
+                    <ul>
+                      {sek.polozky.map((p) => (
+                        <li><span class="nazev">{p.nazev}</span><span class="vedouci" aria-hidden="true"></span><span class="cena">{kc(p.cena)}</span></li>
+                      ))}
+                    </ul>
+                  </section>
+                ))
+              ) : (
+                <p class="listek-prazdny">Ceník doplníme, zavolejte nám na <a href={firma.telefonOdkaz}>{firma.telefon}</a>.</p>
+              )}
+              {s.sekce.length > 0 && <p class="listek-platnost">Ceník platný od {cenik.platnostOd}.</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="sekce o-nas" id="o-nas" aria-labelledby="o-nas-nadpis">
+      <div class="obal o-nas-mrizka">
+        <div class="o-nas-foto" data-reveal>
+          {oNasFoto && <Picture src={oNasFoto} alt="Pán po střihu v kadeřnictví" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 800px) 360px, 80vw" loading="lazy" />}
+        </div>
+        <div class="o-nas-text" data-reveal>
+          <h2 id="o-nas-nadpis">O nás</h2>
+          {firma.oNas.text.map((t) => <p>{t}</p>)}
+          {/* TODO: skutečný text o salonu a fotka salonu od majitelky (src/data/firma.json) */}
+        </div>
+      </div>
+    </section>
+
+    <section class="sekce galerie" id="galerie" aria-labelledby="galerie-nadpis">
+      <div class="obal">
+        <h2 id="galerie-nadpis" data-reveal>Z naší židle</h2>
+      </div>
+      <ul class="stena">
+        {galerie.map((f, i) => (
+          <li class={`stena-polozka s${i % 9}`} data-reveal>
+            <a href={velke[i].src} data-lightbox data-alt={f.alt} aria-label={`Zvětšit fotku: ${f.alt}`}>
+              <Picture src={f.img} alt={f.alt} formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 900px) 280px, 70vw" loading="lazy" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="sekce hodiny" id="hodiny" aria-labelledby="hodiny-nadpis">
+      <div class="obal obal-uzky">
+        <h2 id="hodiny-nadpis" data-reveal>Otevírací doba</h2>
+        <table class="tabulka-hodin" data-reveal>
+          <caption class="sr">Otevírací doba po dnech</caption>
+          <tbody>
+            {dnyPoradi.map((d) => (
+              <tr data-den={d}>
+                <th scope="row">{dnyNazvy[d]}</th>
+                <td>{hodiny[d] ? `${cas(hodiny[d]!.od)}–${cas(hodiny[d]!.do)}` : 'zavřeno'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {/* TODO: víkend zatím nepotvrzen */}
+      </div>
+    </section>
+
+    <section class="sekce kontakt" id="kontakt" aria-labelledby="kontakt-nadpis">
+      <div class="obal kontakt-mrizka">
+        <div class="kontakt-text" data-reveal>
+          <h2 id="kontakt-nadpis">Kontakt</h2>
+          <address>
+            <p class="adresa">{firma.adresa.ulice}<br />{firma.adresa.mesto}</p>
+            <p><a class="telefon-velky" href={firma.telefonOdkaz}>{firma.telefon}</a></p>
+            <p><a href={firma.facebook} rel="noopener noreferrer" target="_blank">Facebook salonu</a></p>
+          </address>
+          <ZavolatTlacitko />
+          <p class="mala"><a href="https://mapy.cz/zakladni?q=Zbo%C5%BEsk%C3%A1%20664%2F4%2C%20Nymburk" rel="noopener noreferrer" target="_blank">Trasa na Mapy.cz</a></p>
+        </div>
+        <div class="mapa" data-reveal>
+          {/* TODO: doplnit souřadnice salonu a značku (marker) do mapy */}
+          <iframe
+            title="Mapa centra Nymburka (OpenStreetMap)"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=15.0300%2C50.1760%2C15.0600%2C50.1960&layer=mapnik"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="paticka">
+    <div class="obal paticka-vnitrek">
+      <p><strong>{firma.nazev}</strong><br />{firma.adresa.ulice}, {firma.adresa.mesto}</p>
+      <p><a href={firma.telefonOdkaz}>{firma.telefon}</a></p>
+      <p><a href={href('/soukromi/')}>Ochrana soukromí</a></p>
+    </div>
+  </footer>
+
+  <a class="zavolat-lista" href={firma.telefonOdkaz}>Zavolat {firma.telefon}</a>
+
+  <dialog class="lightbox" aria-label="Zvětšená fotka">
+    <figure>
+      <img alt="" />
+      <figcaption></figcaption>
+    </figure>
+    <button class="lb-zavrit" type="button" aria-label="Zavřít">×</button>
+    <button class="lb-pred" type="button" aria-label="Předchozí fotka">‹</button>
+    <button class="lb-dalsi" type="button" aria-label="Další fotka">›</button>
+  </dialog>
+
+  <script>
+    import { stavDnes } from '../lib/otevreno';
+    import firma from '../data/firma.json';
+
+    const hodiny = firma.hodiny as never;
+
+    // Štítek otevřeno / zavřeno + zvýraznění dnešního dne (čas Europe/Prague)
+    const aktualizuj = () => {
+      const s = stavDnes(hodiny);
+      const stitek = document.querySelector<HTMLElement>('[data-stav-dnes]');
+      const text = document.querySelector<HTMLElement>('[data-stav-text]');
+      if (stitek && text) {
+        text.textContent = s.text;
+        stitek.classList.toggle('otevreno', s.otevreno);
+        stitek.classList.toggle('zavreno', !s.otevreno);
+      }
+      document.querySelectorAll('[data-den]').forEach((r) => {
+        const dnes = r.getAttribute('data-den') === s.den;
+        r.classList.toggle('dnes', dnes);
+        if (dnes) r.setAttribute('aria-current', 'date');
+        else r.removeAttribute('aria-current');
+      });
+    };
+    try {
+      aktualizuj();
+      setInterval(aktualizuj, 60_000);
+    } catch {
+      /* bez štítku, tabulka hodin zůstává */
+    }
+
+    // Menu (mobil)
+    const tl = document.querySelector<HTMLButtonElement>('.menu-tlacitko');
+    const menu = document.getElementById('menu');
+    const hlavicka = document.getElementById('hlavicka');
+    const zavriMenu = () => {
+      tl?.setAttribute('aria-expanded', 'false');
+      hlavicka?.classList.remove('menu-otevrene');
+    };
+    tl?.addEventListener('click', () => {
+      const otevrene = tl.getAttribute('aria-expanded') === 'true';
+      tl.setAttribute('aria-expanded', String(!otevrene));
+      hlavicka?.classList.toggle('menu-otevrene', !otevrene);
+    });
+    menu?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) zavriMenu();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') zavriMenu();
+    });
+
+    // Záložky ceníku (bez JS jsou vidět všechny tři ceníky pod sebou)
+    const zalozky = Array.from(document.querySelectorAll<HTMLButtonElement>('.zalozka'));
+    const vyber = (z: HTMLButtonElement, fokus = false) => {
+      zalozky.forEach((b) => {
+        const on = b === z;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(b.getAttribute('aria-controls')!);
+        if (p) p.hidden = !on;
+      });
+      if (fokus) z.focus();
+    };
+    zalozky.forEach((z, i) => {
+      z.addEventListener('click', () => vyber(z));
+      z.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') vyber(zalozky[(i + 1) % zalozky.length], true);
+        if (e.key === 'ArrowLeft') vyber(zalozky[(i - 1 + zalozky.length) % zalozky.length], true);
+      });
+    });
+    if (zalozky.length) vyber(zalozky[0]);
+
+    // Scroll-reveal
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prvky = document.querySelectorAll('[data-reveal]');
+    if (reduced || !('IntersectionObserver' in window)) {
+      prvky.forEach((p) => p.classList.add('is-in'));
+    } else {
+      const io = new IntersectionObserver(
+        (zaznamy) => {
+          zaznamy.forEach((z) => {
+            if (z.isIntersecting) {
+              z.target.classList.add('is-in');
+              io.unobserve(z.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      prvky.forEach((p) => io.observe(p));
+    }
+
+    // Lightbox
+    const dlg = document.querySelector<HTMLDialogElement>('.lightbox');
+    const odkazy = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-lightbox]'));
+    if (dlg && odkazy.length) {
+      const img = dlg.querySelector('img')!;
+      const cap = dlg.querySelector('figcaption')!;
+      let idx = 0;
+      const ukaz = (i: number) => {
+        idx = (i + odkazy.length) % odkazy.length;
+        const a = odkazy[idx];
+        img.src = a.href;
+        img.alt = a.dataset.alt ?? '';
+        cap.textContent = a.dataset.alt ?? '';
+      };
+      odkazy.forEach((a, i) =>
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          ukaz(i);
+          dlg.showModal();
+        }),
+      );
+      dlg.querySelector('.lb-zavrit')!.addEventListener('click', () => dlg.close());
+      dlg.querySelector('.lb-pred')!.addEventListener('click', () => ukaz(idx - 1));
+      dlg.querySelector('.lb-dalsi')!.addEventListener('click', () => ukaz(idx + 1));
+      dlg.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') ukaz(idx - 1);
+        if (e.key === 'ArrowRight') ukaz(idx + 1);
+      });
+      dlg.addEventListener('click', (e) => {
+        if (e.target === dlg) dlg.close();
+      });
+    }
+  </script>
+</Base>

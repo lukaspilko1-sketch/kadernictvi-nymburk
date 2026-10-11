@@ -1,0 +1,68 @@
+---
+import '@fontsource-variable/fraunces/soft.css';
+import '@fontsource-variable/fraunces/soft-italic.css';
+import '@fontsource-variable/hanken-grotesk/index.css';
+import '../styles/global.css';
+import firma from '../data/firma.json';
+import { dnyPoradi } from '../lib/otevreno';
+
+interface Props { title?: string; description?: string; cesta?: string; jsonLd?: boolean }
+const {
+  title = 'Kadeřnictví a holičství Nymburk | Zbožská 664/4',
+  description = 'Kadeřnictví a holičství v Nymburku. Dámy, pánové i děti. Zbožská 664/4, objednání na telefonu 603 242 505.',
+  cesta = '/',
+  jsonLd = true,
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (p: string) => `${base}${p}`;
+const kanonicka = new URL(url(cesta), Astro.site).href;
+const og = new URL(url('/og.png'), Astro.site).href;
+
+const dnyJsonLd = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const hodinyLd = dnyPoradi.flatMap((d, i) => {
+  const h = (firma.hodiny as Record<string, { od: string; do: string } | null>)[d];
+  return h ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: dnyJsonLd[i], opens: h.od, closes: h.do }] : [];
+});
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'HairSalon',
+  name: firma.nazev,
+  url: kanonicka,
+  telephone: '+420603242505',
+  image: og,
+  address: { '@type': 'PostalAddress', streetAddress: firma.adresa.ulice, addressLocality: firma.adresa.mesto, addressCountry: 'CZ' },
+  areaServed: 'Nymburk',
+  openingHoursSpecification: hodinyLd,
+  sameAs: [firma.facebook],
+  // TODO: geo (souřadnice) doplnit do src/data/firma.json
+};
+---
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#F3EFE6" />
+    <link rel="canonical" href={kanonicka} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="cs_CZ" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={kanonicka} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og} />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
