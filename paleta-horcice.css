@@ -1,0 +1,31 @@
+/* Paleta „Břidlice & hořčice" – přepis proměnných a míst, kde se hořčice používá */
+:root {
+  --krem: #f4f3f0;
+  --salvej: #44505e;          /* břidlicová šedá: hlavní akcent, nadpisy */
+  --salvej-tmava: #2f3640;    /* tmavá břidlice: text na světlém, tmavé plochy */
+  --salvej-svetla: #e1e3e4;   /* světle šedá: drobné plochy */
+  --zlata: #dba52a;           /* HOŘČICE: tlačítka, zvýraznění, linky, puntíky */
+  --zlata-tmava: #7f6010;     /* hořčice pro TEXT na světlém (kontrast) */
+  --na-horcici: #1f2630;      /* text na hořčicové ploše */
+}
+.tlacitko { background: var(--zlata); color: var(--na-horcici); border-color: var(--zlata); box-shadow: 0 3px 0 #a87b12; }
+.tlacitko:hover, .tlacitko:focus-visible { background: #e9b93f; color: var(--na-horcici); }
+.zavolat-lista { background: var(--zlata); color: var(--na-horcici); border-top-color: #a87b12; }
+.zavolat-lista:hover, .zavolat-lista:focus-visible { background: #e9b93f; color: var(--na-horcici); }
+.hlavicka-tel { background: var(--zlata); color: var(--na-horcici); padding: 0.5rem 1.1rem; border-radius: 999px; }
+.hero h1 em { color: inherit; background: linear-gradient(transparent 62%, var(--zlata) 62%, var(--zlata) 92%, transparent 92%); padding: 0 0.12em; }
+.stitek { background: color-mix(in srgb, var(--zlata) 35%, var(--krem)); }
+.zalozka[aria-selected='true'] { background: var(--zlata); border-color: var(--zlata); color: var(--na-horcici); }
+.sluzby, .kontakt { background: #e6e7e4; }
+.galerie { background: #2f3640; }
+.galerie h2 { color: var(--krem); }
+/* světlý pás s hodinami */
+.pas { background: #fbfaf7; color: var(--uhel); border-block: 3px solid var(--zlata); }
+.pas h2 { color: var(--salvej-tmava); }
+.pas-dny li { background: #efeeea; border-color: #d9d8d3; }
+.pas-cas { opacity: 1; color: #4a4f55; }
+.pas-dny .zavreno-den { opacity: 0.6; }
+.pas-dny li.dnes { background: var(--zlata); border-color: #a87b12; color: var(--na-horcici); }
+.pas-dny li.dnes .pas-cas { color: var(--na-horcici); }
+.pas-stav .tecka { background: var(--zlata); box-shadow: none; }
+.pas-stav.otevreno .tecka { background: #2f8f4e; box-shadow: 0 0 0 4px rgba(47, 143, 78, 0.2); }

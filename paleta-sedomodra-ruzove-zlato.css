@@ -1,0 +1,33 @@
+/* Paleta „Šedomodrá & růžové zlato" – přepis proměnných a míst použití akcentu */
+:root {
+  --krem: #f4f2f1;
+  --salvej: #5d6e80;          /* šedomodrá: hlavní akcent, nadpisy, ikony */
+  --salvej-tmava: #3b4856;    /* tmavá šedomodrá: text, tmavé plochy */
+  --salvej-svetla: #e4e2e1;   /* světle šedá: drobné plochy */
+  --zlata: #c98a73;           /* RŮŽOVÉ ZLATO: tlačítka, zvýraznění, linky, puntíky */
+  --zlata-tmava: #8a5545;     /* růžové zlato pro TEXT na světlém (kontrast) */
+  --zlata-velky: #b36b54;     /* růžové zlato pro VELKÝ text (nadpis) na světlém, kontrast ≥ 3:1 */
+  --zlata-logo: #bc765f;      /* růžové zlato pro hřeben v logu na světlém */
+  --na-akcentu: #1f2630;      /* text na ploše růžového zlata */
+}
+.tlacitko { background: var(--zlata); color: var(--na-akcentu); border-color: var(--zlata); box-shadow: 0 3px 0 #9c6350; }
+.tlacitko:hover, .tlacitko:focus-visible { background: #d79a84; color: var(--na-akcentu); }
+.zavolat-lista { background: var(--zlata); color: var(--na-akcentu); border-top-color: #9c6350; }
+.zavolat-lista:hover, .zavolat-lista:focus-visible { background: #d79a84; color: var(--na-akcentu); }
+.hlavicka-tel { background: var(--zlata); color: var(--na-akcentu); padding: 0.5rem 1.1rem; border-radius: 999px; }
+.hero h1 em { color: var(--zlata-velky); }
+.stitek { background: color-mix(in srgb, var(--zlata) 30%, var(--krem)); }
+.zalozka[aria-selected='true'] { background: var(--zlata); border-color: var(--zlata); color: var(--na-akcentu); }
+.sluzby, .kontakt { background: #e7e4e2; }
+.galerie { background: #2e3641; }
+.galerie h2 { color: var(--krem); }
+/* světlý pás s hodinami */
+.pas { background: #fbfaf9; color: var(--uhel); border-block: 3px solid var(--zlata); }
+.pas h2 { color: var(--salvej-tmava); }
+.pas-dny li { background: #eeecea; border-color: #d9d6d3; }
+.pas-cas { opacity: 1; color: #4a5058; }
+.pas-dny .zavreno-den { opacity: 0.6; }
+.pas-dny li.dnes { background: var(--zlata); border-color: #9c6350; color: var(--na-akcentu); }
+.pas-dny li.dnes .pas-cas { color: var(--na-akcentu); }
+.pas-stav .tecka { background: var(--zlata); box-shadow: none; }
+.pas-stav.otevreno .tecka { background: #2f8f4e; box-shadow: 0 0 0 4px rgba(47, 143, 78, 0.2); }

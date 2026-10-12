@@ -20,6 +20,10 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Odlišnost od AI webů: ceník jako vytištěný ceník se zlatým rámečkem, asymetrické hero, ručně kreslené ikony, galerie „fotky na stěně", cvaknutí nůžek na CTA.
 - Logo: varianta 2 (horizontální: nůžky nad barberským hřebenem + nápis „Kadeřnictví & holičství *Nymburk*"). Návrh v `navrh-loga.html` a `logo-varianta-2.svg`, čisté SVG vytvoří Claude Code.
 - Admin: Pages CMS (GitHub login) + GitHub Actions deploy. Záložně vlastní mini-admin přes GitHub API. Žádné PHP/.htaccess (GitHub Pages je statický). Zatím spravuje Lukáš přes svůj účet, majitelka později jako collaborator.
+- (2026-10-11) Hlavní výhoda salonu: **stříhání bez objednání**. Hero nadpis „Péče o vlasy. Pro každého. Bez objednání." Telefon zůstává jen jako volitelné „Zavolat". Otevírací doba má být v první obrazovce (pás pod hero). Barvy sytější, logo větší. Zadání v `PROMPT-uprava-1.md`.
+- (2026-10-11) Zelená se majiteli nelíbí. Připraveno 5 barevných variant (A bordó, B námořnická, C terakota, D uhel a měď, E čokoláda), viz `barevne-varianty.html`. Čeká na výběr. Do té doby nemění barvy v kódu.
+- (2026-10-11) ~~Barvy: Břidlice & hořčice~~ (PŘEKONÁNO, viz níže).  Hořčice `#dba52a` na CTA Zavolat, telefonu v hlavičce, mobilní liště, zvýraznění „Bez objednání", dnešním dni, aktivní záložce. Pás s hodinami **světlý**. Tokeny v `paleta-horcice.css`, náhled `navrh-horcice.html`, zadání `PROMPT-uprava-1.md` (sekce 4). Starší výběry barev jsou překonané.
+- (2026-10-11) **Barvy schváleny (finální): „Šedomodrá & růžové zlato"** (varianta H, zelená pryč). Růžové zlato `#c98a73` na CTA Zavolat, telefonu v hlavičce, mobilní liště, zvýraznění „Bez objednání", dnešním dni, aktivní záložce. Šedomodrá `#5d6e80`, tmavá `#3b4856`, krém `#f4f2f1`. Pás s hodinami **světlý**. Tokeny v `paleta-sedomodra-ruzove-zlato.css`, náhled `navrh-sedomodra-ruzove-zlato.html`, zadání `PROMPT-uprava-1.md` (sekce 4). Soubory s hořčicí a starší barevné varianty ignorovat.
 
 ## Soubory ve složce
 - `PROMPT-claude-code.md` – zadání pro stavbu webu
@@ -57,3 +61,8 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 ## Deník změn
 - 2026-10-11 – Založen projekt, schválen směr A, vybráno logo 2, napsány prompty (web, admin), založen CLAUDE.md.
 - 2026-10-11 – Postaven web: hero, služby, ceník v rámečku (záložky), O nás, galerie s lightboxem, hodiny, kontakt, soukromí; testy otevřeno/zavřeno; logo skript; README; GitHub Actions deploy.
+- 2026-10-11 – Prohlídka webu: navrženy úpravy kolo 1 (bez objednání, pás s hodinami, větší logo, sytější barvy), viz `PROMPT-uprava-1.md`.
+- 2026-10-11 – Navrženy barevné varianty bez zelené (`barevne-varianty.html`).
+- 2026-10-11 – Vybrána paleta Břidlice & hořčice, pás s hodinami světlý. Zadání přepsáno v `PROMPT-uprava-1.md`.
+- 2026-10-11 – Finální paleta změněna na Šedomodrá & růžové zlato (H). Zadání upraveno v `PROMPT-uprava-1.md`.
+- 2026-10-11 – Upřesnění: „Bez objednání." v nadpisu v barvě růžového zlata (`#b36b54`, bez zvýrazňovacího podkladu), hřeben v logu v růžovém zlatě (`logo-mark-ruzove-zlato.svg`). Zapsáno v `PROMPT-uprava-1.md`.
