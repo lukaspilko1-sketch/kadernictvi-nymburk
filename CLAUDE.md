@@ -51,10 +51,10 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 ## TODO / chybí
 - Dámský a dětský ceník
 - Text „O nás" a skutečné fotky salonu
-- Souřadnice pro JSON-LD, doména
+- Doména
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
 - Souhlas zákazníků s fotkami (jsou na nich i děti)
-- Souřadnice (JSON-LD a značka v mapě), PSČ, provozovatel na stránce Soukromí
+- PSČ, provozovatel na stránce Soukromí
 - Logo.svg převést text na křivky (pro tisk); Lighthouse znovu změřit na ostré adrese
 
 ## Otevřené otázky
@@ -76,3 +76,4 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - 2026-10-12 – Barvy potvrzeny, dámský a dětský ceník zatím chybí. Další krok: spustit `PROMPT-uprava-1.md`, pak admin a nasazení.
 - 2026-10-12 – Zjištěno: web je na GitHub Pages (stará verze). Ceník ponechat do dodání aktuálního. Další: úpravy 1, pak admin.
 - 2026-10-12 – Provedeny úpravy kolo 1: „Bez objednání“ v hero, světlý pás s hodinami pod hero (na mobilu před fotkami), příští otevření v `stavDnes()` (+4 testy), větší logo i hlavička, nové logo (silnější nůžky, hřeben se 7+4 zuby), paleta Černá, šedá & champagne, CTA tmavě šedá, služby ve 3 sloupcích, galerie bez bílých pruhů, mapa jen se souřadnicemi (jinak karta s Mapy.cz), odstraněny zmínky o objednávání a nepotvrzeném víkendu.
+- 2026-10-12 – Doplněny souřadnice salonu (50.1809147 N, 15.2305108 E): mapa OSM se značkou a `geo` v JSON-LD. Dámský a dětský ceník klient dodá později.

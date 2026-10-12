@@ -30,7 +30,7 @@ const kc = (n: number) => `${n.toLocaleString('cs-CZ')} Kč`;
 const { lat, lon } = firma.souradnice as { lat: number | null; lon: number | null };
 // Mapa s iframe jen když jsou souřadnice, jinak karta s adresou a odkazem na Mapy.cz.
 const mapaSrc = lat != null && lon != null
-  ? `https://www.openstreetmap.org/export/embed.html?bbox=${lon - 0.004}%2C${lat - 0.0025}%2C${lon + 0.004}%2C${lat + 0.0025}&layer=mapnik&marker=${lat}%2C${lon}`
+  ? `https://www.openstreetmap.org/export/embed.html?bbox=${(lon - 0.004).toFixed(5)}%2C${(lat - 0.0025).toFixed(5)}%2C${(lon + 0.004).toFixed(5)}%2C${(lat + 0.0025).toFixed(5)}&layer=mapnik&marker=${lat}%2C${lon}`
   : null;
 const mapyUrl = `https://mapy.cz/zakladni?q=${encodeURIComponent(`${firma.adresa.ulice}, ${firma.adresa.mesto}`)}`;
 

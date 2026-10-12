@@ -49,7 +49,6 @@ Lokálně lze adresu přepsat proměnnými `SITE_URL` a `BASE_PATH`.
 - Dámský ceník a dětský ceník (`cenik.json`)
 - Skutečný text „O nás" a fotky salonu (`firma.json`)
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
-- Souřadnice salonu: doplnit `souradnice` v `firma.json`, pak se automaticky objeví mapa se značkou i `geo` v JSON-LD (zatím karta s odkazem na Mapy.cz)
 - PSČ, doména, `site` v `astro.config.mjs`, `Sitemap:` v `robots.txt`
 - Provozovatel (jméno/IČO) na stránce Ochrana soukromí
 - Souhlas zákazníků s fotkami (děti)

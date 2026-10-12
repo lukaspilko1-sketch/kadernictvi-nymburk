@@ -4,7 +4,7 @@
   "telefon": "603 242 505",
   "telefonOdkaz": "tel:+420603242505",
   "facebook": "https://www.facebook.com/profile.php?id=100057433419981",
-  "souradnice": { "lat": null, "lon": null, "TODO": "doplnit souřadnice pro JSON-LD a mapu" },
+  "souradnice": { "lat": 50.1809147, "lon": 15.2305108 },
   "domena": "TODO",
   "hodiny": {
     "po": { "od": "08:00", "do": "14:30" },
