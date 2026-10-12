@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Ikona from '../components/Ikona.astro';
 import Rohy from '../components/Rohy.astro';
 import ZavolatTlacitko from '../components/ZavolatTlacitko.astro';
+import FbIkona from '../components/FbIkona.astro';
 import firma from '../data/firma.json';
 import cenik from '../data/cenik.json';
 import { galerieFotky, fotka } from '../lib/fotky';
@@ -64,7 +65,7 @@ const sluzby = [
     <div class="hlavicka-vnitrek">
       <a class="logo" href={href('/')}>
         <img src={href('/logo-mark.svg')} alt="" width="44" height="46" />
-        <span class="logo-text">Kadeřnictví <span class="amp">&amp;</span> holičství <em>Nymburk</em></span>
+        <span class="logo-text"><span class="logo-radek">Kadeřnictví <span class="amp">&amp;</span> holičství</span> <em>Nymburk</em></span>
       </a>
       <button class="menu-tlacitko" type="button" aria-expanded="false" aria-controls="menu">
         <span class="sr">Menu</span>
@@ -73,8 +74,10 @@ const sluzby = [
       <nav class="menu" id="menu" aria-label="Hlavní menu">
         <ul>
           {menu.map(([id, n]) => <li><a href={`#${id}`}>{n}</a></li>)}
+          <li class="menu-fb"><a href={firma.facebook} target="_blank" rel="noopener noreferrer">Facebook salonu</a></li>
         </ul>
       </nav>
+      <a class="hlavicka-fb" href={firma.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook salonu, otevře se v novém okně"><FbIkona /></a>
       <a class="hlavicka-tel" href={firma.telefonOdkaz}>{firma.telefon}</a>
     </div>
   </header>
@@ -83,8 +86,8 @@ const sluzby = [
     <section class="uvod" aria-labelledby="hero-nadpis">
       <div class="hero">
         <div class="hero-text">
-          <h1 id="hero-nadpis">Péče o vlasy.<br />Pro každého.<br /><em>Bez objednání.</em></h1>
-          <p class="podnadpis">Dámy, pánové i děti · {firma.adresa.ulice}, {firma.adresa.mesto}</p>
+          <h1 id="hero-nadpis"><span class="h1-r" style="--i:0">Péče o vlasy.</span><span class="h1-r" style="--i:1">Pro každého.</span><span class="h1-r" style="--i:2"><em>Bez objednání.</em></span></h1>
+          <p class="podnadpis"><span class="podnadpis-r">Dámy, pánové i děti</span><span class="podnadpis-r adresa-radek">{firma.adresa.ulice}, {firma.adresa.mesto}</span></p>
           <div class="hero-akce">
             <ZavolatTlacitko />
           </div>
@@ -102,15 +105,18 @@ const sluzby = [
             <h2 id="pas-nadpis">Stačí přijít. Bez objednání.</h2>
             <p class="pas-stav" data-stav-dnes><span class="tecka" aria-hidden="true"></span><span data-stav-text></span></p>
           </div>
+          <div class="pas-prava">
           <ul class="pas-dny">
             {dnyPoradi.map((d) => (
-              <li data-den={d} class={hodiny[d] ? '' : 'zavreno-den'}>
+              <li data-den={d} data-reveal class={hodiny[d] ? '' : 'zavreno-den'}>
                 <span class="pas-den" aria-hidden="true">{dnyKratce[d]}</span>
                 <span class="sr">{dnyNazvy[d]}</span>
                 <span class="pas-cas">{hodiny[d] ? <>{cas(hodiny[d]!.od)}–<wbr />{cas(hodiny[d]!.do)}</> : 'zavřeno'}</span>
               </li>
             ))}
           </ul>
+          <p class="pas-fb">Aktuální otevírací dobu a změny najdete na <a href={firma.facebook} target="_blank" rel="noopener noreferrer">Facebooku<FbIkona trida="fb-mala" /></a>.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -177,7 +183,7 @@ const sluzby = [
           {oNasFoto && <Picture src={oNasFoto} alt="Pán po střihu v kadeřnictví" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 800px) 360px, 80vw" loading="lazy" />}
         </div>
         <div class="o-nas-text" data-reveal>
-          <h2 id="o-nas-nadpis">O nás</h2>
+          <h2 id="o-nas-nadpis">{firma.oNas.nadpis}</h2>
           {firma.oNas.text.map((t) => <p>{t}</p>)}
           {/* TODO: skutečný text o salonu a fotka salonu od majitelky (src/data/firma.json) */}
         </div>
@@ -329,10 +335,13 @@ const sluzby = [
     if (reduced || !('IntersectionObserver' in window)) {
       prvky.forEach((p) => p.classList.add('is-in'));
     } else {
+      // Prvky ve skupině (stejný rodič) se odhalují postupně, po 150 ms, max. 6 kroků.
       const io = new IntersectionObserver(
         (zaznamy) => {
+          let krok = 0;
           zaznamy.forEach((z) => {
             if (z.isIntersecting) {
+              (z.target as HTMLElement).style.setProperty('--d', `${Math.min(krok++, 5) * 0.15}s`);
               z.target.classList.add('is-in');
               io.unobserve(z.target);
             }

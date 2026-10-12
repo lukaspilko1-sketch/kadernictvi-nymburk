@@ -1,0 +1,9 @@
+---
+// Vlastní jednoduché „f" v kruhu, barva se řídí přes currentColor (ne oficiální modrá).
+interface Props { trida?: string }
+const { trida = '' } = Astro.props;
+---
+<svg class={`fb-ikona ${trida}`} viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+  <circle cx="12" cy="12" r="10.4" stroke="currentColor" stroke-width="1.7" />
+  <path d="M13.1 19.2v-6.5h2.2l.35-2.55H13.1V8.55c0-.75.22-1.25 1.28-1.25h1.37V5.02c-.24-.03-1.05-.1-2-.1-1.98 0-3.33 1.2-3.33 3.42v1.81H8.2v2.55h2.22v6.5z" fill="currentColor" />
+</svg>

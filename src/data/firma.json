@@ -1,25 +1,49 @@
 {
   "nazev": "Kadeřnictví a holičství Nymburk",
-  "adresa": { "ulice": "Zbožská 664/4", "mesto": "Nymburk", "psc": "TODO" },
+  "adresa": {
+    "ulice": "Zbožská 664/4",
+    "mesto": "Nymburk",
+    "psc": "TODO"
+  },
   "telefon": "603 242 505",
   "telefonOdkaz": "tel:+420603242505",
   "facebook": "https://www.facebook.com/profile.php?id=100057433419981",
-  "souradnice": { "lat": 50.1809147, "lon": 15.2305108 },
+  "souradnice": {
+    "lat": 50.1809147,
+    "lon": 15.2305108
+  },
   "domena": "TODO",
   "hodiny": {
-    "po": { "od": "08:00", "do": "14:30" },
-    "ut": { "od": "08:00", "do": "16:30" },
-    "st": { "od": "08:00", "do": "14:30" },
-    "ct": { "od": "08:00", "do": "16:30" },
-    "pa": { "od": "08:00", "do": "14:00" },
+    "po": {
+      "od": "08:00",
+      "do": "14:30"
+    },
+    "ut": {
+      "od": "08:00",
+      "do": "16:30"
+    },
+    "st": {
+      "od": "08:00",
+      "do": "14:30"
+    },
+    "ct": {
+      "od": "08:00",
+      "do": "16:30"
+    },
+    "pa": {
+      "od": "08:00",
+      "do": "14:00"
+    },
     "so": null,
     "ne": null
   },
   "oNas": {
-    "TODO": "Skutečný text o salonu dodá majitelka. Zatím jen neutrální placeholder.",
+    "TODO": "Text je návrh, majitelka ho může upravit.",
+    "nadpis": "Pojďte dál, posaďte se",
     "text": [
-      "Salon najdete ve Zbožské ulici v Nymburku. Stříháme dámy, pány i děti.",
-      "Stačí přijít v otevírací době, objednávat se nemusíte. Kdybyste si chtěli být jistí, zavolejte."
+      "Přijďte, jak jste zvyklí, a řekněte, jak to chcete mít. Objednávat se nemusíte a nemusíte nic složitě vysvětlovat.",
+      "V salonu vás obslouží několik kolegyň, které jsou příjemné a rády vám vyjdou vstříc. Když si nejste jistí, poradí. Když chcete jen zkrátit, zkrátí. A když máte chuť si popovídat, rády si při práci poklábosí.",
+      "Najdete nás v Nymburce ve Zbožské ulici. Stříháme dámy, pány i děti."
     ]
   }
 }

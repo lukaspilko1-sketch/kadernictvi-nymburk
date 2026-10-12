@@ -3,7 +3,7 @@
 Sdílená paměť projektu. Čti na začátku každé session, aktualizuj na konci. Bez hesel, tokenů a osobních údajů zákazníků (repozitář bude veřejný).
 
 ## Projekt
-Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Nymburku. Správce webu: Lukáš (vlastní GitHub účet a repozitář). Majitelka salonu zatím nespravuje nic.
+Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Nymburce. Správce webu: Lukáš (vlastní GitHub účet a repozitář). Majitelka salonu zatím nespravuje nic.
 
 ## Fakta o provozovně (zdroj pravdy)
 - Název: Kadeřnictví a holičství Nymburk
@@ -28,6 +28,12 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - (2026-10-12) Upřesnění k finální paletě: **CTA tlačítka tmavě šedá** `#2e2f33` (Zavolat, telefon v hlavičce, mobilní lišta), ikona nůžek a hover v champagne. Otevírací doba **potvrzena: jen Po–Pá**, víkend zavřeno. Zapsáno v `PROMPT-uprava-1.md`.
 - (2026-10-12) Barvy a tlačítka potvrzeny uživatelem. Dámský a dětský ceník zatím k dispozici není: na webu zůstává „Ceník doplníme" a doplní se, až ho klient dodá (`src/data/cenik.json`).
 - (2026-10-12) Web je nasazený na GitHub Pages: https://lukaspilko1-sketch.github.io/kadernictvi-nymburk/ (repozitář pod účtem `lukaspilko1-sketch`, název `kadernictvi-nymburk`). Živá verze je zatím **stará** (hero „Péče o vlasy, která sedí.", „Objednáváme jen telefonicky", bez pásu s hodinami). `PROMPT-uprava-1.md` zatím nepromítnut do nasazení. Pánský ceník ponechat, klient dodá aktuální. Čeká se na texty a vlastní fotky, proto brzy nastavit admin (`PROMPT-admin-panel.md`).
+- (2026-10-12) **Kolo 2 (`PROMPT-uprava-2.md`) provedeno v kódu:**
+  - Hlavička: vlastní ikona Facebooku (`FbIkona.astro`, tmavá, při hoveru champagne, 44×44 px, nové okno). Desktop vlevo od telefonu, mobil vedle hamburgeru; pod 360 px se schová z hlavičky a je v menu.
+  - Hero: podnadpis ve dvou řádcích („Dámy, pánové i děti" / „Zbožská 664/4, Nymburk", adresa `nowrap`). Pás s hodinami: věta s odkazem na Facebook a `text-wrap: balance` v nadpisu.
+  - Název salonu v mobilní hlavičce: `clamp(1.05rem, 4.8vw, 1.25rem)`, 1. řádek „Kadeřnictví & holičství" (`.logo-radek`, nowrap), 2. řádek jen „Nymburk" (`display: block`). Při nedostatku místa se zmenšuje značka (2,6 rem pod 390 px), ne písmo. Ověřeno 320–414 px.
+  - O nás: nadpis „Pojďte dál, posaďte se", text je v `firma.json` (`oNas.nadpis`, `oNas.text`), je to návrh k odsouhlasení majitelkou. Správně „v Nymburce" (6. pád) všude, 1. pád „Nymburk" jen v názvu a adrese.
+  - Animace (pravidla): jen `opacity`/`transform`/`translate`/`scale`, pomalé (reveal 1,1 s, `cubic-bezier(0.22,0.61,0.36,1)`, posun 22 px, skupiny po 150 ms, max. 6 kroků), hero nástup postupně, fotky v hero se jemně vznášejí (±4 px, 9–11,5 s), cvaknutí nůžek 1,1 s, puntík „otevřeno" pulzuje 3 s. `prefers-reduced-motion` = žádný pohyb, bez JS je vše viditelné.
 
 ## Soubory ve složce
 - `PROMPT-claude-code.md` – zadání pro stavbu webu
@@ -40,7 +46,8 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - [x] Směr A schválen, logo varianta 2 vybráno
 - [x] Prompt pro web a pro admin hotové
 - [x] Web postaven Claude Code (Astro, `src/`, testy, README, deploy workflow); vizuálně zkontrolován na 360/1280 px v prohlížeči, Lighthouse zatím neměřen
-- [x] Úpravy kolo 1 (`PROMPT-uprava-1.md`) provedeny v kódu 2026-10-12, zatím necommitnuto/nenasazeno; Lighthouse mobil: výkon 91, přístupnost 100, postupy 100, SEO 100
+- [x] Úpravy kolo 1 (`PROMPT-uprava-1.md`) hotové a nasazené; Lighthouse mobil: výkon 91, přístupnost 100, postupy 100, SEO 100
+- [x] Úpravy kolo 2 (`PROMPT-uprava-2.md`) provedeny v kódu a commitnuty lokálně, zatím NEPUSHNUTO (čeká na souhlas); Lighthouse mobil lokálně: výkon 90–91, přístupnost 100, postupy 100, SEO 100
 - [ ] Admin panel (Pages CMS) nastaven
 - [ ] Nasazení na GitHub Pages (workflow `.github/workflows/deploy.yml` připraven, repozitář a Pages zapnout)
 
@@ -77,3 +84,5 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - 2026-10-12 – Zjištěno: web je na GitHub Pages (stará verze). Ceník ponechat do dodání aktuálního. Další: úpravy 1, pak admin.
 - 2026-10-12 – Provedeny úpravy kolo 1: „Bez objednání“ v hero, světlý pás s hodinami pod hero (na mobilu před fotkami), příští otevření v `stavDnes()` (+4 testy), větší logo i hlavička, nové logo (silnější nůžky, hřeben se 7+4 zuby), paleta Černá, šedá & champagne, CTA tmavě šedá, služby ve 3 sloupcích, galerie bez bílých pruhů, mapa jen se souřadnicemi (jinak karta s Mapy.cz), odstraněny zmínky o objednávání a nepotvrzeném víkendu.
 - 2026-10-12 – Doplněny souřadnice salonu (50.1809147 N, 15.2305108 E): mapa OSM se značkou a `geo` v JSON-LD. Dámský a dětský ceník klient dodá později.
+- 2026-10-12 – Připraven `PROMPT-uprava-2.md` (kolo 2): Facebook v hlavičce, adresa v hero na vlastním řádku, odkaz na FB v pásu s hodinami, „Nymburku“ → „Nymburce“, větší mobilní název (2. řádek jen „Nymburk“), nový text O nás (návrh, schválí majitelka), pomalejší klidné animace. Kontrola: živá verze odpovídá složce. Pozn.: lokální větev `master`, workflow se spouští na `main`; bez souhlasu nepushovat.
+- 2026-10-12 – Provedeno kolo 2: Facebook v hlavičce a v pásu s hodinami, adresa v hero na vlastním řádku, „Nymburce", větší dvouřádkový název v mobilní hlavičce, nový text O nás (návrh), pomalé klidné animace. Commit lokálně, bez pushe.
