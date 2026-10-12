@@ -13,6 +13,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const href = (p: string) => `${base}${p}`;
 
 const menu = [
+  ['hodiny', 'Hodiny'],
   ['sluzby', 'Služby'],
   ['cenik', 'Ceník'],
   ['o-nas', 'O nás'],
@@ -22,8 +23,16 @@ const menu = [
 
 const dnyNazvy: Record<string, string> = { po: 'Pondělí', ut: 'Úterý', st: 'Středa', ct: 'Čtvrtek', pa: 'Pátek', so: 'Sobota', ne: 'Neděle' };
 const hodiny = firma.hodiny as Record<string, { od: string; do: string } | null>;
+const dnyKratce: Record<string, string> = { po: 'Po', ut: 'Út', st: 'St', ct: 'Čt', pa: 'Pá', so: 'So', ne: 'Ne' };
 const cas = (s: string) => s.replace(/^0/, '');
 const kc = (n: number) => `${n.toLocaleString('cs-CZ')} Kč`;
+
+const { lat, lon } = firma.souradnice as { lat: number | null; lon: number | null };
+// Mapa s iframe jen když jsou souřadnice, jinak karta s adresou a odkazem na Mapy.cz.
+const mapaSrc = lat != null && lon != null
+  ? `https://www.openstreetmap.org/export/embed.html?bbox=${lon - 0.004}%2C${lat - 0.0025}%2C${lon + 0.004}%2C${lat + 0.0025}&layer=mapnik&marker=${lat}%2C${lon}`
+  : null;
+const mapyUrl = `https://mapy.cz/zakladni?q=${encodeURIComponent(`${firma.adresa.ulice}, ${firma.adresa.mesto}`)}`;
 
 const heroA = fotka('panske-4.jpg');
 const heroB = fotka('detske-1.jpg');
@@ -35,15 +44,15 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
 
 const sluzby = [
   {
-    nazev: 'Dámy', ikona: 'kartac' as const, foto: fotka('damske-1.jpg'), alt: 'Dlouhé vlasy s růžovými prameny',
-    text: 'Střih, barvení a prameny. Dámský ceník právě připravujeme, cenu vám řekneme po telefonu.',
+    id: 'damske', nazev: 'Dámy', ikona: 'kartac' as const, foto: fotka('damske-1.jpg'), alt: 'Dlouhé vlasy s růžovými prameny',
+    text: 'Střih, barvení a prameny. Dámský ceník právě připravujeme, cenu vám rádi řekneme po telefonu.',
   },
   {
-    nazev: 'Pánové', ikona: 'britva' as const, foto: fotka('panske-3.jpg'), alt: 'Pán s vousy po střihu',
+    id: 'panske', nazev: 'Pánové', ikona: 'britva' as const, foto: fotka('panske-3.jpg'), alt: 'Pán s vousy po střihu',
     text: 'Klasické střihy a fade strojkem i břitvou. Úprava vousů, holení břitvou, melír, barvení a trvalá.',
   },
   {
-    nazev: 'Děti', ikona: 'nuzky' as const, foto: fotka('detske-2.jpg'), alt: 'Chlapec po střihu s vyholenou linkou',
+    id: 'detske', nazev: 'Děti', ikona: 'nuzky' as const, foto: fotka('detske-2.jpg'), alt: 'Chlapec po střihu s vyholenou linkou',
     text: 'Střih pro nejmenší i školáky, fade už od šesti let. Barevné pramínky podle přání dítěte.',
   },
 ];
@@ -53,7 +62,7 @@ const sluzby = [
 
   <header class="hlavicka" id="hlavicka">
     <div class="hlavicka-vnitrek">
-      <a class="logo" href={href('/')} aria-label="Kadeřnictví a holičství Nymburk, úvodní strana">
+      <a class="logo" href={href('/')}>
         <img src={href('/logo-mark.svg')} alt="" width="44" height="46" />
         <span class="logo-text">Kadeřnictví <span class="amp">&amp;</span> holičství <em>Nymburk</em></span>
       </a>
@@ -71,22 +80,38 @@ const sluzby = [
   </header>
 
   <main id="obsah">
-    <section class="hero" aria-labelledby="hero-nadpis">
-      <div class="hero-text" data-reveal>
-        <p class="stitek" data-stav-dnes>
-          <span class="tecka" aria-hidden="true"></span><span data-stav-text>Otevírací doba níže</span>
-        </p>
-        <h1 id="hero-nadpis">Péče o vlasy, která&nbsp;sedí.</h1>
-        <p class="podnadpis">Dámy, pánové i děti · {firma.adresa.ulice}, {firma.adresa.mesto}</p>
-        <div class="hero-akce">
-          <ZavolatTlacitko />
-          <span class="hero-poznamka">Objednáváme jen telefonicky.</span>
+    <section class="uvod" aria-labelledby="hero-nadpis">
+      <div class="hero">
+        <div class="hero-text">
+          <h1 id="hero-nadpis">Péče o vlasy.<br />Pro každého.<br /><em>Bez objednání.</em></h1>
+          <p class="podnadpis">Dámy, pánové i děti · {firma.adresa.ulice}, {firma.adresa.mesto}</p>
+          <div class="hero-akce">
+            <ZavolatTlacitko />
+          </div>
+        </div>
+        <div class="hero-foto">
+          {heroA && <figure class="hf hf-a"><Picture src={heroA} alt="Mladý muž po střihu s vyholenými boky" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 900px) 320px, 55vw" loading="eager" fetchpriority="high" /></figure>}
+          {heroB && <figure class="hf hf-b"><Picture src={heroB} alt="Usměvavý chlapec po střihu" formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 900px) 220px, 40vw" loading="eager" /></figure>}
+          {heroC && <figure class="hf hf-c"><Picture src={heroC} alt="Dlouhé vlasy s růžovými a blond prameny" formats={['avif', 'webp']} widths={[200, 320, 400]} sizes="(min-width: 900px) 190px, 34vw" loading="eager" /></figure>}
         </div>
       </div>
-      <div class="hero-foto">
-        {heroA && <figure class="hf hf-a"><Picture src={heroA} alt="Mladý muž po střihu s vyholenými boky" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 900px) 320px, 55vw" loading="eager" fetchpriority="high" /></figure>}
-        {heroB && <figure class="hf hf-b"><Picture src={heroB} alt="Usměvavý chlapec po střihu" formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 900px) 220px, 40vw" loading="eager" /></figure>}
-        {heroC && <figure class="hf hf-c"><Picture src={heroC} alt="Dlouhé vlasy s růžovými a blond prameny" formats={['avif', 'webp']} widths={[200, 320, 400]} sizes="(min-width: 900px) 190px, 34vw" loading="eager" /></figure>}
+
+      <div class="pas" id="hodiny" role="region" aria-labelledby="pas-nadpis">
+        <div class="pas-vnitrek">
+          <div class="pas-text">
+            <h2 id="pas-nadpis">Stačí přijít. Bez objednání.</h2>
+            <p class="pas-stav" data-stav-dnes><span class="tecka" aria-hidden="true"></span><span data-stav-text></span></p>
+          </div>
+          <ul class="pas-dny">
+            {dnyPoradi.map((d) => (
+              <li data-den={d} class={hodiny[d] ? '' : 'zavreno-den'}>
+                <span class="pas-den" aria-hidden="true">{dnyKratce[d]}</span>
+                <span class="sr">{dnyNazvy[d]}</span>
+                <span class="pas-cas">{hodiny[d] ? <>{cas(hodiny[d]!.od)}–<wbr />{cas(hodiny[d]!.do)}</> : 'zavřeno'}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -103,6 +128,7 @@ const sluzby = [
                 <Ikona jmeno={s.ikona} trida="ikona-velka" />
                 <h3>{s.nazev}</h3>
                 <p>{s.text}</p>
+                <a class="sluzba-odkaz" href="#cenik" data-cenik={s.id}>Ceník {s.nazev.toLowerCase()} →</a>
               </div>
             </li>
           ))}
@@ -173,24 +199,6 @@ const sluzby = [
       </ul>
     </section>
 
-    <section class="sekce hodiny" id="hodiny" aria-labelledby="hodiny-nadpis">
-      <div class="obal obal-uzky">
-        <h2 id="hodiny-nadpis" data-reveal>Otevírací doba</h2>
-        <table class="tabulka-hodin" data-reveal>
-          <caption class="sr">Otevírací doba po dnech</caption>
-          <tbody>
-            {dnyPoradi.map((d) => (
-              <tr data-den={d}>
-                <th scope="row">{dnyNazvy[d]}</th>
-                <td>{hodiny[d] ? `${cas(hodiny[d]!.od)}–${cas(hodiny[d]!.do)}` : 'zavřeno'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* TODO: víkend zatím nepotvrzen */}
-      </div>
-    </section>
-
     <section class="sekce kontakt" id="kontakt" aria-labelledby="kontakt-nadpis">
       <div class="obal kontakt-mrizka">
         <div class="kontakt-text" data-reveal>
@@ -200,17 +208,19 @@ const sluzby = [
             <p><a class="telefon-velky" href={firma.telefonOdkaz}>{firma.telefon}</a></p>
             <p><a href={firma.facebook} rel="noopener noreferrer" target="_blank">Facebook salonu</a></p>
           </address>
+          <p class="kontakt-hodiny">Otevřeno pondělí až pátek, o víkendu zavřeno. <a href="#hodiny">Hodiny nahoře</a>.</p>
           <ZavolatTlacitko />
-          <p class="mala"><a href="https://mapy.cz/zakladni?q=Zbo%C5%BEsk%C3%A1%20664%2F4%2C%20Nymburk" rel="noopener noreferrer" target="_blank">Trasa na Mapy.cz</a></p>
         </div>
         <div class="mapa" data-reveal>
-          {/* TODO: doplnit souřadnice salonu a značku (marker) do mapy */}
-          <iframe
-            title="Mapa centra Nymburka (OpenStreetMap)"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=15.0300%2C50.1760%2C15.0600%2C50.1960&layer=mapnik"
-          ></iframe>
+          {mapaSrc ? (
+            <iframe title="Mapa s polohou salonu (OpenStreetMap)" loading="lazy" referrerpolicy="no-referrer" src={mapaSrc}></iframe>
+          ) : (
+            <div class="mapa-karta">
+              <Ikona jmeno="hreben" trida="ikona-velka" />
+              <p class="mapa-adresa">{firma.adresa.ulice}<br />{firma.adresa.mesto}</p>
+              <a class="tlacitko tlacitko-svetle" href={mapyUrl} rel="noopener noreferrer" target="_blank"><span>Trasa na Mapy.cz</span></a>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -306,6 +316,12 @@ const sluzby = [
       });
     });
     if (zalozky.length) vyber(zalozky[0]);
+    document.querySelectorAll<HTMLAnchorElement>('[data-cenik]').forEach((a) =>
+      a.addEventListener('click', () => {
+        const z = document.getElementById(`zal-${a.dataset.cenik}`) as HTMLButtonElement | null;
+        if (z) vyber(z);
+      }),
+    );
 
     // Scroll-reveal
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;

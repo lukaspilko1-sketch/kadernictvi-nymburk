@@ -41,18 +41,16 @@ Nahrajte soubor do `src/assets/photos/` a přidejte řádek do `galerie.json`. F
 Lokálně lze adresu přepsat proměnnými `SITE_URL` a `BASE_PATH`.
 
 ## Kontrola kvality
-- Otevřeno / zavřeno se počítá podle času `Europe/Prague` (ne podle zařízení), logika je v `src/lib/otevreno.ts` a testy v `tests/`.
-- Bez JS jsou vidět všechny tři ceníky pod sebou, tabulka hodin i galerie (fotky se otevřou jako obrázek). JS potřebuje jen lightbox, záložky, menu a štítek otevřeno.
-- Web nepoužívá cookies ani trackery. Jediný externí obsah je mapa z OpenStreetMap (`loading="lazy"`).
+- Otevírací doba (pás pod hero) a štítek „Dnes otevřeno / zavřeno · otevíráme …“ se počítá podle času `Europe/Prague` (ne podle zařízení), logika je v `src/lib/otevreno.ts` a testy v `tests/`.
+- Bez JS jsou vidět všechny tři ceníky pod sebou, dlaždice s hodinami i galerie (fotky se otevřou jako obrázek). JS potřebuje jen lightbox, záložky, menu a štítek otevřeno.
+- Web nepoužívá cookies ani trackery. Externí obsah je jen mapa z OpenStreetMap, a to až po doplnění souřadnic (do té doby karta s odkazem na Mapy.cz).
 
 ## TODO
 - Dámský ceník a dětský ceník (`cenik.json`)
 - Skutečný text „O nás" a fotky salonu (`firma.json`)
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
-- Ověřit víkendové hodiny (zatím zavřeno)
-- Souřadnice salonu: do JSON-LD (`Base.astro`) a značku do mapy (`index.astro`)
+- Souřadnice salonu: doplnit `souradnice` v `firma.json`, pak se automaticky objeví mapa se značkou i `geo` v JSON-LD (zatím karta s odkazem na Mapy.cz)
 - PSČ, doména, `site` v `astro.config.mjs`, `Sitemap:` v `robots.txt`
 - Provozovatel (jméno/IČO) na stránce Ochrana soukromí
 - Souhlas zákazníků s fotkami (děti)
 - Standalone `public/logo.svg` používá text s písmem Fraunces/Georgia (záložní); pro tisk převést text na křivky
-- Lighthouse na mobilu změřit po nasazení (zatím neměřeno)

@@ -1,38 +1,80 @@
 // Generuje SVG/PNG loga z jedné definice. Spuštění: node scripts/make-logo.mjs
+// Varianta 2: nůžky nad barberským hřebenem, svislá linka, nápis. Paleta „Černá, šedá & champagne".
 import { writeFileSync } from 'node:fs';
 import sharp from 'sharp';
 
-const UHEL = '#2b2a27', SALVEJ = '#4f6b57', KREM = '#f3efe6', ZLATA = '#c9a36b';
+const CERNA = '#1d1d1f', SEDA = '#4b4c50', KREM = '#f5f4f2';
+const CHAMPAGNE = '#c9ab78', HREBEN = '#a08150';
 
-const scissors = (c = UHEL, cut = KREM) => `<g transform="translate(62 58) scale(0.62)">
-<ellipse cx="-15" cy="38" rx="8.5" ry="11" fill="none" stroke="${c}" stroke-width="3.6" transform="rotate(18 -15 38)"/>
-<ellipse cx="15" cy="38" rx="8.5" ry="11" fill="none" stroke="${c}" stroke-width="3.6" transform="rotate(-18 15 38)"/>
-<path d="M-13 28 L-3 8 L-5 3 L8 -4 L19 -58 L6 -22 L3 5 L-8 29Z" fill="${c}" stroke="${cut}" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M13 28 L3 8 L5 3 L-8 -4 L-19 -58 L-6 -22 L-3 5 L8 29Z" fill="${c}" stroke="${cut}" stroke-width="1.4" stroke-linejoin="round"/>
-<circle cx="0" cy="3" r="2.3" fill="${cut}" stroke="${c}" stroke-width="1.2"/></g>`;
+const f = (n) => +n.toFixed(2);
 
-const comb = (c = SALVEJ) => {
-  let s = `<g transform="translate(62 104)"><rect x="-48" y="-14" width="96" height="7.28" rx="3.64" fill="${c}"/>`;
-  for (let i = 0; i < 14; i++) s += `<rect x="${(-45 + i * 3.6).toFixed(1)}" y="-7.72" width="1.9" height="21.7" rx="0.9" fill="${c}"/>`;
-  for (let i = 0; i < 6; i++) s += `<rect x="${(6.9 + i * 6.4).toFixed(1)}" y="-7.72" width="3" height="21.7" rx="1.3" fill="${c}"/>`;
-  return s + '</g>';
+/** Čepel jako zúžený trojúhelník (hrot -> pivot) + dřík ke kroužku + zvýrazněná ostrá hrana. */
+function cepel({ tip, pivot, ring, vnitrni }, c, hrana) {
+  const dx = pivot[0] - tip[0], dy = pivot[1] - tip[1];
+  const len = Math.hypot(dx, dy);
+  const nx = -dy / len, ny = dx / len; // normála
+  const w = 5.6; // polovina šířky čepele u pivotu
+  const a = [pivot[0] + nx * w, pivot[1] + ny * w];
+  const b = [pivot[0] - nx * w, pivot[1] - ny * w];
+  // vnitřní strana = ta, která míří k druhé čepeli
+  const vn = vnitrni === 'a' ? a : b;
+  const hx = f(tip[0] + (vn[0] - tip[0]) * 0.8), hy = f(tip[1] + (vn[1] - tip[1]) * 0.8);
+  return `<path d="M${tip[0]} ${tip[1]}L${f(a[0])} ${f(a[1])}L${f(b[0])} ${f(b[1])}Z" fill="${c}" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/>
+<path d="M${pivot[0]} ${pivot[1]}L${ring[0]} ${ring[1]}" stroke="${c}" stroke-width="6.2" stroke-linecap="round" fill="none"/>
+<line x1="${tip[0]}" y1="${f(tip[1] + 3)}" x2="${hx}" y2="${hy}" stroke="${hrana}" stroke-width="1.5" stroke-linecap="round"/>`;
+}
+
+/** Nůžky se středem pivotu v (0,0); otevřené. */
+const nuzky = (c = CERNA, hrana = KREM) => `
+<ellipse cx="-17" cy="40" rx="10" ry="13" fill="none" stroke="${c}" stroke-width="5" transform="rotate(20 -17 40)"/>
+<ellipse cx="17" cy="40" rx="10" ry="13" fill="none" stroke="${c}" stroke-width="5" transform="rotate(-20 17 40)"/>
+${cepel({ tip: [22, -62], pivot: [0, 2], ring: [-11, 27], vnitrni: 'a' }, c, hrana)}
+${cepel({ tip: [-22, -62], pivot: [0, 2], ring: [11, 27], vnitrni: 'b' }, c, hrana)}
+<circle cx="0" cy="2" r="3.6" fill="${hrana}" stroke="${c}" stroke-width="1.8"/>`;
+
+/** Barberský hřeben: jemné zuby vlevo, hrubší vpravo. Středem je (0,0) = střed hřbetu. */
+const hreben = (c = HREBEN) => {
+  let s = `<rect x="-48" y="-5" width="96" height="10" rx="5" fill="${c}"/>`;
+  for (let i = 0; i < 7; i++) s += `<rect x="${f(-44 + i * 5.4)}" y="0" width="3.2" height="22" rx="1.6" fill="${c}"/>`;
+  for (let i = 0; i < 4; i++) s += `<rect x="${f(3 + i * 10.6)}" y="0" width="5.6" height="22" rx="2.4" fill="${c}"/>`;
+  return s;
 };
 
-const mark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 14 104 108" width="104" height="108" role="img" aria-label="Nůžky nad barberským hřebenem">${scissors()}${comb()}</svg>`;
+const znacka = (cn = CERNA, ch = HREBEN, hrana = KREM) =>
+  `<g transform="translate(62 56) scale(0.6)">${nuzky(cn, hrana)}</g><g transform="translate(62 96)">${hreben(ch)}</g>`;
 
-const text = (x) => `<line x1="${x - 16}" y1="22" x2="${x - 16}" y2="108" stroke="${ZLATA}" stroke-width="1.6"/>
-<text x="${x}" y="60" font-family="Fraunces, Georgia, serif" font-size="30" fill="${UHEL}">Kadeřnictví</text>
-<text x="${x}" y="92" font-family="Fraunces, Georgia, serif" font-size="30" fill="${UHEL}">&amp; holičství <tspan fill="${SALVEJ}" font-style="italic">Nymburk</tspan></text>`;
+const mark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 14 104 108" width="104" height="108" role="img" aria-label="Nůžky nad barberským hřebenem">${znacka()}</svg>`;
 
-const logo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130" width="420" height="130" role="img" aria-label="Kadeřnictví a holičství Nymburk"><title>Kadeřnictví a holičství Nymburk</title>${scissors()}${comb()}${text(140)}</svg>`;
+const text = (x) => `<line x1="${x - 16}" y1="22" x2="${x - 16}" y2="108" stroke="${CHAMPAGNE}" stroke-width="2"/>
+<text x="${x}" y="60" font-family="Fraunces, Georgia, serif" font-size="30" fill="${CERNA}">Kadeřnictví</text>
+<text x="${x}" y="92" font-family="Fraunces, Georgia, serif" font-size="30" fill="${CERNA}">&amp; holičství <tspan fill="${SEDA}" font-style="italic">Nymburk</tspan></text>`;
 
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${SALVEJ}"/><g transform="translate(32 33) scale(0.46) translate(-62 -66)">${scissors(KREM, SALVEJ)}${comb(ZLATA)}</g></svg>`;
+const logo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130" width="420" height="130" role="img" aria-label="Kadeřnictví a holičství Nymburk"><title>Kadeřnictví a holičství Nymburk</title>${znacka()}${text(140)}</svg>`;
+
+// Favicon: tmavý podklad, krémové nůžky, champagne hřeben (čitelné i ve 32 px)
+const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${CERNA}"/><g transform="translate(32 33) scale(0.5) translate(-62 -66)">${znacka(KREM, CHAMPAGNE, CERNA)}</g></svg>`;
 
 writeFileSync('public/logo-mark.svg', mark);
 writeFileSync('public/logo.svg', logo);
 writeFileSync('public/favicon.svg', favicon);
 
 await sharp(Buffer.from(logo), { density: 300 }).resize({ width: 512 }).flatten({ background: KREM }).png().toFile('public/logo-512.png');
-const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="${KREM}"/><rect x="30" y="30" width="1140" height="570" fill="none" stroke="${ZLATA}" stroke-width="3"/><g transform="translate(95 150) scale(2.4)">${logo.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g><text x="600" y="545" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="${UHEL}">Zbožská 664/4, Nymburk · 603 242 505</text></svg>`;
+const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="${KREM}"/><rect x="30" y="30" width="1140" height="570" fill="none" stroke="${CHAMPAGNE}" stroke-width="3"/><g transform="translate(95 150) scale(2.4)">${logo.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g><text x="600" y="545" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="${CERNA}">Zbožská 664/4, Nymburk · 603 242 505</text></svg>`;
 await sharp(Buffer.from(og)).png().toFile('public/og.png');
+
+// Náhled čitelnosti: znacka ve 32, 64, 128 px + favicon ve 32, 64
+if (process.env.PREVIEW) {
+  const sizes = [32, 64, 128];
+  const tiles = [];
+  let x = 10;
+  for (const s of sizes) {
+    tiles.push({ input: await sharp(Buffer.from(mark), { density: 400 }).resize({ height: s }).flatten({ background: KREM }).png().toBuffer(), left: x, top: 10 });
+    x += Math.round((s * 104) / 108) + 20;
+  }
+  for (const s of [32, 64]) {
+    tiles.push({ input: await sharp(Buffer.from(favicon), { density: 400 }).resize({ width: s }).png().toBuffer(), left: x, top: 10 });
+    x += s + 20;
+  }
+  await sharp({ create: { width: x, height: 150, channels: 3, background: KREM } }).composite(tiles).png().toFile(process.env.PREVIEW);
+}
 console.log('logo hotovo');

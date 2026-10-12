@@ -27,14 +27,14 @@ describe('stavDnes', () => {
   it('těsně po zavření (pá 14:00)', () => {
     // pá 2025-06-13 14:00 CEST = 12:00 UTC
     const s = stavDnes(h, cest('2025-06-13T12:00:00Z'));
-    expect(s).toMatchObject({ den: 'pa', otevreno: false, text: 'Dnes zavřeno' });
+    expect(s).toMatchObject({ den: 'pa', otevreno: false, text: 'Dnes zavřeno · otevíráme v pondělí v 8:00' });
   });
   it('těsně před zavřením (pá 13:59)', () => {
     expect(stavDnes(h, cest('2025-06-13T11:59:00Z')).otevreno).toBe(true);
   });
   it('sobota a neděle zavřeno', () => {
-    expect(stavDnes(h, cest('2025-06-14T08:00:00Z'))).toMatchObject({ den: 'so', otevreno: false, text: 'Dnes zavřeno' });
-    expect(stavDnes(h, cest('2025-06-15T08:00:00Z'))).toMatchObject({ den: 'ne', otevreno: false });
+    expect(stavDnes(h, cest('2025-06-14T08:00:00Z'))).toMatchObject({ den: 'so', otevreno: false, text: 'Dnes zavřeno · otevíráme v pondělí v 8:00' });
+    expect(stavDnes(h, cest('2025-06-15T08:00:00Z'))).toMatchObject({ den: 'ne', otevreno: false, dalsi: 'zítra v 8:00' });
   });
   it('přechod přes půlnoc: neděle 23:30 UTC je už pondělí v Praze', () => {
     // ne 2025-06-15 22:30 UTC = po 00:30 CEST
@@ -46,5 +46,20 @@ describe('stavDnes', () => {
   });
   it('použije pražský čas, ne UTC: po 15:00 UTC v pátek je už zavřeno', () => {
     expect(stavDnes(h, cest('2025-12-05T13:30:00Z')).otevreno).toBe(false);
+  });
+  it('po zavření v pondělí se otevírá zítra', () => {
+    // po 2025-06-09 15:00 CEST = 13:00 UTC
+    expect(stavDnes(h, cest('2025-06-09T13:00:00Z')).text).toBe('Dnes zavřeno · otevíráme zítra v 8:00');
+  });
+  it('čtvrtek po zavření: otevíráme zítra v 8:00', () => {
+    expect(stavDnes(h, cest('2025-06-12T15:00:00Z')).dalsi).toBe('zítra v 8:00');
+  });
+  it('přechod týdne: pátek 23:30 CEST je ještě pátek, v sobotu 00:30 už víkend', () => {
+    expect(stavDnes(h, cest('2025-06-13T21:30:00Z')).dalsi).toBe('v pondělí v 8:00');
+    expect(stavDnes(h, cest('2025-06-13T22:30:00Z'))).toMatchObject({ den: 'so', dalsi: 'v pondělí v 8:00' });
+  });
+  it('bez jakýchkoli hodin jen „Dnes zavřeno“', () => {
+    const nic = { po: null, ut: null, st: null, ct: null, pa: null, so: null, ne: null } as never;
+    expect(stavDnes(nic, cest('2025-06-09T08:00:00Z')).text).toBe('Dnes zavřeno');
   });
 });

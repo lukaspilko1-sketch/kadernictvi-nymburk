@@ -1,0 +1,38 @@
+/* Paleta „Černá, šedá & champagne" – přepis proměnných a míst použití akcentu */
+:root {
+  --krem: #f5f4f2;
+  --salvej: #4b4c50;          /* středně tmavá šedá: ikony, „Nymburk" v logu, sekundární prvky */
+  --salvej-tmava: #1d1d1f;    /* téměř černá: text, tmavé plochy */
+  --salvej-svetla: #e5e4e1;   /* světle šedá: drobné plochy */
+  --zlata: #c9ab78;           /* CHAMPAGNE: tlačítka, zvýraznění, linky, puntíky */
+  --zlata-velky: #9a7c4a;     /* champagne pro VELKÝ text (nadpis) na světlém, kontrast ≥ 3:1 */
+  --zlata-tmava: #7a6030;     /* champagne pro malý text na světlém */
+  --zlata-logo: #a08150;      /* champagne pro hřeben v logu na světlém */
+  --na-akcentu: #1d1d1f;      /* text na ploše champagne */
+  --cta: #2e2f33;             /* TMAVĚ ŠEDÁ: pozadí všech CTA tlačítek (Zavolat, telefon v hlavičce, mobilní lišta) */
+}
+/* CTA tlačítka: tmavě šedá, champagne jen v ikoně a při hoveru */
+.tlacitko { background: var(--cta); color: var(--krem); border-color: var(--cta); box-shadow: 0 3px 0 #0f0f10; }
+.tlacitko svg, .tlacitko .ikona { color: var(--zlata); }
+.tlacitko:hover, .tlacitko:focus-visible { background: var(--zlata); border-color: var(--zlata); color: var(--na-akcentu); }
+.tlacitko:hover svg, .tlacitko:focus-visible svg { color: var(--na-akcentu); }
+.zavolat-lista { background: var(--cta); color: var(--krem); border-top: 3px solid var(--zlata); }
+.zavolat-lista:hover, .zavolat-lista:focus-visible { background: var(--zlata); color: var(--na-akcentu); }
+.hlavicka-tel { background: var(--cta); color: var(--krem); padding: 0.5rem 1.1rem; border-radius: 999px; }
+.hlavicka-tel:hover, .hlavicka-tel:focus-visible { background: var(--zlata); color: var(--na-akcentu); }
+.hero h1 em { color: var(--zlata-velky); }
+.stitek { background: color-mix(in srgb, var(--zlata) 30%, var(--krem)); }
+.zalozka[aria-selected='true'] { background: var(--zlata); border-color: var(--zlata); color: var(--na-akcentu); }
+.sluzby, .kontakt { background: #e8e7e4; }
+.galerie { background: #232325; }
+.galerie h2 { color: var(--krem); }
+/* světlý pás s hodinami */
+.pas { background: #fbfaf9; color: var(--uhel); border-block: 3px solid var(--zlata); }
+.pas h2 { color: var(--salvej-tmava); }
+.pas-dny li { background: #eeedea; border-color: #d8d6d2; }
+.pas-cas { opacity: 1; color: #4a4b4f; }
+.pas-dny .zavreno-den { opacity: 0.6; }
+.pas-dny li.dnes { background: var(--zlata); border-color: #8d7243; color: var(--na-akcentu); }
+.pas-dny li.dnes .pas-cas { color: var(--na-akcentu); }
+.pas-stav .tecka { background: var(--zlata); box-shadow: none; }
+.pas-stav.otevreno .tecka { background: #2f8f4e; box-shadow: 0 0 0 4px rgba(47, 143, 78, 0.2); }

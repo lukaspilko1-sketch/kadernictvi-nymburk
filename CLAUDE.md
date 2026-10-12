@@ -9,9 +9,9 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Název: Kadeřnictví a holičství Nymburk
 - Adresa: Zbožská 664/4, Nymburk
 - Telefon: 603 242 505 (`tel:+420603242505`)
-- Hodiny: Po 8–14:30, Út 8–16:30, St 8–14:30, Čt 8–16:30, Pá 8–14, So+Ne zavřeno (víkend nepotvrzen)
+- Hodiny: Po 8–14:30, Út 8–16:30, St 8–14:30, Čt 8–16:30, Pá 8–14, So+Ne zavřeno (POTVRZENO 2026-10-12: otevřeno jen Po–Pá)
 - Facebook: https://www.facebook.com/profile.php?id=100057433419981
-- Klientela: dámy, pánové, děti. Objednávání jen telefonem, bez rezervačního systému.
+- Klientela: dámy, pánové, děti. Stříhá se **bez objednání**, stačí přijít v otevírací době (telefon jen volitelně), žádný rezervační systém.
 - Doména: zatím žádná (placeholder).
 
 ## Rozhodnutí
@@ -23,7 +23,11 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - (2026-10-11) Hlavní výhoda salonu: **stříhání bez objednání**. Hero nadpis „Péče o vlasy. Pro každého. Bez objednání." Telefon zůstává jen jako volitelné „Zavolat". Otevírací doba má být v první obrazovce (pás pod hero). Barvy sytější, logo větší. Zadání v `PROMPT-uprava-1.md`.
 - (2026-10-11) Zelená se majiteli nelíbí. Připraveno 5 barevných variant (A bordó, B námořnická, C terakota, D uhel a měď, E čokoláda), viz `barevne-varianty.html`. Čeká na výběr. Do té doby nemění barvy v kódu.
 - (2026-10-11) ~~Barvy: Břidlice & hořčice~~ (PŘEKONÁNO, viz níže).  Hořčice `#dba52a` na CTA Zavolat, telefonu v hlavičce, mobilní liště, zvýraznění „Bez objednání", dnešním dni, aktivní záložce. Pás s hodinami **světlý**. Tokeny v `paleta-horcice.css`, náhled `navrh-horcice.html`, zadání `PROMPT-uprava-1.md` (sekce 4). Starší výběry barev jsou překonané.
-- (2026-10-11) **Barvy schváleny (finální): „Šedomodrá & růžové zlato"** (varianta H, zelená pryč). Růžové zlato `#c98a73` na CTA Zavolat, telefonu v hlavičce, mobilní liště, zvýraznění „Bez objednání", dnešním dni, aktivní záložce. Šedomodrá `#5d6e80`, tmavá `#3b4856`, krém `#f4f2f1`. Pás s hodinami **světlý**. Tokeny v `paleta-sedomodra-ruzove-zlato.css`, náhled `navrh-sedomodra-ruzove-zlato.html`, zadání `PROMPT-uprava-1.md` (sekce 4). Soubory s hořčicí a starší barevné varianty ignorovat.
+- (2026-10-11) ~~Barvy: Šedomodrá & růžové zlato~~ (PŘEKONÁNO)  (varianta H, zelená pryč). Růžové zlato `#c98a73` na CTA Zavolat, telefonu v hlavičce, mobilní liště, zvýraznění „Bez objednání", dnešním dni, aktivní záložce. Šedomodrá `#5d6e80`, tmavá `#3b4856`, krém `#f4f2f1`. Pás s hodinami **světlý**. Tokeny v `paleta-sedomodra-ruzove-zlato.css`, náhled `navrh-sedomodra-ruzove-zlato.html`, zadání `PROMPT-uprava-1.md` (sekce 4). Soubory s hořčicí a starší barevné varianty ignorovat.
+- (2026-10-12) **Barvy FINÁLNÍ (vybral klient): „Černá, šedá & champagne"** (varianta I, zelená pryč). Champagne `#c9ab78` na CTA Zavolat, telefonu v hlavičce, mobilní liště, dnešním dni a aktivní záložce; „Bez objednání." v nadpisu champagne `#9a7c4a` (bez podkladu); hřeben v logu champagne `#a08150`, nůžky téměř černé. Šedá `#4b4c50`, černá `#1d1d1f`, krém `#f5f4f2`. Pás s hodinami **světlý**, galerie téměř černá. Tokeny v `paleta-cerna-seda-champagne.css`, náhled `navrh-cerna-seda-champagne.html`, logo `logo-mark-champagne.svg`, zadání `PROMPT-uprava-1.md` (sekce 4). Všechny starší palety a jejich soubory ignorovat.
+- (2026-10-12) Upřesnění k finální paletě: **CTA tlačítka tmavě šedá** `#2e2f33` (Zavolat, telefon v hlavičce, mobilní lišta), ikona nůžek a hover v champagne. Otevírací doba **potvrzena: jen Po–Pá**, víkend zavřeno. Zapsáno v `PROMPT-uprava-1.md`.
+- (2026-10-12) Barvy a tlačítka potvrzeny uživatelem. Dámský a dětský ceník zatím k dispozici není: na webu zůstává „Ceník doplníme" a doplní se, až ho klient dodá (`src/data/cenik.json`).
+- (2026-10-12) Web je nasazený na GitHub Pages: https://lukaspilko1-sketch.github.io/kadernictvi-nymburk/ (repozitář pod účtem `lukaspilko1-sketch`, název `kadernictvi-nymburk`). Živá verze je zatím **stará** (hero „Péče o vlasy, která sedí.", „Objednáváme jen telefonicky", bez pásu s hodinami). `PROMPT-uprava-1.md` zatím nepromítnut do nasazení. Pánský ceník ponechat, klient dodá aktuální. Čeká se na texty a vlastní fotky, proto brzy nastavit admin (`PROMPT-admin-panel.md`).
 
 ## Soubory ve složce
 - `PROMPT-claude-code.md` – zadání pro stavbu webu
@@ -36,6 +40,7 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - [x] Směr A schválen, logo varianta 2 vybráno
 - [x] Prompt pro web a pro admin hotové
 - [x] Web postaven Claude Code (Astro, `src/`, testy, README, deploy workflow); vizuálně zkontrolován na 360/1280 px v prohlížeči, Lighthouse zatím neměřen
+- [x] Úpravy kolo 1 (`PROMPT-uprava-1.md`) provedeny v kódu 2026-10-12, zatím necommitnuto/nenasazeno; Lighthouse mobil: výkon 91, přístupnost 100, postupy 100, SEO 100
 - [ ] Admin panel (Pages CMS) nastaven
 - [ ] Nasazení na GitHub Pages (workflow `.github/workflows/deploy.yml` připraven, repozitář a Pages zapnout)
 
@@ -47,15 +52,15 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Dámský a dětský ceník
 - Text „O nás" a skutečné fotky salonu
 - Souřadnice pro JSON-LD, doména
-- Ověřit platnost pánského ceníku (platnost od 1. 3. 2025) a víkendové hodiny
+- Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
 - Souhlas zákazníků s fotkami (jsou na nich i děti)
 - Souřadnice (JSON-LD a značka v mapě), PSČ, provozovatel na stránce Soukromí
-- Změřit Lighthouse po nasazení; logo.svg převést text na křivky (pro tisk)
+- Logo.svg převést text na křivky (pro tisk); Lighthouse znovu změřit na ostré adrese
 
 ## Otevřené otázky
 - Prompt web uváděl Cloudflare/Netlify, platí novější rozhodnutí GitHub Pages (tady použito).
 - Nasazení pod `/<repo>/` vyžaduje `BASE_PATH` (nastaveno ve workflow).
-- Název repozitáře a doména
+- Doména (vlastní zatím není, běží na github.io)
 - Kdy a zda dát majitelce přístup do administrace
 
 ## Deník změn
@@ -66,3 +71,8 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - 2026-10-11 – Vybrána paleta Břidlice & hořčice, pás s hodinami světlý. Zadání přepsáno v `PROMPT-uprava-1.md`.
 - 2026-10-11 – Finální paleta změněna na Šedomodrá & růžové zlato (H). Zadání upraveno v `PROMPT-uprava-1.md`.
 - 2026-10-11 – Upřesnění: „Bez objednání." v nadpisu v barvě růžového zlata (`#b36b54`, bez zvýrazňovacího podkladu), hřeben v logu v růžovém zlatě (`logo-mark-ruzove-zlato.svg`). Zapsáno v `PROMPT-uprava-1.md`.
+- 2026-10-12 – Klient vybral finální paletu Černá, šedá & champagne (I). `PROMPT-uprava-1.md` přepsán.
+- 2026-10-12 – CTA tlačítka tmavě šedá, potvrzena otevírací doba Po–Pá (víkend zavřeno).
+- 2026-10-12 – Barvy potvrzeny, dámský a dětský ceník zatím chybí. Další krok: spustit `PROMPT-uprava-1.md`, pak admin a nasazení.
+- 2026-10-12 – Zjištěno: web je na GitHub Pages (stará verze). Ceník ponechat do dodání aktuálního. Další: úpravy 1, pak admin.
+- 2026-10-12 – Provedeny úpravy kolo 1: „Bez objednání“ v hero, světlý pás s hodinami pod hero (na mobilu před fotkami), příští otevření v `stavDnes()` (+4 testy), větší logo i hlavička, nové logo (silnější nůžky, hřeben se 7+4 zuby), paleta Černá, šedá & champagne, CTA tmavě šedá, služby ve 3 sloupcích, galerie bez bílých pruhů, mapa jen se souřadnicemi (jinak karta s Mapy.cz), odstraněny zmínky o objednávání a nepotvrzeném víkendu.

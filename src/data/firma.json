@@ -15,12 +15,11 @@
     "so": null,
     "ne": null
   },
-  "hodinyPoznamka": "TODO: víkend zatím nepotvrzen, ověřit u majitelky.",
   "oNas": {
     "TODO": "Skutečný text o salonu dodá majitelka. Zatím jen neutrální placeholder.",
     "text": [
       "Salon najdete ve Zbožské ulici v Nymburku. Stříháme dámy, pány i děti.",
-      "Objednáváme telefonicky. Zavolejte a domluvíme termín."
+      "Stačí přijít v otevírací době, objednávat se nemusíte. Kdybyste si chtěli být jistí, zavolejte."
     ]
   }
 }
