@@ -5,8 +5,7 @@ import Ikona from '../components/Ikona.astro';
 import Rohy from '../components/Rohy.astro';
 import ZavolatTlacitko from '../components/ZavolatTlacitko.astro';
 import FbIkona from '../components/FbIkona.astro';
-import firma from '../data/firma.json';
-import cenik from '../data/cenik.json';
+import { firma, cenik, sluzby } from '../lib/data';
 import { galerieFotky, fotka } from '../lib/fotky';
 import { dnyPoradi } from '../lib/otevreno';
 
@@ -28,7 +27,7 @@ const dnyKratce: Record<string, string> = { po: 'Po', ut: 'Út', st: 'St', ct: '
 const cas = (s: string) => s.replace(/^0/, '');
 const kc = (n: number) => `${n.toLocaleString('cs-CZ')} Kč`;
 
-const { lat, lon } = firma.souradnice as { lat: number | null; lon: number | null };
+const { lat, lon } = firma.souradnice;
 // Mapa s iframe jen když jsou souřadnice, jinak karta s adresou a odkazem na Mapy.cz.
 const mapaSrc = lat != null && lon != null
   ? `https://www.openstreetmap.org/export/embed.html?bbox=${(lon - 0.004).toFixed(5)}%2C${(lat - 0.0025).toFixed(5)}%2C${(lon + 0.004).toFixed(5)}%2C${(lat + 0.0025).toFixed(5)}&layer=mapnik&marker=${lat}%2C${lon}`
@@ -43,20 +42,6 @@ const oNasFoto = fotka('panske-1.jpg');
 const galerie = galerieFotky();
 const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width: 1000, format: 'webp' })));
 
-const sluzby = [
-  {
-    id: 'damske', nazev: 'Dámy', ikona: 'kartac' as const, foto: fotka('damske-1.jpg'), alt: 'Dlouhé vlasy s růžovými prameny',
-    text: 'Střih, barvení a prameny. Dámský ceník právě připravujeme, cenu vám rádi řekneme po telefonu.',
-  },
-  {
-    id: 'panske', nazev: 'Pánové', ikona: 'britva' as const, foto: fotka('panske-3.jpg'), alt: 'Pán s vousy po střihu',
-    text: 'Klasické střihy a fade strojkem i břitvou. Úprava vousů, holení břitvou, melír, barvení a trvalá.',
-  },
-  {
-    id: 'detske', nazev: 'Děti', ikona: 'nuzky' as const, foto: fotka('detske-2.jpg'), alt: 'Chlapec po střihu s vyholenou linkou',
-    text: 'Střih pro nejmenší i školáky, fade už od šesti let. Barevné pramínky podle přání dítěte.',
-  },
-];
 ---
 <Base>
   <a class="preskocit" href="#obsah">Přeskočit na obsah</a>
@@ -99,7 +84,7 @@ const sluzby = [
         </div>
       </div>
 
-      <div class="pas" id="hodiny" role="region" aria-labelledby="pas-nadpis">
+      <div class="pas" id="hodiny" role="region" aria-labelledby="pas-nadpis" data-hodiny={JSON.stringify(firma.hodiny)}>
         <div class="pas-vnitrek">
           <div class="pas-text">
             <h2 id="pas-nadpis">Stačí přijít. Bez objednání.</h2>
@@ -123,12 +108,12 @@ const sluzby = [
 
     <section class="sekce sluzby" id="sluzby" aria-labelledby="sluzby-nadpis">
       <div class="obal">
-        <h2 id="sluzby-nadpis" data-reveal>Pro koho stříháme</h2>
+        <h2 id="sluzby-nadpis" data-reveal>{sluzby.nadpis}</h2>
         <ol class="sluzby-seznam">
-          {sluzby.map((s, i) => (
+          {sluzby.polozky.map((s: any, i: number) => (
             <li class={`sluzba ${i % 2 ? 'obracene' : ''}`} data-reveal>
               <div class="sluzba-foto">
-                {s.foto && <Picture src={s.foto} alt={s.alt} formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 700px) 240px, 60vw" loading="lazy" />}
+                {<Picture src={fotka(s.foto)} alt={s.alt} formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 700px) 240px, 60vw" loading="lazy" />}
               </div>
               <div class="sluzba-text">
                 <Ikona jmeno={s.ikona} trida="ikona-velka" />
@@ -162,7 +147,7 @@ const sluzby = [
                     <h4>{sek.nazev}</h4>
                     <ul>
                       {sek.polozky.map((p) => (
-                        <li><span class="nazev">{p.nazev}</span><span class="vedouci" aria-hidden="true"></span><span class="cena">{kc(p.cena)}</span></li>
+                        <li><span class="nazev">{p.nazev}{p.poznamka && <small class="poznamka"> ({p.poznamka})</small>}</span><span class="vedouci" aria-hidden="true"></span><span class="cena">{kc(p.cena)}</span></li>
                       ))}
                     </ul>
                   </section>
@@ -257,9 +242,8 @@ const sluzby = [
 
   <script>
     import { stavDnes } from '../lib/otevreno';
-    import firma from '../data/firma.json';
-
-    const hodiny = firma.hodiny as never;
+    // hodiny dodává server (data-hodiny na pásu), nic se nenačítá z JSON
+    const hodiny = JSON.parse(document.getElementById('hodiny')?.dataset.hodiny ?? '{}');
 
     // Štítek otevřeno / zavřeno + zvýraznění dnešního dne (čas Europe/Prague)
     const aktualizuj = () => {

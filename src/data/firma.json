@@ -6,7 +6,6 @@
     "psc": "TODO"
   },
   "telefon": "603 242 505",
-  "telefonOdkaz": "tel:+420603242505",
   "facebook": "https://www.facebook.com/profile.php?id=100057433419981",
   "souradnice": {
     "lat": 50.1809147,
@@ -15,27 +14,40 @@
   "domena": "TODO",
   "hodiny": {
     "po": {
+      "zavreno": false,
       "od": "08:00",
       "do": "14:30"
     },
     "ut": {
+      "zavreno": false,
       "od": "08:00",
       "do": "16:30"
     },
     "st": {
+      "zavreno": false,
       "od": "08:00",
       "do": "14:30"
     },
     "ct": {
+      "zavreno": false,
       "od": "08:00",
       "do": "16:30"
     },
     "pa": {
+      "zavreno": false,
       "od": "08:00",
       "do": "14:00"
     },
-    "so": null,
-    "ne": null
+    "so": {
+      "zavreno": true,
+      "od": "",
+      "do": ""
+    },
+    "ne": {
+      "zavreno": true,
+      "od": "",
+      "do": ""
+    }
   },
   "oNas": {
     "TODO": "Text je návrh, majitelka ho může upravit.",

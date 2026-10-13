@@ -24,7 +24,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Kontrola dat (ceník, hodiny, fotky)
+        run: npm run validate
       - run: npm test
+      - uses: actions/configure-pages@v5
       - name: Build
         run: npm run build
         env:

@@ -7,7 +7,8 @@ Jednostránkový statický web (Astro, vanilla CSS). Texty, ceny, hodiny a fotky
 ```bash
 npm install
 npm run dev      # vývoj na http://localhost:4321
-npm run build    # produkční build do dist/
+npm run validate # kontrola dat (ceník, hodiny, fotky), build ji spouští sám
+npm run build    # produkční build do dist/ (při chybě v datech skončí českou hláškou)
 npm run preview  # náhled buildu
 npm test         # jednotkové testy (Vitest): otevřeno / zavřeno
 ```
@@ -18,7 +19,9 @@ npm test         # jednotkové testy (Vitest): otevřeno / zavřeno
 |---|---|
 | Adresa, telefon, Facebook, hodiny, text „O nás" | `src/data/firma.json` |
 | Ceníky (pánský, dámský, dětský), platnost ceníku | `src/data/cenik.json` |
-| Fotky v galerii, alt texty, skrytí fotky | `src/data/galerie.json` (soubor v `src/assets/photos/`) |
+| Fotky v galerii, alt texty, skrytí, pořadí | `src/data/galerie.json` (soubory v `src/assets/galerie/`) |
+| Služby (Dámy, Pánové, Děti) | `src/data/sluzby.json` |
+| SEO titulek a popis | `src/data/seo.json` |
 | Logo | `scripts/make-logo.mjs` (jedna definice), pak `node scripts/make-logo.mjs` vygeneruje `public/logo.svg`, `logo-mark.svg`, `favicon.svg`, `logo-512.png`, `og.png` |
 | Barvy a písma | CSS proměnné na začátku `src/styles/global.css` |
 | Fonty | balíčky `@fontsource-variable/*`, hostované lokálně, žádné CDN |
@@ -27,9 +30,14 @@ npm test         # jednotkové testy (Vitest): otevřeno / zavřeno
 V `cenik.json` přidejte do skupiny `sekce` s položkami `{ "nazev": "...", "cena": 250 }`. Prázdná skupina zobrazí „Ceník doplníme, zavolejte nám".
 
 ### Fotky
-Nahrajte soubor do `src/assets/photos/` a přidejte řádek do `galerie.json`. Fotku skryjete nastavením `"zobrazit": false`. Pokud soubor chybí, build vypíše varování a položku vynechá.
+Nahrajte soubor do `src/assets/galerie/` a přidejte položku do `galerie.json` (`src`, `alt`, `zobrazit`, `poradi`). Fotku skryjete `"zobrazit": false`. Chybějící fotka nebo prázdný `alt` shodí build s českou hláškou, takže nasazená verze zůstane beze změny.
 
 **Upozornění:** na fotkách jsou skuteční zákazníci, včetně dětí. Před zveřejněním musí mít majitelka jejich souhlas. Původní fotky jsou z Facebooku, tedy v menším rozlišení. Až budou vlastní, stačí je vyměnit.
+
+## Administrace (Pages CMS)
+Obsah se upravuje ve formulářích na https://app.pagescms.org (přihlášení přes GitHub). Formuláře jsou definované v `.pages.yml`, změny jdou jako commity do `main` a GitHub Actions web znovu nasadí. Postup krok za krokem: [`docs/NAVOD-pro-spravce.md`](docs/NAVOD-pro-spravce.md).
+
+Hodiny jsou v `firma.json` jako `{ "zavreno": true/false, "od": "08:00", "do": "14:30" }` (Pages CMS neumí `null`). Data se při buildu kontrolují schématem v `src/lib/nacti-data.mjs`.
 
 ## Nasazení (GitHub Pages)
 

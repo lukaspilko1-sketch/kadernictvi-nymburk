@@ -3,13 +3,13 @@ import '@fontsource-variable/fraunces/soft.css';
 import '@fontsource-variable/fraunces/soft-italic.css';
 import '@fontsource-variable/hanken-grotesk/index.css';
 import '../styles/global.css';
-import firma from '../data/firma.json';
+import { firma, seo } from '../lib/data';
 import { dnyPoradi } from '../lib/otevreno';
 
 interface Props { title?: string; description?: string; cesta?: string; jsonLd?: boolean }
 const {
-  title = 'Kadeřnictví a holičství Nymburk | Zbožská 664/4',
-  description = 'Kadeřnictví a holičství v Nymburce, Zbožská 664/4. Dámy, pánové i děti, bez objednání.',
+  title = seo.title,
+  description = seo.description,
   cesta = '/',
   jsonLd = true,
 } = Astro.props;
@@ -21,7 +21,7 @@ const og = new URL(url('/og.png'), Astro.site).href;
 
 const dnyJsonLd = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const hodinyLd = dnyPoradi.flatMap((d, i) => {
-  const h = (firma.hodiny as Record<string, { od: string; do: string } | null>)[d];
+  const h = firma.hodiny[d];
   return h ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: dnyJsonLd[i], opens: h.od, closes: h.do }] : [];
 });
 const ld = {
@@ -37,7 +37,7 @@ const ld = {
   sameAs: [firma.facebook],
 };
 // Souřadnice se přidají automaticky, jakmile je někdo doplní do src/data/firma.json.
-const { lat, lon } = firma.souradnice as { lat: number | null; lon: number | null };
+const { lat, lon } = firma.souradnice;
 if (lat != null && lon != null) Object.assign(ld, { geo: { '@type': 'GeoCoordinates', latitude: lat, longitude: lon } });
 ---
 <!doctype html>

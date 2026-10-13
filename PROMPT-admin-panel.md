@@ -17,6 +17,19 @@ V kořeni projektu je soubor `CLAUDE.md` s aktuálním stavem projektu. Pracuje 
 
 GitHub Pages je čistě statický hosting. **Žádné PHP, žádný `.htaccess`, žádné `save.php`/`upload.php`, žádné Basic Auth.** Cokoli, co by potřebovalo vlastní server, nepoužívej. Úpravy proto musí fungovat tak, že se změna uloží jako commit do repozitáře a GitHub Actions web znovu sestaví a nasadí (cca 1–2 minuty).
 
+## Aktuální stav webu (platí místo starších předpokladů)
+
+- **Správce je jen Lukáš** (vlastník repozitáře). Majitelka salonu GitHub nemá a nejspíš mít nebude, změny jí bude dělat Lukáš (podle jejích zpráv/telefonu). Proto: **nevytvářej návod pro majitelku**, nepočítej s collaboratory a nic nepřizpůsobuj netechnickému uživateli. Admin má být pro Lukáše rychlý a bezpečný (validace, srozumitelné české hlášky, nejde jím web rozbít). Pokud by se to v budoucnu změnilo, stačí přidat účet jako collaboratora, bez předělávání.
+- **Galerie se nastavuje hned**: nahrání fotek přes admin do `src/assets/galerie/`, pole `alt` (povinné), `zobrazit` (skrýt fotku), `poradi`, případně popisek. Zkontroluj, jak galerii vykresluje stávající kód a `src/data/galerie.json`, a admin přizpůsob tomu (stávající fotky z Facebooku musí zůstat funkční). Při buildu se fotky optimalizují. Doporuč v návodu max. cca 3 MB na fotku a upozorni na souhlas zákazníků s fotkou (děti!).
+
+- Web je hotový a nasazený, repozitář `lukaspilko1-sketch/kadernictvi-nymburk`. Nasazuje se **jen z větve `main`**, lokální větev je `master`. Před pushem ověř větve a nepushuj bez mého výslovného souhlasu; napiš mi přesný příkaz (např. `git push origin master:main`). Případně navrhni sjednocení na `main`.
+- Data už existují a **nepřepisuj jejich strukturu zbytečně**: `src/data/firma.json` (kontakt, hodiny jako `{od, do}` nebo `null` pro zavřeno, souřadnice, `oNas.nadpis` a `oNas.text` jako pole odstavců), `src/data/cenik.json` (`skupiny` → `sekce` → `polozky` s `nazev`, `cena`; u skupiny volitelná `poznamka`; `platnostOd`), `src/data/galerie.json`. Pokud formulář Pages CMS něco z toho neumí (např. `null` u víkendu), uprav datový model **i kód, testy a build tak, aby web fungoval stejně**, a napiš mi, co jsi změnil.
+- Ceník: pánský platí od 1. 3. 2025 (čeká na aktualizaci). Dámský má jen `poznamka` „Cena podle domluvy.", dětský `poznamka` „Ceny pro děti do 6 let najdete v pánském ceníku." a prázdné `sekce`. Majitelka musí v administraci umět **přidat sekce a položky do dámského a dětského ceníku**; jakmile je `sekce` neprázdná, web zobrazí ceník místo poznámky.
+- Text „O nás" je návrh, bude se upravovat v administraci. Formulář: nadpis + odstavce.
+- Hodiny: formát `HH:MM`; validace musí odmítnout špatný čas a `do` dřívější než `od`. Pás s hodinami i stav „Dnes otevřeno/zavřeno" se počítají z těchto dat.
+- Vzhled (barvy, rozložení, animace) zůstává v kódu a admin ho nemění. Nesahej na paletu „Černá, šedá & champagne".
+- Doména a PSČ zatím nejsou (`TODO`), neměň je.
+
 ## 1. Analýza
 
 Projdi hotový web a `src/data/` (`firma.json`, `cenik.json`, `galerie.json`). Vypiš mi:
@@ -58,15 +71,15 @@ Doporučené řešení: **Pages CMS** (pagescms.org), webové rozhraní, ke kter
 
 ## 6. Návod pro majitelku
 
-Vytvoř `docs/NAVOD-pro-majitelku.md` česky, krátce a bez technického žargonu:
+Vytvoř jen `docs/NAVOD-pro-spravce.md` (pro Lukáše), česky a stručně, s číslovanými kroky:
 
-1. Jak se přihlásit.
-2. Jak změnit otevírací dobu, cenu, přidat položku do ceníku.
-3. Jak přidat a skrýt fotku.
-4. Kdy se změna objeví na webu (po 1–2 minutách) a co dělat, když ne.
-5. Co dělat, když se objeví chyba (kam napsat, jak vrátit poslední změnu přes historii commitů).
-
-A samostatně `docs/NAVOD-pro-spravce.md` (pro mě): jak zřídit repozitář pod mým účtem, GitHub Pages, jak později přidat majitelku jako collaboratora, vlastní doménu, jak vrátit změny.
+1. Jak se přihlásit do administrace.
+2. Jak změnit otevírací dobu, cenu, přidat položku nebo sekci do ceníku (včetně dámského a dětského).
+3. Jak upravit texty (O nás, služby, SEO).
+4. Jak přidat, přeřadit a skrýt fotku v galerii.
+5. Kdy se změna objeví na webu (po 1–2 minutách), jak zkontrolovat běh v záložce Actions a co dělat, když build selže.
+6. Jak vrátit poslední změnu přes historii commitů.
+7. Doména (`public/CNAME`), případné přidání dalšího editora jako collaboratora.
 
 ## 7. Kvalita
 

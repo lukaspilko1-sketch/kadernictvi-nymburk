@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import firma from '../data/firma.json';
+import { firma } from '../lib/data';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base title="Ochrana soukromí | Kadeřnictví a holičství Nymburk" description="Web nepoužívá cookies ani sledovací nástroje." cesta="/soukromi/" jsonLd={false}>

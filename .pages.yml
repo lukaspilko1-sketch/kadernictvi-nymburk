@@ -1,0 +1,315 @@
+# Pages CMS (https://pagescms.org): administrace obsahu webu. Změny se ukládají jako commity do větve main
+# a GitHub Actions web sestaví a nasadí (1–2 minuty). Dokumentace polí: https://pagescms.org/docs
+# Vzhled webu (barvy, rozložení, animace) tady není, ten zůstává v kódu.
+
+settings:
+  content:
+    merge: true # klíče, které formulář nezná (např. poznámky TODO), se při ukládání nesmažou
+  commit:
+    templates:
+      create: "Administrace: vytvořeno {filename}"
+      update: "Administrace: upraveno {filename}"
+      delete: "Administrace: smazáno {filename}"
+      rename: "Administrace: přejmenováno {oldFilename} na {newFilename}"
+
+media:
+  - name: galerie
+    label: Fotky
+    input: src/assets/galerie
+    output: /src/assets/galerie
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+
+components:
+  den:
+    type: object
+    fields:
+      - name: zavreno
+        label: Zavřeno
+        type: boolean
+      - name: od
+        label: Otevíráme od (HH:MM)
+        type: string
+        pattern:
+          regex: '^([01]\d|2[0-3]):[0-5]\d$'
+          message: "Čas zadejte jako HH:MM, např. 08:30"
+      - name: do
+        label: Zavíráme v (HH:MM)
+        type: string
+        pattern:
+          regex: '^([01]\d|2[0-3]):[0-5]\d$'
+          message: "Čas zadejte jako HH:MM, např. 14:30"
+
+content:
+  # ---------------------------------------------------------------- Kontakt a hodiny
+  - name: firma
+    label: Kontakt, hodiny a O nás
+    type: file
+    path: src/data/firma.json
+    format: json
+    fields:
+      - name: nazev
+        label: Název salonu
+        type: string
+        required: true
+      - name: adresa
+        label: Adresa
+        type: object
+        fields:
+          - name: ulice
+            label: Ulice a číslo
+            type: string
+            required: true
+          - name: mesto
+            label: Město
+            type: string
+            required: true
+          - name: psc
+            label: PSČ
+            type: string
+      - name: telefon
+        label: Telefon
+        description: "9 číslic, např. 603 242 505. Odkaz „Zavolat“ se vytvoří sám."
+        type: string
+        required: true
+        pattern:
+          regex: "^\\s*(\\+?420)?(\\s*\\d){9}\\s*$"
+          message: "Zadejte 9 číslic, např. 603 242 505"
+      - name: facebook
+        label: Odkaz na Facebook
+        type: string
+        required: true
+        pattern:
+          regex: "^https://"
+          message: "Odkaz musí začínat https://"
+      - name: souradnice
+        label: Souřadnice salonu (pro mapu)
+        description: "Zeměpisná šířka a délka, např. 50.1809147 a 15.2305108. Vyplňte obě, nebo žádnou."
+        type: object
+        fields:
+          - name: lat
+            label: Zeměpisná šířka (N)
+            type: number
+          - name: lon
+            label: Zeměpisná délka (E)
+            type: number
+      - name: hodiny
+        label: Otevírací doba
+        description: "Čas zadejte ve tvaru HH:MM (např. 08:30). U dne, kdy je zavřeno, zaškrtněte Zavřeno."
+        type: object
+        fields:
+          - name: po
+            label: Pondělí
+            component: den
+          - name: ut
+            label: Úterý
+            component: den
+          - name: st
+            label: Středa
+            component: den
+          - name: ct
+            label: Čtvrtek
+            component: den
+          - name: pa
+            label: Pátek
+            component: den
+          - name: so
+            label: Sobota
+            component: den
+          - name: ne
+            label: Neděle
+            component: den
+      - name: oNas
+        label: Sekce „O nás“
+        type: object
+        fields:
+          - name: nadpis
+            label: Nadpis
+            type: string
+            required: true
+          - name: text
+            label: Odstavce textu
+            description: "Každý odstavec zvlášť. Krátké věty, přátelsky."
+            type: text
+            list: true
+            required: true
+
+  # ---------------------------------------------------------------- Ceník
+  - name: cenik
+    label: Ceník
+    type: file
+    path: src/data/cenik.json
+    format: json
+    fields:
+      - name: platnostOd
+        label: Ceník platný od
+        description: "Zobrazí se pod ceníkem, např. 1. 3. 2025."
+        type: string
+        required: true
+      - name: skupiny
+        label: Skupiny ceníku (pánské, dámské, dětské)
+        description: "Skupiny nepřidávejte ani nemažte. Dokud skupina nemá žádnou sekci, web zobrazí její poznámku."
+        type: object
+        list:
+          min: 3
+          max: 3
+          collapsible:
+            collapsed: true
+            summary: "{nazev}"
+        fields:
+          - name: id
+            label: Označení (neměnit)
+            type: string
+            readonly: true
+          - name: nazev
+            label: Název skupiny
+            type: string
+            required: true
+          - name: poznamka
+            label: Poznámka (zobrazí se, když skupina nemá žádné sekce)
+            description: "Např. „Cena podle domluvy.“"
+            type: text
+          - name: sekce
+            label: Sekce ceníku (např. Vlasy, Vousy)
+            description: "Přidejte sekci a do ní položky. Jakmile je aspoň jedna sekce, web zobrazí ceník místo poznámky."
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{nazev}"
+            fields:
+              - name: nazev
+                label: Název sekce
+                type: string
+                required: true
+              - name: polozky
+                label: Položky
+                type: object
+                list:
+                  collapsible:
+                    collapsed: true
+                    summary: "{nazev}"
+                fields:
+                  - name: nazev
+                    label: Název služby
+                    type: string
+                    required: true
+                  - name: cena
+                    label: Cena v Kč
+                    description: "Jen číslo, např. 225. Formát „225 Kč“ doplní web."
+                    type: number
+                    required: true
+                    options:
+                      min: 0
+                  - name: poznamka
+                    label: Poznámka k položce (nepovinné)
+                    description: "Zobrazí se drobně za názvem, např. „dlouhé vlasy +50 Kč“."
+                    type: string
+
+  # ---------------------------------------------------------------- Služby
+  - name: sluzby
+    label: Služby (Dámy, Pánové, Děti)
+    type: file
+    path: src/data/sluzby.json
+    format: json
+    fields:
+      - name: nadpis
+        label: Nadpis sekce
+        type: string
+        required: true
+      - name: polozky
+        label: Služby
+        description: "Jsou tři. Nepřidávejte ani nemažte."
+        type: object
+        list:
+          min: 3
+          max: 3
+          collapsible:
+            collapsed: true
+            summary: "{nazev}"
+        fields:
+          - name: id
+            label: Označení (neměnit)
+            type: string
+            readonly: true
+          - name: ikona
+            label: Ikona (neměnit)
+            type: string
+            readonly: true
+          - name: nazev
+            label: Název
+            type: string
+            required: true
+          - name: text
+            label: Popis
+            type: text
+            required: true
+          - name: foto
+            label: Fotka
+            type: image
+            required: true
+            options:
+              media: galerie
+          - name: alt
+            label: Popis fotky (pro nevidomé a vyhledávače)
+            type: string
+            required: true
+
+  # ---------------------------------------------------------------- Galerie
+  - name: galerie
+    label: Galerie
+    type: file
+    path: src/data/galerie.json
+    format: json
+    fields:
+      - name: fotky
+        label: Fotky v galerii
+        description: "Maximálně cca 3 MB na fotku (web si ji sám zmenší). Nenahrávejte fotky zákazníků bez jejich souhlasu, zvlášť dětí. Fotku lze kdykoli skrýt vypnutím „Zobrazit na webu“."
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{poradi}. {alt}"
+        fields:
+          - name: src
+            label: Fotka (nahrát nebo vybrat)
+            type: image
+            required: true
+            options:
+              media: galerie
+          - name: alt
+            label: Popis fotky (povinný)
+            description: "Krátce, co je na fotce, např. „Pánský fade s vyholenou linkou“."
+            type: string
+            required: true
+          - name: zobrazit
+            label: Zobrazit na webu (vypnout = skrýt fotku)
+            type: boolean
+            default: true
+          - name: poradi
+            label: Pořadí (menší číslo je dřív)
+            type: number
+            options:
+              min: 0
+
+  # ---------------------------------------------------------------- SEO
+  - name: seo
+    label: SEO (titulek a popis ve vyhledávači)
+    type: file
+    path: src/data/seo.json
+    format: json
+    fields:
+      - name: title
+        label: Titulek stránky
+        description: "Max. 70 znaků. Zobrazí se v záložce prohlížeče a ve vyhledávání."
+        type: string
+        required: true
+        options:
+          maxlength: 70
+      - name: description
+        label: Popis stránky
+        description: "Max. 160 znaků. Zobrazí se pod titulkem ve vyhledávání."
+        type: text
+        required: true
+        options:
+          maxlength: 160

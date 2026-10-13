@@ -47,13 +47,19 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - [x] Prompt pro web a pro admin hotové
 - [x] Web postaven Claude Code (Astro, `src/`, testy, README, deploy workflow); vizuálně zkontrolován na 360/1280 px v prohlížeči, Lighthouse zatím neměřen
 - [x] Úpravy kolo 1 (`PROMPT-uprava-1.md`) hotové a nasazené; Lighthouse mobil: výkon 91, přístupnost 100, postupy 100, SEO 100
-- [x] Úpravy kolo 2 (`PROMPT-uprava-2.md`) provedeny v kódu a commitnuty lokálně, zatím NEPUSHNUTO (čeká na souhlas); Lighthouse mobil lokálně: výkon 90–91, přístupnost 100, postupy 100, SEO 100
-- [ ] Admin panel (Pages CMS) nastaven
-- [ ] Nasazení na GitHub Pages (workflow `.github/workflows/deploy.yml` připraven, repozitář a Pages zapnout)
+- [x] Úpravy kolo 2 (`PROMPT-uprava-2.md`) hotové a nasazené; Lighthouse mobil lokálně: výkon 90–91, přístupnost 100, postupy 100, SEO 100
+- [x] Admin (Pages CMS): `.pages.yml`, validace dat při buildu, návod; připraveno v kódu 2026-10-13, zatím NEPUSHNUTO. Zbývá první přihlášení na app.pagescms.org a vyzkoušet uložení
+- [x] Nasazení na GitHub Pages z větve `main` (workflow `deploy.yml`: validace dat → testy → build → deploy)
 
 ## Struktura kódu
-- `src/data/` firma, cenik, galerie (JSON) · `src/lib/otevreno.ts` (+ `tests/`) · `src/pages/index.astro` (celý web) · `src/styles/global.css` · `scripts/make-logo.mjs` (generuje logo do `public/`) · fotky v `src/assets/photos/` (kopie z `img/`, ceník `487829…` se nepoužívá).
+- `src/data/` firma, cenik, galerie, sluzby, seo (JSON; validuje je `src/lib/nacti-data.mjs`, načítá `src/lib/data.ts`) · `.pages.yml` (formuláře Pages CMS) · `docs/NAVOD-pro-spravce.md` · `src/lib/otevreno.ts` (+ `tests/`) · `src/pages/index.astro` (celý web) · `src/styles/global.css` · `scripts/make-logo.mjs` (generuje logo do `public/`) · fotky v `src/assets/galerie/` (kopie z `img/`, ceník `487829…` se nepoužívá).
 - Detaily a TODO seznam: `README.md`.
+
+## Admin (2026-10-13)
+- Pages CMS (https://app.pagescms.org, GitHub login) edituje `src/data/*.json` podle `.pages.yml`; `settings.content.merge: true`, commity „Administrace: …". Media = `src/assets/galerie`.
+- Datový model: hodiny `{zavreno, od, do}` (ne `null`; kód z toho dělá `null`/`{od,do}`), `telefonOdkaz` se odvozuje z `telefon`, galerie `{src, alt, zobrazit, poradi}` (src = `/src/assets/galerie/…`), nové `sluzby.json` a `seo.json`, `poznamka` u položky ceníku (zobrazí se drobně za názvem).
+- Build (`prebuild` → `npm run validate`) selže s českou hláškou při špatném čase (HH:MM, `do` > `od`), chybějící ceně, prázdném alt, neexistující fotce atd. Stará verze webu zůstává online. Hero a O nás používají pevně `panske-4.jpg`, `detske-1.jpg`, `damske-1.jpg`, `panske-1.jpg`; nemazat.
+- Vzhled a texty hero zůstávají v kódu. `public/CNAME.priklad` = vzor pro vlastní doménu (přejmenovat na `CNAME` až bude doména).
 
 ## TODO / chybí
 - Dámský a dětský ceník
@@ -87,3 +93,4 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - 2026-10-12 – Připraven `PROMPT-uprava-2.md` (kolo 2): Facebook v hlavičce, adresa v hero na vlastním řádku, odkaz na FB v pásu s hodinami, „Nymburku“ → „Nymburce“, větší mobilní název (2. řádek jen „Nymburk“), nový text O nás (návrh, schválí majitelka), pomalejší klidné animace. Kontrola: živá verze odpovídá složce. Pozn.: lokální větev `master`, workflow se spouští na `main`; bez souhlasu nepushovat.
 - 2026-10-12 – Provedeno kolo 2: Facebook v hlavičce a v pásu s hodinami, adresa v hero na vlastním řádku, „Nymburce", větší dvouřádkový název v mobilní hlavičce, nový text O nás (návrh), pomalé klidné animace. Commit lokálně, bez pushe.
 - 2026-10-13 – Ceník: dámské = „Cena podle domluvy.“, dětské = odkaz na pánský ceník (děti do 6 let); pole `poznamka` v `cenik.json`. Hlavička: „Nymburk“ v logu vždy na 2. řádku i na PC, barva champagne (`--zlata` #c9ab78). Neověřeno buildem, necommitnuto.
+- 2026-10-13 – Admin: Pages CMS (`.pages.yml`), validace dat při buildu (Zod, české hlášky), nové `sluzby.json`/`seo.json`, hodiny `{zavreno, od, do}`, galerie přesunuta do `src/assets/galerie/` (`src`, `poradi`), workflow s validací a `configure-pages`, `docs/NAVOD-pro-spravce.md`, 15 nových testů (celkem 29). Commit lokálně, nepushnuto.

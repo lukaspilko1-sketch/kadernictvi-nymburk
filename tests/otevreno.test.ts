@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { stavDnes, prazskyCas } from '../src/lib/otevreno';
-import firma from '../src/data/firma.json';
+import { nactiAValiduj } from '../src/lib/nacti-data.mjs';
+
+const firma = nactiAValiduj().firma;
 
 const h = firma.hodiny as never;
 // Letní čas (CEST, UTC+2) a zimní (CET, UTC+1), zadáváme v UTC.

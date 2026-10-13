@@ -1,13 +1,14 @@
 import type { ImageMetadata } from 'astro';
-import galerie from '../data/galerie.json';
+import { galerie } from './data';
 
-const vsechny = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
+const vsechny = import.meta.glob<{ default: ImageMetadata }>('../assets/galerie/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true });
 
-export function fotka(soubor: string): ImageMetadata | null {
-  const m = vsechny[`../assets/photos/${soubor}`];
+/** Fotka podle názvu souboru nebo cesty (např. /src/assets/galerie/foto.jpg). Chybějící fotka shodí build. */
+export function fotka(src: string): ImageMetadata {
+  const nazev = src.split('/').pop()!;
+  const m = vsechny[`../assets/galerie/${nazev}`];
   if (!m) {
-    console.warn(`[galerie] Chybí fotka src/assets/photos/${soubor}, položka se skryje.`);
-    return null;
+    throw new Error(`\n\nFotka „${nazev}“ chybí ve složce src/assets/galerie/ (nebo má nepodporovaný formát; povolené jsou jpg, png, webp). Build se zastavil, web zůstává beze změny.\n`);
   }
   return m.default;
 }
@@ -18,11 +19,9 @@ export interface PolozkaGalerie {
   img: ImageMetadata;
 }
 
-/** Jen zapnuté fotky, které opravdu existují. */
+/** Zapnuté fotky podle pole „poradi“. */
 export function galerieFotky(): PolozkaGalerie[] {
-  return galerie.fotky.flatMap((f) => {
-    if (!f.zobrazit) return [];
-    const img = fotka(f.soubor);
-    return img ? [{ soubor: f.soubor, alt: f.alt, img }] : [];
-  });
+  return galerie.fotky
+    .filter((f: { zobrazit: boolean }) => f.zobrazit)
+    .map((f: { src: string; alt: string }) => ({ soubor: f.src.split('/').pop()!, alt: f.alt, img: fotka(f.src) }));
 }
