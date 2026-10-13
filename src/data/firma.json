@@ -1,9 +1,9 @@
 {
   "nazev": "Kadeřnictví a holičství Nymburk",
   "adresa": {
-    "ulice": "Zbožská 664/4",
+    "ulice": "Zbožská 664/5",
     "mesto": "Nymburk",
-    "psc": "TODO"
+    "psc": "288 02"
   },
   "telefon": "603 242 505",
   "facebook": "https://www.facebook.com/profile.php?id=100057433419981",
@@ -40,13 +40,13 @@
     },
     "so": {
       "zavreno": true,
-      "od": "",
-      "do": ""
+      "od": "08:00",
+      "do": "14:00"
     },
     "ne": {
       "zavreno": true,
-      "od": "",
-      "do": ""
+      "od": "08:30",
+      "do": "14:00"
     }
   },
   "oNas": {
