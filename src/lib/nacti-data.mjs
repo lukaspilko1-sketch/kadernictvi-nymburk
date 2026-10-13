@@ -81,7 +81,7 @@ const galerieSchema = z.object({
     z.object({
       src: text('soubor fotky'),
       alt: text('popis fotky (alt text)'),
-      zobrazit: z.boolean().default(true),
+      zobrazit: z.boolean().default(false),
       poradi: z.number().optional(),
     }),
   ),

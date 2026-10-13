@@ -283,9 +283,9 @@ content:
             type: string
             required: true
           - name: zobrazit
-            label: Zobrazit na webu (vypnout = skrýt fotku)
+            label: Zobrazit na webu (nová fotka je napřed skrytá, zapněte až po kontrole)
             type: boolean
-            default: true
+            default: false
           - name: poradi
             label: Pořadí (menší číslo je dřív)
             type: number
