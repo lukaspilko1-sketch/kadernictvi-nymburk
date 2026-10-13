@@ -168,7 +168,10 @@ const sluzby = [
                   </section>
                 ))
               ) : (
-                <p class="listek-prazdny">Ceník doplníme, zavolejte nám na <a href={firma.telefonOdkaz}>{firma.telefon}</a>.</p>
+                <>
+                  {s.poznamka ? <p class="listek-poznamka">{s.poznamka}</p> : <p class="listek-prazdny">Ceník doplníme.</p>}
+                  <p class="listek-prazdny">Máte dotaz? Zavolejte nám na <a href={firma.telefonOdkaz}>{firma.telefon}</a>.</p>
+                </>
               )}
               {s.sekce.length > 0 && <p class="listek-platnost">Ceník platný od {cenik.platnostOd}.</p>}
             </div>

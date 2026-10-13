@@ -46,7 +46,7 @@
         }
       ]
     },
-    { "id": "damske", "nazev": "Dámské", "TODO": "Dámský ceník dodá majitelka.", "sekce": [] },
-    { "id": "detske", "nazev": "Dětské", "TODO": "Dětský ceník dodá majitelka.", "sekce": [] }
+    { "id": "damske", "nazev": "Dámské", "poznamka": "Cena podle domluvy.", "TODO": "Ověřit s majitelkou, případně doplnit ceník.", "sekce": [] },
+    { "id": "detske", "nazev": "Dětské", "poznamka": "Ceny pro děti do 6 let najdete v pánském ceníku.", "TODO": "Ověřit s majitelkou, případně doplnit ceník.", "sekce": [] }
   ]
 }

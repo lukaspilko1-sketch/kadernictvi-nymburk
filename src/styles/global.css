@@ -108,7 +108,7 @@ p { margin: 0 0 1em; }
   font-size: 1.3rem; line-height: 1.15; font-weight: 500;
   padding-left: 0.75rem; border-left: 1.5px solid var(--zlata);
 }
-.logo-text em { color: var(--salvej); font-style: italic; }
+.logo-text em { display: block; color: var(--zlata); font-style: italic; }
 .logo-radek { white-space: nowrap; }
 .hlavicka-fb { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex: none; color: var(--uhel); border-radius: 50%; transition: color 0.5s ease; }
 .hlavicka-fb:hover, .hlavicka-fb:focus-visible { color: var(--zlata); }
@@ -131,7 +131,6 @@ p { margin: 0 0 1em; }
   .menu-tlacitko { order: 3; }
   .menu { order: 4; }
   .logo-text { font-size: clamp(1.05rem, 4.8vw, 1.25rem); padding-left: 0.6rem; }
-  .logo-text em { display: block; }
   .menu-tlacitko {
     display: none; width: 2.75rem; height: 2.75rem; border: 1.5px solid var(--zlata); border-radius: 0.7rem;
     background: transparent; cursor: pointer; position: relative; flex: none;
@@ -317,6 +316,7 @@ html:not(.js) .pas-stav { display: none; }
 .listek-sekce .cena { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .listek-platnost { text-align: right; font-style: italic; font-size: 0.9rem; margin: 1.4rem 0 0; color: color-mix(in srgb, var(--uhel) 70%, transparent); }
 .listek-prazdny { margin: 1.5rem 0; font-size: 1.1rem; }
+.listek-poznamka { margin: 1.5rem 0 0.5rem; font-size: 1.25rem; font-family: var(--font-nadpis); line-height: 1.4; }
 
 /* ---------- O nás ---------- */
 .o-nas-mrizka { display: grid; gap: 2rem; align-items: center; }
