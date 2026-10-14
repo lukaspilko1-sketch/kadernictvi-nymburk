@@ -119,6 +119,12 @@ content:
           - name: ne
             label: Neděle
             component: den
+      - name: fotoBudovy
+        label: Fotka salonu zvenku (Kontakt)
+        description: "Nepovinné. Zobrazí se vedle mapy v Kontaktu. Nahrajte vlastní fotku budovy (snímky ze Street View ani z Mapy.cz nejsou pro web volně použitelné). Když pole necháte prázdné a v galerii je soubor budova.jpg, použije se ten."
+        type: image
+        options:
+          media: galerie
       - name: oNas
         label: Sekce „O nás“
         type: object
@@ -147,12 +153,12 @@ content:
         type: string
         required: true
       - name: skupiny
-        label: Skupiny ceníku (pánské, dámské, dětské)
+        label: Skupiny ceníku (pánské a dětské)
         description: "Skupiny nepřidávejte ani nemažte. Dokud skupina nemá žádnou sekci, web zobrazí její poznámku."
         type: object
         list:
-          min: 3
-          max: 3
+          min: 2
+          max: 2
           collapsible:
             collapsed: true
             summary: "{nazev}"
@@ -208,7 +214,7 @@ content:
 
   # ---------------------------------------------------------------- Služby
   - name: sluzby
-    label: Služby (Dámy, Pánové, Děti)
+    label: Služby (Pánové, Děti)
     type: file
     path: src/data/sluzby.json
     format: json
@@ -219,11 +225,11 @@ content:
         required: true
       - name: polozky
         label: Služby
-        description: "Jsou tři. Nepřidávejte ani nemažte."
+        description: "Jsou dvě (Pánové, Děti). Nepřidávejte ani nemažte."
         type: object
         list:
-          min: 3
-          max: 3
+          min: 2
+          max: 2
           collapsible:
             collapsed: true
             summary: "{nazev}"

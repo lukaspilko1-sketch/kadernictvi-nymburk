@@ -18,11 +18,12 @@ npm test         # jednotkové testy (Vitest): otevřeno / zavřeno
 | Co | Kde |
 |---|---|
 | Adresa, telefon, Facebook, hodiny, text „O nás" | `src/data/firma.json` |
-| Ceníky (pánský, dámský, dětský), platnost ceníku | `src/data/cenik.json` |
+| Ceníky (pánský a dětský), platnost ceníku | `src/data/cenik.json` |
 | Fotky v galerii, alt texty, skrytí, pořadí | `src/data/galerie.json` (soubory v `src/assets/galerie/`) |
-| Služby (Dámy, Pánové, Děti) | `src/data/sluzby.json` |
+| Služby (Pánové, Děti) | `src/data/sluzby.json` |
 | SEO titulek a popis | `src/data/seo.json` |
-| Logo | `scripts/make-logo.mjs` (jedna definice), pak `node scripts/make-logo.mjs` vygeneruje `public/logo.svg`, `logo-mark.svg`, `favicon.svg`, `logo-512.png`, `og.png` |
+| Logo v hlavičce (židle) | `scripts/make-logo-zidle.mjs` z `src/assets/logo-zidle.jpg` vyrobí `public/logo-zidle.webp` (120 × 120 px) |
+| Logo (hřeben, favicon, og) | `scripts/make-logo.mjs` (jedna definice), pak `node scripts/make-logo.mjs` vygeneruje `public/logo.svg`, `logo-mark.svg`, `favicon.svg`, `logo-512.png`, `og.png` |
 | Barvy a písma | CSS proměnné na začátku `src/styles/global.css` |
 | Fonty | balíčky `@fontsource-variable/*`, hostované lokálně, žádné CDN |
 
@@ -54,7 +55,8 @@ Lokálně lze adresu přepsat proměnnými `SITE_URL` a `BASE_PATH`.
 - Web nepoužívá cookies ani trackery. Externí obsah je jen mapa z OpenStreetMap, a to až po doplnění souřadnic (do té doby karta s odkazem na Mapy.cz).
 
 ## TODO
-- Dámský ceník a dětský ceník (`cenik.json`)
+- Dětský ceník (zatím jen poznámka, že ceny jsou v pánském ceníku; `cenik.json`)
+- Fotka salonu zvenku (`budova.jpg` v `src/assets/galerie/` nebo pole `fotoBudovy` ve `firma.json`)
 - Skutečný text „O nás" a fotky salonu (`firma.json`)
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
 - PSČ, doména, `site` v `astro.config.mjs`, `Sitemap:` v `robots.txt`

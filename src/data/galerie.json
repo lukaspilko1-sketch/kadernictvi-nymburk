@@ -3,7 +3,7 @@
   "fotky": [
     {
       "src": "/src/assets/galerie/panske-1.jpg",
-      "alt": "Pán v zeleném tričku po střihu, krátké boky a vyčesaný vršek",
+      "alt": "Pán s vysoko vyčesaným blond vrškem a krátkými boky",
       "zobrazit": true,
       "poradi": 1
     },
@@ -14,20 +14,14 @@
       "poradi": 2
     },
     {
-      "src": "/src/assets/galerie/damske-1.jpg",
-      "alt": "Dlouhé hnědé vlasy s růžovými a blond prameny",
-      "zobrazit": true,
-      "poradi": 3
-    },
-    {
       "src": "/src/assets/galerie/panske-2.jpg",
-      "alt": "Pánský fade s vyholeným vzorem do boku hlavy, pohled zezadu",
+      "alt": "Vousatý pán s krátkými vlasy po střihu",
       "zobrazit": true,
       "poradi": 4
     },
     {
       "src": "/src/assets/galerie/panske-3.jpg",
-      "alt": "Vousatý pán se zakrácenými vlasy a čistým přechodem po stranách",
+      "alt": "Mladý muž po střihu s čistým přechodem po stranách",
       "zobrazit": true,
       "poradi": 5
     },
@@ -39,7 +33,7 @@
     },
     {
       "src": "/src/assets/galerie/panske-4.jpg",
-      "alt": "Mladý muž s upraveným vrškem a vyholenými boky, pohled z profilu",
+      "alt": "Mladý muž v zeleném tričku po střihu, pohled z profilu",
       "zobrazit": true,
       "poradi": 7
     },
@@ -51,7 +45,7 @@
     },
     {
       "src": "/src/assets/galerie/panske-5.jpg",
-      "alt": "Pán s delším vrškem v odstínech blond a vyholenými boky",
+      "alt": "Pohled zezadu na pánský fade s vyholeným vzorem",
       "zobrazit": true,
       "poradi": 9
     },

@@ -45,6 +45,7 @@ const firmaSchema = z
       })
       .refine((s) => (s.lat === null) === (s.lon === null), { error: 'Souřadnice: vyplňte zeměpisnou šířku i délku, nebo ani jednu.' }),
     hodiny: z.object(Object.fromEntries(DNY.map((d) => [d, den]))),
+    fotoBudovy: z.string().optional().default(''),
     oNas: z.object({
       nadpis: text('nadpis sekce O nás'),
       text: z.array(text('odstavec textu O nás'), { error: 'Chybí odstavce textu O nás.' }).min(1, { error: 'Text O nás musí mít aspoň jeden odstavec.' }),
@@ -57,7 +58,7 @@ const polozka = z.object({
   poznamka: z.string().optional(),
 });
 const skupina = z.object({
-  id: z.enum(['panske', 'damske', 'detske']),
+  id: z.enum(['panske', 'detske']),
   nazev: text('název skupiny ceníku'),
   poznamka: z.string().optional(),
   sekce: z
@@ -71,8 +72,8 @@ const skupina = z.object({
 });
 const cenikSchema = z.object({
   platnostOd: text('datum „Ceník platný od“'),
-  skupiny: z.array(skupina).refine((s) => ['panske', 'damske', 'detske'].every((id) => s.some((x) => x.id === id)), {
-    error: 'V ceníku musí zůstat všechny tři skupiny (pánské, dámské, dětské).',
+  skupiny: z.array(skupina).refine((s) => ['panske', 'detske'].every((id) => s.some((x) => x.id === id)), {
+    error: 'V ceníku musí zůstat obě skupiny (pánské a dětské).',
   }),
 });
 
@@ -91,7 +92,7 @@ const sluzbySchema = z.object({
   nadpis: text('nadpis sekce Služby'),
   polozky: z.array(
     z.object({
-      id: z.enum(['damske', 'panske', 'detske']),
+      id: z.enum(['panske', 'detske']),
       nazev: text('název služby'),
       ikona: z.enum(['kartac', 'britva', 'nuzky', 'hreben']),
       text: text('text služby'),
@@ -159,6 +160,7 @@ export function nactiAValiduj(root = process.cwd()) {
   const seo = over(root, 'seo.json', seoSchema, chyby);
 
   galerie?.fotky.forEach((f, i) => overFoto(root, f.src, `src/data/galerie.json › fotky › #${i + 1}`, chyby));
+  if (firma?.fotoBudovy) overFoto(root, firma.fotoBudovy, 'src/data/firma.json › fotoBudovy', chyby);
   sluzby?.polozky.forEach((s, i) => overFoto(root, s.foto, `src/data/sluzby.json › polozky › #${i + 1} (${s.nazev})`, chyby));
 
   if (chyby.length) {

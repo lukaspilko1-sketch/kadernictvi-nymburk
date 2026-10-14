@@ -1,5 +1,5 @@
 import type { ImageMetadata } from 'astro';
-import { galerie } from './data';
+import { firma, galerie } from './data';
 
 const vsechny = import.meta.glob<{ default: ImageMetadata }>('../assets/galerie/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true });
 
@@ -24,4 +24,18 @@ export function galerieFotky(): PolozkaGalerie[] {
   return galerie.fotky
     .filter((f: { zobrazit: boolean }) => f.zobrazit)
     .map((f: { src: string; alt: string }) => ({ soubor: f.src.split('/').pop()!, alt: f.alt, img: fotka(f.src) }));
+}
+
+/**
+ * Fotka salonu zvenku pro Kontakt. Bere se pole `fotoBudovy` z firma.json,
+ * a když je prázdné, hledá se soubor `budova.jpg` (nebo .png/.webp) v src/assets/galerie/.
+ * Když fotka neexistuje, vrací null a sekce Kontakt ji prostě nezobrazí.
+ */
+export function fotoBudovy(): ImageMetadata | null {
+  if (firma.fotoBudovy) return fotka(firma.fotoBudovy);
+  for (const koncovka of ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP']) {
+    const m = vsechny[`../assets/galerie/budova.${koncovka}`];
+    if (m) return m.default;
+  }
+  return null;
 }

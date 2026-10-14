@@ -6,7 +6,7 @@ import Rohy from '../components/Rohy.astro';
 import ZavolatTlacitko from '../components/ZavolatTlacitko.astro';
 import FbIkona from '../components/FbIkona.astro';
 import { firma, cenik, sluzby } from '../lib/data';
-import { galerieFotky, fotka } from '../lib/fotky';
+import { galerieFotky, fotka, fotoBudovy } from '../lib/fotky';
 import { dnyPoradi } from '../lib/otevreno';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -36,7 +36,8 @@ const mapyUrl = `https://mapy.cz/zakladni?q=${encodeURIComponent(`${firma.adresa
 
 const heroA = fotka('panske-4.jpg');
 const heroB = fotka('detske-1.jpg');
-const heroC = fotka('damske-1.jpg');
+const heroC = fotka('panske-5.jpg');
+const budova = fotoBudovy();
 const oNasFoto = fotka('panske-1.jpg');
 
 const galerie = galerieFotky();
@@ -49,7 +50,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
   <header class="hlavicka" id="hlavicka">
     <div class="hlavicka-vnitrek">
       <a class="logo" href={href('/')}>
-        <img src={href('/logo-mark.svg')} alt="" width="44" height="46" />
+        <img class="logo-zidle" src={href('/logo-zidle.webp')} alt="" width="120" height="120" />
         <span class="logo-text"><span class="logo-radek">Kadeřnictví <span class="amp">&amp;</span> holičství</span> <em>Nymburk</em></span>
       </a>
       <button class="menu-tlacitko" type="button" aria-expanded="false" aria-controls="menu">
@@ -72,7 +73,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
       <div class="hero">
         <div class="hero-text">
           <h1 id="hero-nadpis"><span class="h1-r" style="--i:0">Péče o vlasy.</span><span class="h1-r" style="--i:1">Pro každého.</span><span class="h1-r" style="--i:2"><em>Bez objednání.</em></span></h1>
-          <p class="podnadpis"><span class="podnadpis-r">Dámy, pánové i děti</span><span class="podnadpis-r adresa-radek">{firma.adresa.ulice}, {firma.adresa.mesto}</span></p>
+          <p class="podnadpis"><span class="podnadpis-r">Pánové a děti</span><span class="podnadpis-r adresa-radek">{firma.adresa.ulice}, {firma.adresa.mesto}</span></p>
           <div class="hero-akce">
             <ZavolatTlacitko />
           </div>
@@ -80,12 +81,13 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
         <div class="hero-foto">
           {heroA && <figure class="hf hf-a"><Picture src={heroA} alt="Mladý muž po střihu s vyholenými boky" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 900px) 320px, 55vw" loading="eager" fetchpriority="high" /></figure>}
           {heroB && <figure class="hf hf-b"><Picture src={heroB} alt="Usměvavý chlapec po střihu" formats={['avif', 'webp']} widths={[240, 360, 480]} sizes="(min-width: 900px) 220px, 40vw" loading="eager" /></figure>}
-          {heroC && <figure class="hf hf-c"><Picture src={heroC} alt="Dlouhé vlasy s růžovými a blond prameny" formats={['avif', 'webp']} widths={[200, 320, 400]} sizes="(min-width: 900px) 190px, 34vw" loading="eager" /></figure>}
+          {heroC && <figure class="hf hf-c"><Picture src={heroC} alt="Pohled zezadu na pánský fade s vyholeným vzorem" formats={['avif', 'webp']} widths={[200, 320, 400]} sizes="(min-width: 900px) 190px, 34vw" loading="eager" /></figure>}
         </div>
       </div>
 
       <div class="pas" id="hodiny" role="region" aria-labelledby="pas-nadpis" data-hodiny={JSON.stringify(firma.hodiny)}>
         <div class="pas-vnitrek">
+          <p class="pas-fb">Aktuální otevírací dobu a změny najdete na <a href={firma.facebook} target="_blank" rel="noopener noreferrer">Facebooku<FbIkona trida="fb-mala" /></a>.</p>
           <div class="pas-text">
             <h2 id="pas-nadpis">Stačí přijít. Bez objednání.</h2>
             <p class="pas-stav" data-stav-dnes><span class="tecka" aria-hidden="true"></span><span data-stav-text></span></p>
@@ -100,7 +102,6 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
               </li>
             ))}
           </ul>
-          <p class="pas-fb">Aktuální otevírací dobu a změny najdete na <a href={firma.facebook} target="_blank" rel="noopener noreferrer">Facebooku<FbIkona trida="fb-mala" /></a>.</p>
           </div>
         </div>
       </div>
@@ -119,7 +120,6 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
                 <Ikona jmeno={s.ikona} trida="ikona-velka" />
                 <h3>{s.nazev}</h3>
                 <p>{s.text}</p>
-                <a class="sluzba-odkaz" href="#cenik" data-cenik={s.id}>Ceník {s.nazev.toLowerCase()} →</a>
               </div>
             </li>
           ))}
@@ -168,7 +168,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
     <section class="sekce o-nas" id="o-nas" aria-labelledby="o-nas-nadpis">
       <div class="obal o-nas-mrizka">
         <div class="o-nas-foto" data-reveal>
-          {oNasFoto && <Picture src={oNasFoto} alt="Pán po střihu v kadeřnictví" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 800px) 360px, 80vw" loading="lazy" />}
+          {oNasFoto && <Picture src={oNasFoto} alt="Pán s vysoko vyčesaným blond vrškem po střihu" formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 800px) 360px, 80vw" loading="lazy" />}
         </div>
         <div class="o-nas-text" data-reveal>
           <h2 id="o-nas-nadpis">{firma.oNas.nadpis}</h2>
@@ -205,6 +205,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
           <p class="kontakt-hodiny">Otevřeno pondělí až pátek, o víkendu zavřeno. <a href="#hodiny">Hodiny nahoře</a>.</p>
           <ZavolatTlacitko />
         </div>
+        <div class={`kontakt-media${budova ? ' s-fotkou' : ''}`}>
         <div class="mapa" data-reveal>
           {mapaSrc ? (
             <iframe title="Mapa s polohou salonu (OpenStreetMap)" loading="lazy" referrerpolicy="no-referrer" src={mapaSrc}></iframe>
@@ -215,6 +216,12 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
               <a class="tlacitko tlacitko-svetle" href={mapyUrl} rel="noopener noreferrer" target="_blank"><span>Trasa na Mapy.cz</span></a>
             </div>
           )}
+        </div>
+        {budova && (
+          <figure class="budova" data-reveal>
+            <Picture src={budova} alt="Salon Kadeřnictví a holičství Nymburk, vstup z ulice Zbožská" formats={['avif', 'webp']} widths={[320, 480, 640, 800]} sizes="(min-width: 900px) 330px, 100vw" loading="lazy" />
+          </figure>
+        )}
         </div>
       </div>
     </section>
@@ -309,12 +316,6 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
       });
     });
     if (zalozky.length) vyber(zalozky[0]);
-    document.querySelectorAll<HTMLAnchorElement>('[data-cenik]').forEach((a) =>
-      a.addEventListener('click', () => {
-        const z = document.getElementById(`zal-${a.dataset.cenik}`) as HTMLButtonElement | null;
-        if (z) vyber(z);
-      }),
-    );
 
     // Scroll-reveal
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -18,14 +18,14 @@ Formuláře se řídí souborem `.pages.yml`. Pokud se menu nezobrazí, zkontrol
 
 **Nová položka:** v sekci pod *Položky* klikněte na přidání, vyplňte název a cenu (volitelně poznámku, např. „dlouhé vlasy +50 Kč“).
 
-**Nová sekce (včetně dámského a dětského ceníku):** u skupiny *Dámské* nebo *Dětské* klikněte v *Sekce ceníku* na přidání, zadejte název sekce a přidejte položky. Jakmile má skupina aspoň jednu sekci, web zobrazí ceník místo poznámky („Cena podle domluvy.“). Poznámku u skupiny lze změnit v poli *Poznámka*. Sekce musí mít aspoň jednu položku, jinak build selže.
+**Nová sekce (i v dětském ceníku):** u skupiny *Dětské* (nebo *Pánské*) klikněte v *Sekce ceníku* na přidání, zadejte název sekce a přidejte položky. Jakmile má skupina aspoň jednu sekci, web zobrazí ceník místo poznámky („Ceny pro děti do 6 let najdete v pánském ceníku.“). Poznámku u skupiny lze změnit v poli *Poznámka*. Sekce musí mít aspoň jednu položku, jinak build selže.
 
-Skupiny (pánské, dámské, dětské) nepřidávejte ani nemažte.
+Skupiny (pánské a dětské) nepřidávejte ani nemažte.
 
 ## 3. Texty: O nás, služby, SEO
 
 - **O nás:** *Kontakt, hodiny a O nás → Sekce „O nás“*: nadpis a odstavce (každý zvlášť).
-- **Služby:** *Služby*: název, popis, fotka a popis fotky u Dámy, Pánové, Děti.
+- **Služby:** *Služby*: název, popis, fotka a popis fotky u Pánové a Děti.
 - **SEO:** *SEO*: titulek (max. 70 znaků) a popis (max. 160 znaků), které se zobrazí ve vyhledávání.
 - Kontakt (adresa, telefon, Facebook, souřadnice) je ve stejném formuláři jako hodiny. Telefon zadejte jako 9 číslic. Doménu a PSČ zatím neměňte, jsou `TODO`.
 
@@ -39,7 +39,9 @@ Skupiny (pánské, dámské, dětské) nepřidávejte ani nemažte.
 
 **Souhlas zákazníků:** nenahrávejte fotky, na kterých jsou zákazníci, bez jejich souhlasu. Platí to hlavně pro děti. V případě pochybností fotku skryjte přepínačem *Zobrazit na webu*.
 
-Fotky v hero (úvod) a „O nás“ jsou pevně v kódu a berou se z téže složky (`panske-4.jpg`, `detske-1.jpg`, `damske-1.jpg`, `panske-1.jpg`). Tyto soubory nemažte ani nepřejmenovávejte.
+Fotky v hero (úvod) a „O nás“ jsou pevně v kódu a berou se z téže složky (`panske-4.jpg`, `detske-1.jpg`, `panske-5.jpg`, `panske-1.jpg`). Tyto soubory nemažte ani nepřejmenovávejte.
+
+**Fotka salonu zvenku (Kontakt):** *Kontakt, hodiny a O nás → Fotka salonu zvenku*. Nahrajte vlastní fotku budovy (ne snímek ze Street View nebo Mapy.cz, ty nejsou volně použitelné). Zobrazí se vedle mapy. Když pole nevyplníte, ale v galerii (sekce *Fotky*) je soubor `budova.jpg`, použije se ten. Bez fotky se mapa zobrazí přes celou šířku.
 
 ## 5. Kdy se změna objeví a co dělat při chybě
 

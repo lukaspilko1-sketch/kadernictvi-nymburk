@@ -11,7 +11,7 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Telefon: 603 242 505 (`tel:+420603242505`)
 - Hodiny: Po 8–14:30, Út 8–16:30, St 8–14:30, Čt 8–16:30, Pá 8–14, So+Ne zavřeno (POTVRZENO 2026-10-12: otevřeno jen Po–Pá)
 - Facebook: https://www.facebook.com/profile.php?id=100057433419981
-- Klientela: dámy, pánové, děti. Stříhá se **bez objednání**, stačí přijít v otevírací době (telefon jen volitelně), žádný rezervační systém.
+- Klientela: pánové a děti (dámy se nestříhají, od 2026-10-14 nejsou nikde na webu). Stříhá se **bez objednání**, stačí přijít v otevírací době (telefon jen volitelně), žádný rezervační systém.
 - Doména: zatím žádná (placeholder).
 
 ## Rozhodnutí
@@ -35,6 +35,14 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
   - O nás: nadpis „Pojďte dál, posaďte se", text je v `firma.json` (`oNas.nadpis`, `oNas.text`), je to návrh k odsouhlasení majitelkou. Správně „v Nymburce" (6. pád) všude, 1. pád „Nymburk" jen v názvu a adrese.
   - Animace (pravidla): jen `opacity`/`transform`/`translate`/`scale`, pomalé (reveal 1,1 s, `cubic-bezier(0.22,0.61,0.36,1)`, posun 22 px, skupiny po 150 ms, max. 6 kroků), hero nástup postupně, fotky v hero se jemně vznášejí (±4 px, 9–11,5 s), cvaknutí nůžek 1,1 s, puntík „otevřeno" pulzuje 3 s. `prefers-reduced-motion` = žádný pohyb, bez JS je vše viditelné.
 
+- (2026-10-14) **Kolo 3 (`PROMPT-uprava-3.md`):**
+  - **Dámy odstraněny všude** (ceník: jen `panske` a `detske`, služby: jen Pánové a Děti, hero „Pánové a děti", SEO/meta/JSON-LD, validace, `.pages.yml` min/max 2, testy, návod, README). Fotka `damske-1.jpg` smazána, hero C je teď `panske-5.jpg`. Služby ve 2 sloupcích bez odkazů na ceník (JS `data-cenik` pryč).
+  - **Facebook štítek** je v pásu s hodinami úplně nahoře (nad nadpisem, dny a stavem): světlá champagne bublina s levou linkou, tmavý text, ikona „f" v `--zlata-velky`.
+  - **Fotka salonu zvenku** v Kontaktu: pole `fotoBudovy` ve `firma.json` (+ formulář v `.pages.yml`), nebo bez pole soubor `budova.jpg` v `src/assets/galerie/` (objeví se sám). Bez fotky mapa přes celou šířku. S fotkou: text nahoře, mapa a fotka pod ním vedle sebe, stejně vysoké.
+  - **Logo v hlavičce = kulatá židle** (perokresba jako profilovka na Facebooku): zdroj `src/assets/logo-zidle.jpg` (1728 px, z `img/kreslo.jpg`), `node scripts/make-logo-zidle.mjs` vyrobí `public/logo-zidle.webp` 120×120 (lanczos3, bílé pozadí „vynásobené" barvou `--krem`), v CSS kruh s champagne rámem 2 px. `public/logo-mark.svg` (hřeben) se v hlavičce nepoužívá, zůstává v ceníku a jako zdroj; favicon, `og.png` a JSON-LD zatím beze změny.
+  - **Pravidlo: před každou prací `git fetch` + `git pull` z `origin/main`. Obsah (texty, ceny, hodiny, fotky) se mění v administraci (Pages CMS commituje přímo do `main`), Claude Code ho nepřepisuje, jen nad čerstvou verzí a jen kde to zadání výslovně žádá. Pracuje se na větvi `main` (větev `master` se nepoužívá).**
+  - Snímek `img/kadernictvi-outside.png` je ze Street View (© Google), na webu se NEPOUŽIJE (licence). Potřeba vlastní fotka budovy.
+
 ## Soubory ve složce
 - `PROMPT-claude-code.md` – zadání pro stavbu webu
 - `PROMPT-admin-panel.md` – zadání pro administraci (spustit až po hotovém webu)
@@ -48,7 +56,8 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - [x] Web postaven Claude Code (Astro, `src/`, testy, README, deploy workflow); vizuálně zkontrolován na 360/1280 px v prohlížeči, Lighthouse zatím neměřen
 - [x] Úpravy kolo 1 (`PROMPT-uprava-1.md`) hotové a nasazené; Lighthouse mobil: výkon 91, přístupnost 100, postupy 100, SEO 100
 - [x] Úpravy kolo 2 (`PROMPT-uprava-2.md`) hotové a nasazené; Lighthouse mobil lokálně: výkon 90–91, přístupnost 100, postupy 100, SEO 100
-- [x] Admin (Pages CMS): `.pages.yml`, validace dat při buildu, návod; připraveno v kódu 2026-10-13, zatím NEPUSHNUTO. Zbývá první přihlášení na app.pagescms.org a vyzkoušet uložení
+- [x] Admin (Pages CMS): `.pages.yml`, validace dat při buildu, návod; nasazeno, v provozu (commity „Administrace: …" už přicházejí do `main`)
+- [x] Kolo 3 (`PROMPT-uprava-3.md`) hotové v kódu a commitnuté lokálně na `main`, NEPUSHNUTO (čeká na souhlas)
 - [x] Nasazení na GitHub Pages z větve `main` (workflow `deploy.yml`: validace dat → testy → build → deploy)
 
 ## Struktura kódu
@@ -62,7 +71,8 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Vzhled a texty hero zůstávají v kódu. `public/CNAME.priklad` = vzor pro vlastní doménu (přejmenovat na `CNAME` až bude doména).
 
 ## TODO / chybí
-- Dámský a dětský ceník
+- Dětský ceník (zatím jen poznámka, že ceny jsou v pánském)
+- Vlastní fotka budovy (`budova.jpg` nebo pole `fotoBudovy`), případně originál loga židle ve větším rozlišení
 - Text „O nás" a skutečné fotky salonu
 - Doména
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
@@ -94,3 +104,4 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - 2026-10-12 – Provedeno kolo 2: Facebook v hlavičce a v pásu s hodinami, adresa v hero na vlastním řádku, „Nymburce", větší dvouřádkový název v mobilní hlavičce, nový text O nás (návrh), pomalé klidné animace. Commit lokálně, bez pushe.
 - 2026-10-13 – Ceník: dámské = „Cena podle domluvy.“, dětské = odkaz na pánský ceník (děti do 6 let); pole `poznamka` v `cenik.json`. Hlavička: „Nymburk“ v logu vždy na 2. řádku i na PC, barva champagne (`--zlata` #c9ab78). Neověřeno buildem, necommitnuto.
 - 2026-10-13 – Admin: Pages CMS (`.pages.yml`), validace dat při buildu (Zod, české hlášky), nové `sluzby.json`/`seo.json`, hodiny `{zavreno, od, do}`, galerie přesunuta do `src/assets/galerie/` (`src`, `poradi`), workflow s validací a `configure-pages`, `docs/NAVOD-pro-spravce.md`, 15 nových testů (celkem 29). Commit lokálně, nepushnuto.
+- 2026-10-14 – Kolo 3: Dámy odstraněny, Facebook štítek nad otevírací dobou, fotka budovy v Kontaktu (nepovinná), logo židle v hlavičce, opraveny alt texty fotek v galerii (neseděly s obsahem). Commit lokálně na `main`, nepushnuto.

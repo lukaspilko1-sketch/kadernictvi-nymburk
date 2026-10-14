@@ -37,18 +37,55 @@ describe('platná data', () => {
   });
 });
 
+describe('pouze pánské a dětské', () => {
+  it('ceník má dvě skupiny a služby dvě položky', () => {
+    const d = nactiAValiduj();
+    expect(d.cenik.skupiny.map((s: any) => s.id)).toEqual(['panske', 'detske']);
+    expect(d.sluzby.polozky.map((s: any) => s.id).sort()).toEqual(['detske', 'panske']);
+  });
+
+  it('neznámá skupina ceníku není povolená', () => {
+    uprav('cenik.json', (d) => d.skupiny.push({ id: 'jina', nazev: 'Jiná', sekce: [] }));
+    expect(zprava(() => nactiAValiduj(root))).toContain('cenik.json');
+  });
+
+  it('chybějící dětská skupina shodí build', () => {
+    uprav('cenik.json', (d) => (d.skupiny = d.skupiny.filter((s: any) => s.id !== 'detske')));
+    expect(zprava(() => nactiAValiduj(root))).toContain('obě skupiny');
+  });
+});
+
+describe('fotka budovy', () => {
+  it('prázdné pole fotoBudovy je v pořádku', () => {
+    expect(nactiAValiduj(root).firma.fotoBudovy).toBe('');
+  });
+
+  it('vyplněné pole s existující fotkou projde', () => {
+    copyFileSync(join(root, 'src/assets/galerie/panske-1.jpg'), join(root, 'src/assets/galerie/budova.jpg'));
+    uprav('firma.json', (d) => (d.fotoBudovy = '/src/assets/galerie/budova.jpg'));
+    expect(nactiAValiduj(root).firma.fotoBudovy).toContain('budova.jpg');
+  });
+
+  it('vyplněné pole s neexistující fotkou shodí build', () => {
+    uprav('firma.json', (d) => (d.fotoBudovy = '/src/assets/galerie/neni-budova.jpg'));
+    const m = zprava(() => nactiAValiduj(root));
+    expect(m).toContain('fotoBudovy');
+    expect(m).toContain('neni-budova.jpg');
+  });
+});
+
 describe('scénáře úprav', () => {
   it('změna ceny projde', () => {
     uprav('cenik.json', (d) => (d.skupiny[0].sekce[0].polozky[0].cena = 240));
     expect(nactiAValiduj(root).cenik.skupiny[0].sekce[0].polozky[0].cena).toBe(240);
   });
 
-  it('nová položka a nová sekce v dámském ceníku projdou', () => {
+  it('nová položka a nová sekce v dětském ceníku projdou', () => {
     uprav('cenik.json', (d) => {
-      d.skupiny[1].sekce = [{ nazev: 'Střih', polozky: [{ nazev: 'Dámský střih', cena: 450, poznamka: 'dlouhé vlasy +50 Kč' }] }];
+      d.skupiny[1].sekce = [{ nazev: 'Střih', polozky: [{ nazev: 'Dětský střih', cena: 180, poznamka: 'do 6 let' }] }];
     });
     const c = nactiAValiduj(root).cenik;
-    expect(c.skupiny[1].sekce[0].polozky[0].nazev).toBe('Dámský střih');
+    expect(c.skupiny[1].sekce[0].polozky[0].nazev).toBe('Dětský střih');
   });
 
   it('chybějící cena shodí build s českou hláškou', () => {

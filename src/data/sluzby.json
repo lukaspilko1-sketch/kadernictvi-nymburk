@@ -7,7 +7,7 @@
       "nazev": "Pánové",
       "text": "Klasické střihy a fade strojkem i břitvou. Úprava vousů, holení břitvou, melír, barvení a trvalá.",
       "foto": "/src/assets/galerie/panske-3.jpg",
-      "alt": "Pán s vousy po střihu"
+      "alt": "Mladý muž po střihu s čistým přechodem po stranách"
     },
     {
       "id": "detske",
@@ -16,14 +16,6 @@
       "text": "Střih pro nejmenší i školáky, fade už od šesti let. Barevné pramínky podle přání dítěte.",
       "foto": "/src/assets/galerie/detske-2.jpg",
       "alt": "Chlapec po střihu s vyholenou linkou"
-    },
-    {
-      "id": "damske",
-      "ikona": "kartac",
-      "nazev": "Dámy",
-      "text": "Dámy prosíme o rezervování termínu v rezervačním systému.",
-      "foto": "/src/assets/galerie/damske-1.jpg",
-      "alt": "Dlouhé vlasy s růžovými prameny"
     }
   ]
 }
