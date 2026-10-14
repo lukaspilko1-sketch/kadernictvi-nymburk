@@ -125,6 +125,55 @@ content:
         type: image
         options:
           media: galerie
+      - name: hero
+        label: Úvod (velký nadpis)
+        description: "Tři řádky nadpisu na úvodní straně a podnadpis nad adresou. Třetí řádek je zvýrazněný. Adresa pod podnadpisem se bere z adresy výše."
+        type: object
+        fields:
+          - name: radek1
+            label: 1. řádek nadpisu
+            type: string
+            required: true
+            options:
+              maxlength: 30
+          - name: radek2
+            label: 2. řádek nadpisu
+            type: string
+            required: true
+            options:
+              maxlength: 30
+          - name: radek3
+            label: 3. řádek nadpisu (zvýrazněný)
+            type: string
+            required: true
+            options:
+              maxlength: 30
+          - name: podnadpis
+            label: Podnadpis (nad adresou)
+            type: string
+            required: true
+            options:
+              maxlength: 60
+      - name: platba
+        label: Informace o platbě (Ceník)
+        description: "Zobrazí se pod nadpisem Ceník a v časté odpovědi „Čím mohu platit?“. Prázdné pole = věta se nezobrazí. Např. „Platba pouze v hotovosti.“"
+        type: string
+        options:
+          maxlength: 80
+      - name: provozovatel
+        label: Provozovatel
+        description: "Zobrazí se v Kontaktu a na stránce Ochrana soukromí (jen když je něco vyplněno). Sídlo ani bydliště neuvádíme."
+        type: object
+        fields:
+          - name: jmeno
+            label: Jméno nebo obchodní jméno
+            type: string
+          - name: ic
+            label: IČ (8 číslic)
+            type: string
+            pattern:
+              regex: '^\d{8}$'
+              message: "IČ má 8 číslic"
       - name: oNas
         label: Sekce „O nás“
         type: object
@@ -297,6 +346,87 @@ content:
             type: number
             options:
               min: 0
+
+  # ---------------------------------------------------------------- Okolí a časté dotazy
+  - name: okoli
+    label: Okolí a časté dotazy
+    type: file
+    path: src/data/okoli.json
+    format: json
+    fields:
+      - name: nadpis
+        label: Nadpis sekce „Okolí“
+        type: string
+        required: true
+        options:
+          maxlength: 80
+      - name: odstavce
+        label: Odstavce textu
+        description: "Každý odstavec zvlášť. Pište lidsky a jen to, co je pravda, bez opakování klíčových slov."
+        type: text
+        list:
+          min: 1
+          max: 4
+        required: true
+        options:
+          maxlength: 700
+      - name: obceUvod
+        label: Začátek věty o obcích
+        description: "Např. „Stříháme pány a děti z“. Za něj web doplní obce ve 2. pádu."
+        type: string
+        required: true
+        options:
+          maxlength: 60
+      - name: obce
+        label: Obce, ze kterých k nám chodí zákazníci
+        description: "Název obce se použije pro vyhledávače. Druhý pád se zobrazí ve větě (např. Poděbrady / Poděbrad)."
+        type: object
+        list:
+          min: 1
+          max: 20
+          collapsible:
+            collapsed: true
+            summary: "{nazev}"
+        required: true
+        fields:
+          - name: nazev
+            label: Obec (1. pád, např. Poděbrady)
+            type: string
+            required: true
+          - name: z
+            label: Obec ve 2. pádu (např. Poděbrad)
+            type: string
+            required: true
+      - name: dotazyNadpis
+        label: Nadpis sekce „Časté dotazy“
+        type: string
+        required: true
+        options:
+          maxlength: 60
+      - name: dotazy
+        label: Časté dotazy
+        description: "V odpovědi lze použít značky, které web nahradí aktuálními údaji: {dny} (dny otevření), {hodiny} (celá otevírací doba), {facebook} (odkaz na Facebook), {klasika} (cena klasického střihu z ceníku), {platba} (věta o platbě), {adresa} (adresa s PSČ), {mapa} (věta o mapě v Kontaktu). Když pro značku nejsou data (např. prázdná platba), otázka se nezobrazí."
+        type: object
+        list:
+          min: 1
+          max: 12
+          collapsible:
+            collapsed: true
+            summary: "{otazka}"
+        required: true
+        fields:
+          - name: otazka
+            label: Otázka
+            type: string
+            required: true
+            options:
+              maxlength: 90
+          - name: odpoved
+            label: Odpověď
+            type: text
+            required: true
+            options:
+              maxlength: 400
 
   # ---------------------------------------------------------------- SEO
   - name: seo

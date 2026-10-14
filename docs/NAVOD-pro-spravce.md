@@ -29,6 +29,13 @@ Skupiny (pánské a dětské) nepřidávejte ani nemažte.
 - **SEO:** *SEO*: titulek (max. 70 znaků) a popis (max. 160 znaků), které se zobrazí ve vyhledávání.
 - Kontakt (adresa, telefon, Facebook, souřadnice) je ve stejném formuláři jako hodiny. Telefon zadejte jako 9 číslic. Doménu a PSČ zatím neměňte, jsou `TODO`.
 
+**Další texty ve formuláři *Kontakt, hodiny a O nás*:**
+- *Úvod (velký nadpis)*: tři řádky nadpisu na úvodní straně (třetí je zvýrazněný) a podnadpis nad adresou.
+- *Informace o platbě (Ceník)*: věta pod nadpisem Ceník (např. „Platba pouze v hotovosti.“). Prázdné pole ji skryje i z časté odpovědi.
+- *Provozovatel*: jméno a IČ (8 číslic) se zobrazí v Kontaktu a na stránce Ochrana soukromí. Sídlo ani bydliště neuvádíme.
+
+**Okolí a časté dotazy:** formulář *Okolí a časté dotazy*. Upravíte texty sekce, obce (název a jeho druhý pád pro větu „Stříháme pány a děti z …“) a otázky s odpověďmi. V odpovědi můžete použít značky, které web nahradí aktuálními údaji: `{dny}`, `{hodiny}`, `{facebook}`, `{klasika}`, `{platba}`, `{adresa}`, `{mapa}`. Když pro značku nejsou data (např. prázdná platba), otázka se nezobrazí. Neznámá značka shodí build s hláškou.
+
 ## 4. Galerie: přidat, přeřadit, skrýt fotku
 
 1. *Galerie → Fotky v galerii → přidat položku*. Klikněte na pole **Fotka**, nahrajte soubor (jpg, png, webp; **max. cca 3 MB**, web si ji při buildu sám zmenší a převede na WebP/AVIF) nebo vyberte už nahraný.

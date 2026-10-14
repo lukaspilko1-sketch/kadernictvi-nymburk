@@ -3,8 +3,10 @@ import '@fontsource-variable/fraunces/soft.css';
 import '@fontsource-variable/fraunces/soft-italic.css';
 import '@fontsource-variable/hanken-grotesk/index.css';
 import '../styles/global.css';
-import { firma, seo } from '../lib/data';
-import { dnyPoradi } from '../lib/otevreno';
+import { getImage } from 'astro:assets';
+import { firma, seo, okoli } from '../lib/data';
+import { fotoBudovy } from '../lib/fotky';
+import { sestavJsonLd } from '../lib/jsonld';
 
 interface Props { title?: string; description?: string; cesta?: string; jsonLd?: boolean }
 const {
@@ -18,27 +20,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const url = (p: string) => `${base}${p}`;
 const kanonicka = new URL(url(cesta), Astro.site).href;
 const og = new URL(url('/og.png'), Astro.site).href;
+const logo = new URL(url('/logo-zidle.webp'), Astro.site).href;
 
-const dnyJsonLd = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const hodinyLd = dnyPoradi.flatMap((d, i) => {
-  const h = firma.hodiny[d];
-  return h ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: dnyJsonLd[i], opens: h.od, closes: h.do }] : [];
-});
-const ld = {
-  '@context': 'https://schema.org',
-  '@type': 'HairSalon',
-  name: firma.nazev,
-  url: kanonicka,
-  telephone: '+420603242505',
-  image: og,
-  address: { '@type': 'PostalAddress', streetAddress: firma.adresa.ulice, addressLocality: firma.adresa.mesto, addressCountry: 'CZ' },
-  areaServed: 'Nymburk',
-  openingHoursSpecification: hodinyLd,
-  sameAs: [firma.facebook],
-};
-// Souřadnice se přidají automaticky, jakmile je někdo doplní do src/data/firma.json.
-const { lat, lon } = firma.souradnice;
-if (lat != null && lon != null) Object.assign(ld, { geo: { '@type': 'GeoCoordinates', latitude: lat, longitude: lon } });
+// V JSON-LD je jako obrázek salonu fotka budovy (když existuje), jinak og.png.
+const budova = fotoBudovy();
+const obrazek = budova ? new URL((await getImage({ src: budova, width: 1200, format: 'webp' })).src, Astro.site).href : og;
+
+const ld = sestavJsonLd({ firma, seo: { description: seo.description }, obce: okoli.obce, url: kanonicka, obrazek, logo });
 ---
 <!doctype html>
 <html lang="cs">
@@ -47,7 +35,7 @@ if (lat != null && lon != null) Object.assign(ld, { geo: { '@type': 'GeoCoordina
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#F3EFE6" />
+    <meta name="theme-color" content="#f5f4f2" />
     <link rel="canonical" href={kanonicka} />
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />

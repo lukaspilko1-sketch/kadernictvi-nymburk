@@ -5,7 +5,8 @@ import Ikona from '../components/Ikona.astro';
 import Rohy from '../components/Rohy.astro';
 import ZavolatTlacitko from '../components/ZavolatTlacitko.astro';
 import FbIkona from '../components/FbIkona.astro';
-import { firma, cenik, sluzby } from '../lib/data';
+import { firma, cenik, sluzby, okoli } from '../lib/data';
+import { sestavDotazy, vetaObci } from '../lib/faq';
 import { galerieFotky, fotka, fotoBudovy } from '../lib/fotky';
 import { dnyPoradi } from '../lib/otevreno';
 
@@ -38,6 +39,17 @@ const heroA = fotka('panske-4.jpg');
 const heroB = fotka('detske-1.jpg');
 const heroC = fotka('panske-5.jpg');
 const budova = fotoBudovy();
+
+const dotazy = sestavDotazy(okoli.dotazy, {
+  hodiny: firma.hodiny,
+  cenik,
+  facebook: firma.facebook,
+  platba: firma.platba,
+  adresa: firma.adresa,
+  maFotkuBudovy: !!budova,
+});
+const obceVeta = vetaObci(okoli.obceUvod, okoli.obce);
+const provozovatel = [firma.provozovatel.jmeno.trim(), firma.provozovatel.ic.trim() ? `IČ ${firma.provozovatel.ic.trim()}` : ''].filter(Boolean).join(', ');
 const oNasFoto = fotka('panske-1.jpg');
 
 const galerie = galerieFotky();
@@ -72,8 +84,8 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
     <section class="uvod" aria-labelledby="hero-nadpis">
       <div class="hero">
         <div class="hero-text">
-          <h1 id="hero-nadpis"><span class="h1-r" style="--i:0">Péče o vlasy.</span><span class="h1-r" style="--i:1">Pro každého.</span><span class="h1-r" style="--i:2"><em>Bez objednání.</em></span></h1>
-          <p class="podnadpis"><span class="podnadpis-r">Pánové a děti</span><span class="podnadpis-r adresa-radek">{firma.adresa.ulice}, {firma.adresa.mesto}</span></p>
+          <h1 id="hero-nadpis"><span class="h1-r" style="--i:0">{firma.hero.radek1}</span><span class="h1-r" style="--i:1">{firma.hero.radek2}</span><span class="h1-r" style="--i:2"><em>{firma.hero.radek3}</em></span></h1>
+          <p class="podnadpis"><span class="podnadpis-r">{firma.hero.podnadpis}</span><span class="podnadpis-r adresa-radek">{firma.adresa.ulice}, {firma.adresa.mesto}</span></p>
           <div class="hero-akce">
             <ZavolatTlacitko />
           </div>
@@ -130,6 +142,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
     <section class="sekce cenik" id="cenik" aria-labelledby="cenik-nadpis">
       <div class="obal obal-uzky">
         <h2 id="cenik-nadpis" data-reveal>Ceník</h2>
+        {firma.platba.trim() && <p class="platba" data-reveal><Ikona jmeno="bankovka" trida="ikona-mala" /><span>{firma.platba.trim()}</span></p>}
         <div class="zalozky" role="tablist" aria-label="Skupina ceníku">
           {cenik.skupiny.map((s, i) => (
             <button class="zalozka" role="tab" type="button" id={`zal-${s.id}`} aria-controls={`panel-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{s.nazev}</button>
@@ -193,6 +206,32 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
       </ul>
     </section>
 
+    <section class="sekce okoli" id="okoli" aria-labelledby="okoli-nadpis">
+      <div class="obal obal-uzky">
+        <h2 id="okoli-nadpis" data-reveal>{okoli.nadpis}</h2>
+        <div class="okoli-text" data-reveal>
+          {okoli.odstavce.map((o: string) => <p>{o}</p>)}
+          {obceVeta && <p class="obce-veta">{obceVeta}</p>}
+        </div>
+      </div>
+    </section>
+
+    {dotazy.length > 0 && (
+      <section class="sekce dotazy" id="dotazy" aria-labelledby="dotazy-nadpis">
+        <div class="obal obal-uzky">
+          <h2 id="dotazy-nadpis" data-reveal>{okoli.dotazyNadpis}</h2>
+          <div class="dotazy-seznam" data-reveal>
+            {dotazy.map((d) => (
+              <details class="dotaz">
+                <summary>{d.otazka}</summary>
+                <div class="odpoved" set:html={`<p>${d.html}</p>`} />
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
     <section class="sekce kontakt" id="kontakt" aria-labelledby="kontakt-nadpis">
       <div class="obal kontakt-mrizka">
         <div class="kontakt-text" data-reveal>
@@ -202,6 +241,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
             <p><a class="telefon-velky" href={firma.telefonOdkaz}>{firma.telefon}</a></p>
             <p><a href={firma.facebook} rel="noopener noreferrer" target="_blank">Facebook salonu</a></p>
           </address>
+          {provozovatel && <p class="provozovatel">Provozovatel: {provozovatel}</p>}
           <p class="kontakt-hodiny">Otevřeno pondělí až pátek, o víkendu zavřeno. <a href="#hodiny">Hodiny nahoře</a>.</p>
           <ZavolatTlacitko />
         </div>

@@ -3,3 +3,6 @@ dist/
 .astro/
 .env
 img/kadernictvi-outside.png
+
+# náhledy favicony a og (ke schválení, ne do webu)
+nahled-favicon-og/

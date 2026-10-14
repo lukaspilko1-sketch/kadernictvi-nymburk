@@ -22,6 +22,8 @@ npm test         # jednotkové testy (Vitest): otevřeno / zavřeno
 | Fotky v galerii, alt texty, skrytí, pořadí | `src/data/galerie.json` (soubory v `src/assets/galerie/`) |
 | Služby (Pánové, Děti) | `src/data/sluzby.json` |
 | SEO titulek a popis | `src/data/seo.json` |
+| Okolí (obce) a časté dotazy | `src/data/okoli.json` |
+| Nadpis úvodu, platba, provozovatel | `src/data/firma.json` (`hero`, `platba`, `provozovatel`) |
 | Logo v hlavičce (židle) | `scripts/make-logo-zidle.mjs` z `src/assets/logo-zidle.jpg` vyrobí `public/logo-zidle.webp` (120 × 120 px) |
 | Logo (hřeben, favicon, og) | `scripts/make-logo.mjs` (jedna definice), pak `node scripts/make-logo.mjs` vygeneruje `public/logo.svg`, `logo-mark.svg`, `favicon.svg`, `logo-512.png`, `og.png` |
 | Barvy a písma | CSS proměnné na začátku `src/styles/global.css` |
@@ -49,6 +51,11 @@ Hodiny jsou v `firma.json` jako `{ "zavreno": true/false, "od": "08:00", "do": "
 
 Lokálně lze adresu přepsat proměnnými `SITE_URL` a `BASE_PATH`.
 
+## SEO
+- `<title>` a description jsou v `seo.json`, JSON-LD (`HairSalon`) se skládá z dat v `src/lib/jsonld.ts` (adresa s PSČ, `areaServed` z obcí, hotovost, provozovatel, souřadnice, hodiny).
+- `robots.txt` se generuje při buildu (`src/pages/robots.txt.ts`) z `SITE_URL` a `BASE_PATH`. Na projektové adrese `github.io/<repo>/` ho vyhledávače nevyhodnocují, platný bude až na vlastní doméně.
+- Časté dotazy v `okoli.json` používají značky `{dny}`, `{hodiny}`, `{facebook}`, `{klasika}`, `{platba}`, `{adresa}`, `{mapa}`, které se dosazují z dat. Otázka bez dat se nezobrazí.
+
 ## Kontrola kvality
 - Otevírací doba (pás pod hero) a štítek „Dnes otevřeno / zavřeno · otevíráme …“ se počítá podle času `Europe/Prague` (ne podle zařízení), logika je v `src/lib/otevreno.ts` a testy v `tests/`.
 - Bez JS jsou vidět všechny tři ceníky pod sebou, dlaždice s hodinami i galerie (fotky se otevřou jako obrázek). JS potřebuje jen lightbox, záložky, menu a štítek otevřeno.
@@ -60,6 +67,7 @@ Lokálně lze adresu přepsat proměnnými `SITE_URL` a `BASE_PATH`.
 - Skutečný text „O nás" a fotky salonu (`firma.json`)
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
 - PSČ, doména, `site` v `astro.config.mjs`, `Sitemap:` v `robots.txt`
-- Provozovatel (jméno/IČO) na stránce Ochrana soukromí
+- Potvrdit s majitelkou zveřejnění jména a IČ provozovatele
+- Schválit sjednocení favicony a `og.png` (`node scripts/navrh-favicon-og.mjs` vyrobí náhled do `nahled-favicon-og/`)
 - Souhlas zákazníků s fotkami (děti)
 - Standalone `public/logo.svg` používá text s písmem Fraunces/Georgia (záložní); pro tisk převést text na křivky

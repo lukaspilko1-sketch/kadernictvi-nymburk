@@ -12,6 +12,7 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Hodiny: Po 8–14:30, Út 8–16:30, St 8–14:30, Čt 8–16:30, Pá 8–14, So+Ne zavřeno (POTVRZENO 2026-10-12: otevřeno jen Po–Pá)
 - Facebook: https://www.facebook.com/profile.php?id=100057433419981
 - Klientela: pánové a děti (dámy se nestříhají, od 2026-10-14 nejsou nikde na webu). Stříhá se **bez objednání**, stačí přijít v otevírací době (telefon jen volitelně), žádný rezervační systém.
+- Provozovatel: Lucie Řehořová, IČ 71108271 (ověřeno v ARES, stav aktivní). Sídlo ani bydliště se na webu **neuvádí** (v ARES je soukromá adresa), pole `sidlo` neexistuje. Platba pouze v hotovosti.
 - Doména: zatím žádná (placeholder).
 
 ## Rozhodnutí
@@ -43,6 +44,15 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
   - **Pravidlo: před každou prací `git fetch` + `git pull` z `origin/main`. Obsah (texty, ceny, hodiny, fotky) se mění v administraci (Pages CMS commituje přímo do `main`), Claude Code ho nepřepisuje, jen nad čerstvou verzí a jen kde to zadání výslovně žádá. Pracuje se na větvi `main` (větev `master` se nepoužívá).**
   - Snímek `img/kadernictvi-outside.png` je ze Street View (© Google), na webu se NEPOUŽIJE (licence). Potřeba vlastní fotka budovy.
 
+- (2026-10-14) **Kolo 4 (`PROMPT-uprava-4.md`):**
+  - **Hero:** nadpis „Střih pro pány. / Střih pro děti. / Bez objednání." (3. řádek champagne), podnadpis „Kadeřnictví a holičství v Nymburce" + adresa na vlastním řádku (nowrap). Texty jsou ve `firma.json` → `hero` (radek1–3, podnadpis), upravitelné v administraci.
+  - **Platba:** `firma.json` → `platba` („Platba pouze v hotovosti."), věta s ikonou bankovky pod nadpisem Ceník; prázdné = nezobrazí se. Také v odpovědi FAQ a v JSON-LD (`paymentAccepted: Hotovost`, `currenciesAccepted: CZK`, jen když je vyplněno).
+  - **Provozovatel:** `firma.json` → `provozovatel {jmeno, ic}` (IČ `^\d{8}$`, prázdné povoleno). V Kontaktu „Provozovatel: Lucie Řehořová, IČ 71108271", na stránce Soukromí jako správce údajů, v JSON-LD `legalName`/`taxID`; vše jen když vyplněno.
+  - **Okolí a FAQ:** nový `src/data/okoli.json` (nadpis, odstavce, `obce` s 1. a 2. pádem, `dotazy` s odpověďmi). Sekce `#okoli` a `#dotazy` před Kontaktem. Odpovědi používají zástupné značky `{dny} {hodiny} {facebook} {klasika} {platba} {adresa} {mapa}` (`src/lib/faq.ts`), dosazují se z dat při buildu; když pro značku nejsou data (prázdná platba, žádná „Klasika" v pánském ceníku), otázka se nezobrazí. Neznámá značka shodí validaci. `<details>` bez JS, přechod 0,4 s. Žádný `FAQPage` v JSON-LD.
+  - **SEO:** title „Kadeřnictví a holičství Nymburk | Pánské a dětské střihy", description 136 znaků (`seo.json`), `theme-color` #f5f4f2. JSON-LD se skládá v `src/lib/jsonld.ts` z dat: PSČ, `addressRegion` Středočeský kraj, `areaServed` = města z `obce`, telefon z dat, `description` = meta description, `image` = fotka budovy (jinak og.png), `logo` = logo židle, bez `priceRange`. `robots.txt` generuje `src/pages/robots.txt.ts` ze `SITE_URL`/`BASE_PATH` (soubor `public/robots.txt` smazán); na projektové adrese `github.io/kadernictvi-nymburk/` se robots.txt nevyhodnocuje, platný bude až na vlastní doméně.
+  - **Pravidla SEO:** žádné vycpávání klíčových slov, žádné doorway stránky pro obce, nic nevymýšlet (vzdálenosti, parkování, praxe). Alt texty popisné, bez klíčových slov („Pánský fade s vyholeným vzorem" ano, „kadeřnictví Nymburk střih pánský fade" ne).
+  - **Favicon a og.png:** navržena sjednocená verze (kulatá židle s champagne rámečkem) v `nahled-favicon-og/` (generuje `scripts/navrh-favicon-og.mjs`, složka je v `.gitignore`). Čeká na schválení, `public/` zatím beze změny.
+
 ## Soubory ve složce
 - `PROMPT-claude-code.md` – zadání pro stavbu webu
 - `PROMPT-admin-panel.md` – zadání pro administraci (spustit až po hotovém webu)
@@ -57,7 +67,8 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - [x] Úpravy kolo 1 (`PROMPT-uprava-1.md`) hotové a nasazené; Lighthouse mobil: výkon 91, přístupnost 100, postupy 100, SEO 100
 - [x] Úpravy kolo 2 (`PROMPT-uprava-2.md`) hotové a nasazené; Lighthouse mobil lokálně: výkon 90–91, přístupnost 100, postupy 100, SEO 100
 - [x] Admin (Pages CMS): `.pages.yml`, validace dat při buildu, návod; nasazeno, v provozu (commity „Administrace: …" už přicházejí do `main`)
-- [x] Kolo 3 (`PROMPT-uprava-3.md`) hotové v kódu a commitnuté lokálně na `main`, NEPUSHNUTO (čeká na souhlas)
+- [x] Kolo 3 (`PROMPT-uprava-3.md`) hotové a nasazené
+- [x] Kolo 4 (`PROMPT-uprava-4.md`) hotové v kódu a commitnuté lokálně na `main`, NEPUSHNUTO (čeká na souhlas)
 - [x] Nasazení na GitHub Pages z větve `main` (workflow `deploy.yml`: validace dat → testy → build → deploy)
 
 ## Struktura kódu
@@ -68,16 +79,18 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - Pages CMS (https://app.pagescms.org, GitHub login) edituje `src/data/*.json` podle `.pages.yml`; `settings.content.merge: true`, commity „Administrace: …". Media = `src/assets/galerie`.
 - Datový model: hodiny `{zavreno, od, do}` (ne `null`; kód z toho dělá `null`/`{od,do}`), `telefonOdkaz` se odvozuje z `telefon`, galerie `{src, alt, zobrazit, poradi}` (src = `/src/assets/galerie/…`), nové `sluzby.json` a `seo.json`, `poznamka` u položky ceníku (zobrazí se drobně za názvem).
 - Build (`prebuild` → `npm run validate`) selže s českou hláškou při špatném čase (HH:MM, `do` > `od`), chybějící ceně, prázdném alt, neexistující fotce atd. Stará verze webu zůstává online. Hero a O nás používají pevně `panske-4.jpg`, `detske-1.jpg`, `damske-1.jpg`, `panske-1.jpg`; nemazat.
-- Vzhled a texty hero zůstávají v kódu. `public/CNAME.priklad` = vzor pro vlastní doménu (přejmenovat na `CNAME` až bude doména).
+- Vzhled zůstává v kódu; texty hero jsou od kola 4 v `firma.json` (`hero`). `public/CNAME.priklad` = vzor pro vlastní doménu (přejmenovat na `CNAME` až bude doména).
 
 ## TODO / chybí
 - Dětský ceník (zatím jen poznámka, že ceny jsou v pánském)
 - Vlastní fotka budovy (`budova.jpg` nebo pole `fotoBudovy`), případně originál loga židle ve větším rozlišení
 - Text „O nás" a skutečné fotky salonu
+- Potvrdit s majitelkou, že souhlasí se zveřejněním jména a IČ na webu
+- Potvrdit seznam obcí v `okoli.json` (potvrdil Lukáš, lze upravit v administraci)
+- Schválit sjednocení favicony a og.png (náhled v `nahled-favicon-og/`)
 - Doména
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
 - Souhlas zákazníků s fotkami (jsou na nich i děti)
-- PSČ, provozovatel na stránce Soukromí
 - Logo.svg převést text na křivky (pro tisk); Lighthouse znovu změřit na ostré adrese
 
 ## Otevřené otázky
@@ -105,3 +118,4 @@ Jednostránkový, mobile-first web (česky) pro kadeřnictví a holičství v Ny
 - 2026-10-13 – Ceník: dámské = „Cena podle domluvy.“, dětské = odkaz na pánský ceník (děti do 6 let); pole `poznamka` v `cenik.json`. Hlavička: „Nymburk“ v logu vždy na 2. řádku i na PC, barva champagne (`--zlata` #c9ab78). Neověřeno buildem, necommitnuto.
 - 2026-10-13 – Admin: Pages CMS (`.pages.yml`), validace dat při buildu (Zod, české hlášky), nové `sluzby.json`/`seo.json`, hodiny `{zavreno, od, do}`, galerie přesunuta do `src/assets/galerie/` (`src`, `poradi`), workflow s validací a `configure-pages`, `docs/NAVOD-pro-spravce.md`, 15 nových testů (celkem 29). Commit lokálně, nepushnuto.
 - 2026-10-14 – Kolo 3: Dámy odstraněny, Facebook štítek nad otevírací dobou, fotka budovy v Kontaktu (nepovinná), logo židle v hlavičce, opraveny alt texty fotek v galerii (neseděly s obsahem). Commit lokálně na `main`, nepushnuto.
+- 2026-10-14 – Kolo 4: nový hero nadpis a podnadpis, věta o platbě v hotovosti, provozovatel Lucie Řehořová (IČ 71108271) v Kontaktu/Soukromí/JSON-LD, sekce Okolí a Časté dotazy (`okoli.json`, odpovědi z dat), SEO (title, description, JSON-LD z dat, robots.txt ze SITE_URL), návrh favicony a og.png ke schválení, +26 testů (celkem 61).

@@ -1,0 +1,73 @@
+{
+  "nadpis": "Kadeřnictví a holičství v Nymburce i okolí",
+  "odstavce": [
+    "Kadeřnictví a holičství Nymburk najdete ve Zbožské ulici. Stříháme pány i děti, bez objednání: stačí přijít v otevírací době. Děláme klasické pánské střihy, fade strojkem i břitvou, úpravu a holení vousů, melír, barvení i trvalou. Děti stříháme od těch nejmenších po školáky.",
+    "K nám chodí zákazníci z Nymburka i okolí: z Poděbrad, Sadské, Lysé nad Labem, Milovic a dalších obcí okresu Nymburk. Platba je možná pouze v hotovosti. Aktuální otevírací dobu a změny najdete na Facebooku."
+  ],
+  "obceUvod": "Stříháme pány a děti z",
+  "obce": [
+    {
+      "nazev": "Nymburk",
+      "z": "Nymburka"
+    },
+    {
+      "nazev": "Poděbrady",
+      "z": "Poděbrad"
+    },
+    {
+      "nazev": "Lysá nad Labem",
+      "z": "Lysé nad Labem"
+    },
+    {
+      "nazev": "Sadská",
+      "z": "Sadské"
+    },
+    {
+      "nazev": "Milovice",
+      "z": "Milovic"
+    },
+    {
+      "nazev": "Kostomlaty nad Labem",
+      "z": "Kostomlat nad Labem"
+    },
+    {
+      "nazev": "Semice",
+      "z": "Semic"
+    },
+    {
+      "nazev": "Hořátev",
+      "z": "Hořátve"
+    },
+    {
+      "nazev": "Kovanice",
+      "z": "Kovanic"
+    }
+  ],
+  "dotazyNadpis": "Časté dotazy",
+  "dotazy": [
+    {
+      "otazka": "Musím se objednat?",
+      "odpoved": "Ne. Stříháme pány i děti bez objednání, stačí přijít v otevírací době ({dny})."
+    },
+    {
+      "otazka": "Jaká je otevírací doba?",
+      "odpoved": "{hodiny} Aktuální otevírací dobu a změny najdete na {facebook}."
+    },
+    {
+      "otazka": "Stříháte i dámy?",
+      "odpoved": "Ne, jsme kadeřnictví a holičství pro pány a děti."
+    },
+    {
+      "otazka": "Kolik stojí střih?",
+      "odpoved": "Pánská klasika stojí {klasika}. Celý ceník najdete výše."
+    },
+    {
+      "otazka": "Čím mohu platit?",
+      "odpoved": "{platba}"
+    },
+    {
+      "otazka": "Kde vás najdu?",
+      "odpoved": "{adresa}. {mapa}."
+    }
+  ]
+}

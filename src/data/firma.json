@@ -58,5 +58,16 @@
       "Najdete nás v Nymburce ve Zbožské ulici. Stříháme pány i děti. Rádi uvítáme zákazníky nejenom z Nymburka, ale klidně i z Poděbrad, Sadské, Lysé nad Labem a okolí."
     ]
   },
-  "fotoBudovy": ""
+  "fotoBudovy": "",
+  "hero": {
+    "radek1": "Střih pro pány.",
+    "radek2": "Střih pro děti.",
+    "radek3": "Bez objednání.",
+    "podnadpis": "Kadeřnictví a holičství v Nymburce"
+  },
+  "platba": "Platba pouze v hotovosti.",
+  "provozovatel": {
+    "jmeno": "Lucie Řehořová",
+    "ic": "71108271"
+  }
 }

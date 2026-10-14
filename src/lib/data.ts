@@ -9,3 +9,4 @@ export const cenik = data.cenik;
 export const galerie = data.galerie;
 export const sluzby = data.sluzby;
 export const seo = data.seo;
+export const okoli = data.okoli;

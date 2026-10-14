@@ -30,6 +30,9 @@ const den = z
     }
   });
 
+/** Zástupné značky v odpovědích na časté dotazy (nahrazují se údaji z webu při buildu). */
+export const ZASTUPNE_ZNACKY = ['dny', 'hodiny', 'facebook', 'klasika', 'platba', 'adresa', 'mapa'];
+
 const firmaSchema = z
   .object({
     nazev: text('název salonu'),
@@ -46,6 +49,20 @@ const firmaSchema = z
       .refine((s) => (s.lat === null) === (s.lon === null), { error: 'Souřadnice: vyplňte zeměpisnou šířku i délku, nebo ani jednu.' }),
     hodiny: z.object(Object.fromEntries(DNY.map((d) => [d, den]))),
     fotoBudovy: z.string().optional().default(''),
+    hero: z.object({
+      radek1: text('1. řádek nadpisu úvodu'),
+      radek2: text('2. řádek nadpisu úvodu'),
+      radek3: text('3. řádek nadpisu úvodu (zvýrazněný)'),
+      podnadpis: text('podnadpis úvodu'),
+    }),
+    // prázdné pole = věta o platbě se na webu nezobrazí
+    platba: z.string().default(''),
+    provozovatel: z
+      .object({
+        jmeno: z.string().default(''),
+        ic: z.string().default('').refine((v) => /^(\d{8})?$/.test(v), { error: 'IČ má 8 číslic (nebo nechte pole prázdné).' }),
+      })
+      .default({ jmeno: '', ic: '' }),
     oNas: z.object({
       nadpis: text('nadpis sekce O nás'),
       text: z.array(text('odstavec textu O nás'), { error: 'Chybí odstavce textu O nás.' }).min(1, { error: 'Text O nás musí mít aspoň jeden odstavec.' }),
@@ -75,6 +92,28 @@ const cenikSchema = z.object({
   skupiny: z.array(skupina).refine((s) => ['panske', 'detske'].every((id) => s.some((x) => x.id === id)), {
     error: 'V ceníku musí zůstat obě skupiny (pánské a dětské).',
   }),
+});
+
+const okoliSchema = z.object({
+  nadpis: text('nadpis sekce Okolí'),
+  odstavce: z.array(text('odstavec sekce Okolí')).min(1, { error: 'Sekce Okolí musí mít aspoň jeden odstavec.' }),
+  obceUvod: text('úvod věty o obcích (např. „Stříháme pány a děti z“)'),
+  obce: z
+    .array(z.object({ nazev: text('název obce (1. pád)'), z: text('název obce ve 2. pádu (např. Nymburka)') }))
+    .min(1, { error: 'Přidejte aspoň jednu obec.' }),
+  dotazyNadpis: text('nadpis sekce Časté dotazy'),
+  dotazy: z.array(
+    z.object({
+      otazka: text('otázku'),
+      odpoved: text('odpověď').superRefine((v, ctx) => {
+        for (const m of v.matchAll(/\{([^}]*)\}/g)) {
+          if (!ZASTUPNE_ZNACKY.includes(m[1])) {
+            ctx.addIssue({ code: 'custom', message: `Neznámá zástupná značka {${m[1]}}. Povolené jsou: ${ZASTUPNE_ZNACKY.map((z) => `{${z}}`).join(', ')}.` });
+          }
+        }
+      }),
+    }),
+  ),
 });
 
 const galerieSchema = z.object({
@@ -158,6 +197,7 @@ export function nactiAValiduj(root = process.cwd()) {
   const galerie = over(root, 'galerie.json', galerieSchema, chyby);
   const sluzby = over(root, 'sluzby.json', sluzbySchema, chyby);
   const seo = over(root, 'seo.json', seoSchema, chyby);
+  const okoli = over(root, 'okoli.json', okoliSchema, chyby);
 
   galerie?.fotky.forEach((f, i) => overFoto(root, f.src, `src/data/galerie.json › fotky › #${i + 1}`, chyby));
   if (firma?.fotoBudovy) overFoto(root, firma.fotoBudovy, 'src/data/firma.json › fotoBudovy', chyby);
@@ -182,6 +222,7 @@ export function nactiAValiduj(root = process.cwd()) {
     },
     sluzby,
     seo,
+    okoli,
   };
 }
 

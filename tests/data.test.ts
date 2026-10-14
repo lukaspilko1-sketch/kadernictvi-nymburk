@@ -55,6 +55,47 @@ describe('pouze pánské a dětské', () => {
   });
 });
 
+describe('provozovatel, platba, hero a okolí', () => {
+  it('výchozí hodnoty z dat', () => {
+    const f = nactiAValiduj(root).firma;
+    expect(f.provozovatel).toEqual({ jmeno: 'Lucie Řehořová', ic: '71108271' });
+    expect(f.platba).toBe('Platba pouze v hotovosti.');
+    expect(f.hero.radek1).toBe('Střih pro pány.');
+  });
+
+  it('špatné IČ shodí build, prázdné IČ a jméno projdou', () => {
+    uprav('firma.json', (d) => (d.provozovatel.ic = '1234'));
+    expect(zprava(() => nactiAValiduj(root))).toContain('IČ má 8 číslic');
+    uprav('firma.json', (d) => (d.provozovatel = { jmeno: '', ic: '' }));
+    expect(nactiAValiduj(root).firma.provozovatel).toEqual({ jmeno: '', ic: '' });
+  });
+
+  it('prázdná platba je povolená', () => {
+    uprav('firma.json', (d) => (d.platba = ''));
+    expect(nactiAValiduj(root).firma.platba).toBe('');
+  });
+
+  it('chybějící řádek nadpisu úvodu je chyba', () => {
+    uprav('firma.json', (d) => (d.hero.radek2 = ''));
+    expect(zprava(() => nactiAValiduj(root))).toContain('2. řádek nadpisu');
+  });
+
+  it('neznámá zástupná značka v dotazu shodí build', () => {
+    uprav('okoli.json', (d) => (d.dotazy[0].odpoved = 'Odpověď {nesmysl}'));
+    expect(zprava(() => nactiAValiduj(root))).toContain('Neznámá zástupná značka {nesmysl}');
+  });
+
+  it('obec bez druhého pádu je chyba', () => {
+    uprav('okoli.json', (d) => d.obce.push({ nazev: 'Nová', z: '' }));
+    expect(zprava(() => nactiAValiduj(root))).toContain('okoli.json');
+  });
+
+  it('title a description mají limity', () => {
+    uprav('seo.json', (d) => (d.title = 'x'.repeat(90)));
+    expect(zprava(() => nactiAValiduj(root))).toContain('max. 70');
+  });
+});
+
 describe('fotka budovy', () => {
   it('prázdné pole fotoBudovy je v pořádku', () => {
     expect(nactiAValiduj(root).firma.fotoBudovy).toBe('');

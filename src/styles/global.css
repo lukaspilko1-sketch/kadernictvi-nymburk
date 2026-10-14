@@ -202,10 +202,10 @@ p { margin: 0 0 1em; }
   display: grid; gap: 1.5rem; padding: clamp(1.2rem, 3vw, 2rem) 0 clamp(1.8rem, 4vw, 2.6rem);
   align-items: center;
 }
-.hero h1 { font-size: clamp(2.5rem, 8vw, 4.4rem); line-height: 1.02; margin-bottom: 0.45em; font-weight: 650; }
+.hero h1 { font-size: clamp(2.2rem, 8.6vw, 4.4rem); line-height: 1.02; margin-bottom: 0.45em; font-weight: 650; }
 .hero h1 em { font-weight: 750; font-style: italic; color: var(--zlata-velky); }
-.h1-r { display: block; }
-.podnadpis { font-size: 1.2rem; color: color-mix(in srgb, var(--uhel) 85%, transparent); }
+.h1-r { display: block; white-space: nowrap; }
+.podnadpis { font-size: clamp(1rem, 4.9vw, 1.2rem); color: color-mix(in srgb, var(--uhel) 85%, transparent); }
 .podnadpis-r { display: block; }
 .adresa-radek { white-space: nowrap; }
 .hero-akce { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 1.5rem; }
@@ -448,3 +448,35 @@ address { font-style: normal; }
   .js [data-reveal] { opacity: 1; translate: 0 0; transition: none; }
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
 }
+
+/* ---------- Platba, okolí, časté dotazy, provozovatel ---------- */
+.platba { display: flex; align-items: center; gap: 0.55rem; margin: 0.9rem 0 0; font-size: 1rem; color: var(--salvej); }
+.ikona-mala { width: 1.6rem; height: 1.6rem; flex: none; color: var(--salvej); }
+
+.okoli { padding-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+.okoli-text p { max-width: 62ch; font-size: 1.1rem; line-height: 1.7; }
+.okoli-text .obce-veta { font-size: 0.95rem; color: var(--salvej); margin-top: 1.4rem; padding-top: 1rem; border-top: 1px dotted var(--zlata); }
+
+.dotazy { padding-top: clamp(1.5rem, 4vw, 2.5rem); }
+.dotazy-seznam { margin-top: 1.4rem; border-top: 1px solid color-mix(in srgb, var(--zlata) 60%, transparent); }
+.dotaz { border-bottom: 1px solid color-mix(in srgb, var(--zlata) 60%, transparent); }
+.dotaz summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: 1rem 0.2rem; font-family: var(--font-nadpis); font-variation-settings: 'SOFT' 100; font-weight: 600; font-size: 1.2rem;
+  transition: color 0.4s ease;
+}
+.dotaz summary::-webkit-details-marker { display: none; }
+.dotaz summary::after {
+  content: ''; flex: none; width: 0.6rem; height: 0.6rem; border-right: 2px solid var(--zlata-velky); border-bottom: 2px solid var(--zlata-velky);
+  transform: rotate(45deg) translate(-2px, -2px); transition: transform 0.4s var(--ease);
+}
+.dotaz[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+.dotaz summary:hover { color: var(--zlata-tmava); }
+.dotaz .odpoved { padding: 0 0.2rem 1rem; max-width: 62ch; }
+.dotaz .odpoved p { margin: 0; line-height: 1.7; }
+.dotaz .odpoved a { color: var(--uhel); font-weight: 600; text-decoration-color: var(--zlata-velky); text-decoration-thickness: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .dotaz[open] .odpoved { animation: nastup 0.4s var(--ease) both; }
+}
+
+.provozovatel { margin: 0.2rem 0 1rem; font-size: 0.85rem; color: var(--salvej); }
