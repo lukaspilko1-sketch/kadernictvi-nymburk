@@ -27,12 +27,17 @@ Podnadpis (dva řádky, adresa se nesmí zalomit): první řádek **„Kadeřnic
 
 ## 3. Provozovatel (odpovědná osoba a IČ) v Kontaktu
 
-Údaje dodá Lukáš později, takže připrav jen **datovou a vizuální část, která se bez údajů nezobrazí**:
+Provozovatel je ověřený v ARES (obchodní jméno a IČO, stav aktivní). Údaje jsou:
 
-- `firma.json`: nový objekt `provozovatel` s poli `jmeno` (odpovědná osoba nebo obchodní jméno), `ic` (osm číslic, validace regexem `^\d{8}$`, prázdné povoleno) a volitelně `sidlo`. Všechna pole výchozí prázdná.
+- jméno: **Lucie Řehořová**
+- IČ: **71108271**
+
+**Sídlo ani adresu bydliště neuváděj** (v ARES je to soukromá adresa mimo Nymburk, na webu se zobrazuje jen provozovna Zbožská 664/4). Pole `sidlo` proto **nezakládej**.
+
+- `firma.json`: nový objekt `provozovatel` s poli `jmeno` (výchozí „Lucie Řehořová") a `ic` (výchozí „71108271", validace regexem `^\d{8}$`, prázdné povoleno, aby šlo pole případně vymazat).
 - V `.pages.yml` formulář „Provozovatel" s popisky česky, s hláškou „IČ má 8 číslic".
 - V sekci Kontakt pod adresu a telefon: **„Provozovatel: {jméno}, IČ {ic}"** (jemný drobný text). Zobrazí se, jen když je `jmeno` nebo `ic` vyplněno. Na stránce Soukromí uveď stejného provozovatele jako správce údajů, pokud je vyplněn. Do JSON-LD přidej `legalName` a `taxID`, jen když jsou údaje vyplněné.
-- Do `CLAUDE.md` zapiš TODO: „doplnit provozovatele (jméno, IČ)" a po vyplnění ho odškrtnout.
+- Do `CLAUDE.md` zapiš: provozovatel Lucie Řehořová, IČ 71108271 (ověřeno v ARES, bez sídla). Do TODO: „potvrdit s majitelkou, že souhlasí se zveřejněním jména a IČ na webu".
 
 ## 4. SEO pro celou stránku a okolí (okres Nymburk)
 
@@ -50,8 +55,8 @@ Text ulož do nového souboru `src/data/okoli.json` a do `.pages.yml` jako formu
 
 - **Nadpis (h2):** `Kadeřnictví a holičství v Nymburce i okolí`
 - **Odstavec 1:** `Kadeřnictví a holičství Nymburk najdete ve Zbožské ulici. Stříháme pány i děti, bez objednání: stačí přijít v otevírací době. Děláme klasické pánské střihy, fade strojkem i břitvou, úpravu a holení vousů, melír, barvení i trvalou. Děti stříháme od těch nejmenších po školáky.`
-- **Odstavec 2:** `K nám chodí zákazníci z Nymburka i okolí: z Poděbrad, Sadské, Lysé nad Labem, Milovic, Městce Králové a dalších obcí okresu Nymburk. Platba je možná pouze v hotovosti. Aktuální otevírací dobu a změny najdete na Facebooku.`
-- **Seznam obcí** (pole `obce`, `areaServed` v JSON-LD, výchozí): Nymburk, Poděbrady, Lysá nad Labem, Sadská, Milovice, Městec Králové, Rožďalovice, Kostomlaty nad Labem, Semice, Hořátev, Kovanice. Na stránce jako **jemná souvislá věta** („Stříháme pány a děti z Nymburka, Poděbrad, …"), ne jako hustý seznam odkazů. **Lukáš ověří seznam obcí** (v `CLAUDE.md` do TODO: „potvrdit, které obce uvádět jako okolí").
+- **Odstavec 2:** `K nám chodí zákazníci z Nymburka i okolí: z Poděbrad, Sadské, Lysé nad Labem, Milovic a dalších obcí okresu Nymburk. Platba je možná pouze v hotovosti. Aktuální otevírací dobu a změny najdete na Facebooku.`
+- **Seznam obcí** (pole `obce`, `areaServed` v JSON-LD, výchozí): Nymburk, Poděbrady, Lysá nad Labem, Sadská, Milovice, Kostomlaty nad Labem, Semice, Hořátev, Kovanice (Městec Králové a Rožďalovice jsou už příliš daleko, **neuvádět**). Na stránce jako **jemná souvislá věta** („Stříháme pány a děti z Nymburka, Poděbrad, …"), ne jako hustý seznam odkazů. Seznam je potvrzený Lukášem, dá se později upravit v administraci.
 
 ### 4.3 Sekce časté dotazy (pod sekcí okolí)
 
@@ -98,9 +103,9 @@ Rozšiř stávající `HairSalon`:
 
 - Hero nadpis je „Střih pro pány. / Střih pro děti. / Bez objednání." s podnadpisem „Kadeřnictví a holičství v Nymburce" a adresou na vlastním řádku.
 - Pod nadpisem Ceník je „Platba pouze v hotovosti."
-- V Kontaktu se po vyplnění objeví provozovatel a IČ, bez vyplnění se nezobrazí nic.
+- V Kontaktu je „Provozovatel: Lucie Řehořová, IČ 71108271" (bez sídla). Po vymazání polí se nezobrazí nic.
 - Sekce „Kadeřnictví a holičství v Nymburce i okolí" a časté dotazy jsou na stránce a upravitelné v administraci.
 - JSON-LD má adresu s PSČ, `areaServed`, hotovost a zbytek z dat.
 - `robots.txt` obsahuje správnou adresu mapy webu.
 - Texty z administrace (O nás, PSČ, souřadnice) jsou beze změny.
-- Na konci stručně shrň změny a co ještě potřebuješ (provozovatel, IČ, fotka budovy, potvrzení obcí).
+- Na konci stručně shrň změny a co ještě potřebuješ (fotka budovy, souhlas majitelky se zveřejněním jména a IČ, doména).
