@@ -51,30 +51,11 @@ const text = (x) => `<line x1="${x - 16}" y1="22" x2="${x - 16}" y2="108" stroke
 
 const logo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130" width="420" height="130" role="img" aria-label="Kadeřnictví a holičství Nymburk"><title>Kadeřnictví a holičství Nymburk</title>${znacka()}${text(140)}</svg>`;
 
-// Favicon: tmavý podklad, krémové nůžky, champagne hřeben (čitelné i ve 32 px)
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${CERNA}"/><g transform="translate(32 33) scale(0.5) translate(-62 -66)">${znacka(KREM, CHAMPAGNE, CERNA)}</g></svg>`;
 
 writeFileSync('public/logo-mark.svg', mark);
 writeFileSync('public/logo.svg', logo);
-writeFileSync('public/favicon.svg', favicon);
 
 await sharp(Buffer.from(logo), { density: 300 }).resize({ width: 512 }).flatten({ background: KREM }).png().toFile('public/logo-512.png');
-const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="${KREM}"/><rect x="30" y="30" width="1140" height="570" fill="none" stroke="${CHAMPAGNE}" stroke-width="3"/><g transform="translate(95 150) scale(2.4)">${logo.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g><text x="600" y="545" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="${CERNA}">Zbožská 664/4, Nymburk · 603 242 505</text></svg>`;
-await sharp(Buffer.from(og)).png().toFile('public/og.png');
 
-// Náhled čitelnosti: znacka ve 32, 64, 128 px + favicon ve 32, 64
-if (process.env.PREVIEW) {
-  const sizes = [32, 64, 128];
-  const tiles = [];
-  let x = 10;
-  for (const s of sizes) {
-    tiles.push({ input: await sharp(Buffer.from(mark), { density: 400 }).resize({ height: s }).flatten({ background: KREM }).png().toBuffer(), left: x, top: 10 });
-    x += Math.round((s * 104) / 108) + 20;
-  }
-  for (const s of [32, 64]) {
-    tiles.push({ input: await sharp(Buffer.from(favicon), { density: 400 }).resize({ width: s }).png().toBuffer(), left: x, top: 10 });
-    x += s + 20;
-  }
-  await sharp({ create: { width: x, height: 150, channels: 3, background: KREM } }).composite(tiles).png().toFile(process.env.PREVIEW);
-}
+// Favicony a og.png (židle) už tenhle skript nevyrábí, jsou hotové v public/ (favicon.ico, favicon-32.png, apple-touch-icon.png, icon-*.png, og.png).
 console.log('logo hotovo');

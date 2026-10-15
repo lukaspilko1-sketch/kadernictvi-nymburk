@@ -25,7 +25,7 @@ npm test         # jednotkové testy (Vitest): otevřeno / zavřeno
 | Okolí (obce) a časté dotazy | `src/data/okoli.json` |
 | Nadpis úvodu, platba, provozovatel | `src/data/firma.json` (`hero`, `platba`, `provozovatel`) |
 | Logo v hlavičce (židle) | `scripts/make-logo-zidle.mjs` z `src/assets/logo-zidle.jpg` vyrobí `public/logo-zidle.webp` (120 × 120 px) |
-| Logo (hřeben, favicon, og) | `scripts/make-logo.mjs` (jedna definice), pak `node scripts/make-logo.mjs` vygeneruje `public/logo.svg`, `logo-mark.svg`, `favicon.svg`, `logo-512.png`, `og.png` |
+| Logo (hřeben do ceníku) | `scripts/make-logo.mjs` vygeneruje `public/logo.svg`, `logo-mark.svg`, `logo-512.png`. Favicony a `og.png` (židle) jsou hotové v `public/` a skript je nevyrábí. |
 | Barvy a písma | CSS proměnné na začátku `src/styles/global.css` |
 | Fonty | balíčky `@fontsource-variable/*`, hostované lokálně, žádné CDN |
 
@@ -68,6 +68,6 @@ Lokálně lze adresu přepsat proměnnými `SITE_URL` a `BASE_PATH`.
 - Ověřit platnost pánského ceníku (platnost od 1. 3. 2025)
 - PSČ, doména, `site` v `astro.config.mjs`, `Sitemap:` v `robots.txt`
 - Potvrdit s majitelkou zveřejnění jména a IČ provozovatele
-- Schválit sjednocení favicony a `og.png` (`node scripts/navrh-favicon-og.mjs` vyrobí náhled do `nahled-favicon-og/`)
+- Favicony a `og.png` jsou sjednocené s logem židle (hotovo).
 - Souhlas zákazníků s fotkami (děti)
 - Standalone `public/logo.svg` používá text s písmem Fraunces/Georgia (záložní); pro tisk převést text na křivky
