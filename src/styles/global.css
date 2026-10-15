@@ -479,4 +479,4 @@ address { font-style: normal; }
   .dotaz[open] .odpoved { animation: nastup 0.4s var(--ease) both; }
 }
 
-.provozovatel { margin: 0.2rem 0 1rem; font-size: 0.85rem; color: var(--salvej); }
+.paticka .paticka-provozovatel { flex-basis: 100%; font-size: 0.85rem; opacity: 0.75; padding-top: 0.9rem; border-top: 1px solid rgba(245, 244, 242, 0.14); }

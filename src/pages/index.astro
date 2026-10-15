@@ -241,7 +241,6 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
             <p><a class="telefon-velky" href={firma.telefonOdkaz}>{firma.telefon}</a></p>
             <p><a href={firma.facebook} rel="noopener noreferrer" target="_blank">Facebook salonu</a></p>
           </address>
-          {provozovatel && <p class="provozovatel">Provozovatel: {provozovatel}</p>}
           <p class="kontakt-hodiny">Otevřeno pondělí až pátek, o víkendu zavřeno. <a href="#hodiny">Hodiny nahoře</a>.</p>
           <ZavolatTlacitko />
         </div>
@@ -272,6 +271,7 @@ const velke = await Promise.all(galerie.map((f) => getImage({ src: f.img, width:
       <p><strong>{firma.nazev}</strong><br />{firma.adresa.ulice}, {firma.adresa.mesto}</p>
       <p><a href={firma.telefonOdkaz}>{firma.telefon}</a></p>
       <p><a href={href('/soukromi/')}>Ochrana soukromí</a></p>
+      {provozovatel && <p class="paticka-provozovatel">Provozovatel: {provozovatel}</p>}
     </div>
   </footer>
 
