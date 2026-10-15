@@ -31,9 +31,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # TODO: po zakoupení domény nastavit SITE_URL na ni a BASE_PATH smazat.
-          SITE_URL: https://${{ github.repository_owner }}.github.io
-          BASE_PATH: /${{ github.event.repository.name }}
+          SITE_URL: https://kadernictvinymburk.cz
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -43,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://kadernictvinymburk.cz
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
